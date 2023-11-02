@@ -1,0 +1,14 @@
+C:\Users\malik\Desktop\ZZ2\Service_Web\Service_Web\Service_Web\bin\Debug\net7.0\Service_Web.exe
+C:\Users\malik\Desktop\ZZ2\Service_Web\Service_Web\Service_Web\bin\Debug\net7.0\Service_Web.deps.json
+C:\Users\malik\Desktop\ZZ2\Service_Web\Service_Web\Service_Web\bin\Debug\net7.0\Service_Web.runtimeconfig.json
+C:\Users\malik\Desktop\ZZ2\Service_Web\Service_Web\Service_Web\bin\Debug\net7.0\Service_Web.dll
+C:\Users\malik\Desktop\ZZ2\Service_Web\Service_Web\Service_Web\bin\Debug\net7.0\Service_Web.pdb
+C:\Users\malik\Desktop\ZZ2\Service_Web\Service_Web\Service_Web\obj\Debug\net7.0\Service_Web.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\malik\Desktop\ZZ2\Service_Web\Service_Web\Service_Web\obj\Debug\net7.0\Service_Web.AssemblyInfoInputs.cache
+C:\Users\malik\Desktop\ZZ2\Service_Web\Service_Web\Service_Web\obj\Debug\net7.0\Service_Web.AssemblyInfo.cs
+C:\Users\malik\Desktop\ZZ2\Service_Web\Service_Web\Service_Web\obj\Debug\net7.0\Service_Web.csproj.CoreCompileInputs.cache
+C:\Users\malik\Desktop\ZZ2\Service_Web\Service_Web\Service_Web\obj\Debug\net7.0\Service_Web.dll
+C:\Users\malik\Desktop\ZZ2\Service_Web\Service_Web\Service_Web\obj\Debug\net7.0\refint\Service_Web.dll
+C:\Users\malik\Desktop\ZZ2\Service_Web\Service_Web\Service_Web\obj\Debug\net7.0\Service_Web.pdb
+C:\Users\malik\Desktop\ZZ2\Service_Web\Service_Web\Service_Web\obj\Debug\net7.0\Service_Web.genruntimeconfig.cache
+C:\Users\malik\Desktop\ZZ2\Service_Web\Service_Web\Service_Web\obj\Debug\net7.0\ref\Service_Web.dll
