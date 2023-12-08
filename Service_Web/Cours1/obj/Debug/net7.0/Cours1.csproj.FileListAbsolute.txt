@@ -1,0 +1,14 @@
+C:\Users\malik\Desktop\ZZ2\Service_Web\Service_Web\Cours1\bin\Debug\net7.0\Cours1.exe
+C:\Users\malik\Desktop\ZZ2\Service_Web\Service_Web\Cours1\bin\Debug\net7.0\Cours1.deps.json
+C:\Users\malik\Desktop\ZZ2\Service_Web\Service_Web\Cours1\bin\Debug\net7.0\Cours1.runtimeconfig.json
+C:\Users\malik\Desktop\ZZ2\Service_Web\Service_Web\Cours1\bin\Debug\net7.0\Cours1.dll
+C:\Users\malik\Desktop\ZZ2\Service_Web\Service_Web\Cours1\bin\Debug\net7.0\Cours1.pdb
+C:\Users\malik\Desktop\ZZ2\Service_Web\Service_Web\Cours1\obj\Debug\net7.0\Cours1.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\malik\Desktop\ZZ2\Service_Web\Service_Web\Cours1\obj\Debug\net7.0\Cours1.AssemblyInfoInputs.cache
+C:\Users\malik\Desktop\ZZ2\Service_Web\Service_Web\Cours1\obj\Debug\net7.0\Cours1.AssemblyInfo.cs
+C:\Users\malik\Desktop\ZZ2\Service_Web\Service_Web\Cours1\obj\Debug\net7.0\Cours1.csproj.CoreCompileInputs.cache
+C:\Users\malik\Desktop\ZZ2\Service_Web\Service_Web\Cours1\obj\Debug\net7.0\Cours1.dll
+C:\Users\malik\Desktop\ZZ2\Service_Web\Service_Web\Cours1\obj\Debug\net7.0\refint\Cours1.dll
+C:\Users\malik\Desktop\ZZ2\Service_Web\Service_Web\Cours1\obj\Debug\net7.0\Cours1.pdb
+C:\Users\malik\Desktop\ZZ2\Service_Web\Service_Web\Cours1\obj\Debug\net7.0\Cours1.genruntimeconfig.cache
+C:\Users\malik\Desktop\ZZ2\Service_Web\Service_Web\Cours1\obj\Debug\net7.0\ref\Cours1.dll
