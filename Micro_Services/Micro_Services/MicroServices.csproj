@@ -10,4 +10,10 @@
       <ProjectReference Include="..\UserLib\UserLib.csproj" />
     </ItemGroup>
 
+    <ItemGroup>
+      <None Include="wwwroot\Images\1.jpg" />
+      <None Include="wwwroot\Images\2.jpg" />
+      <None Include="wwwroot\Images\3.jpg" />
+    </ItemGroup>
+
 </Project>

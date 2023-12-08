@@ -33,3 +33,39 @@ E:\Me\Csharp\Test\Micro_Services\Gateway\obj\Debug\net8.0\refint\Gateway.dll
 E:\Me\Csharp\Test\Micro_Services\Gateway\obj\Debug\net8.0\Gateway.pdb
 E:\Me\Csharp\Test\Micro_Services\Gateway\obj\Debug\net8.0\Gateway.genruntimeconfig.cache
 E:\Me\Csharp\Test\Micro_Services\Gateway\obj\Debug\net8.0\ref\Gateway.dll
+C:\Users\malik\Desktop\ZZ2\Service Web\Micro_Services\Gateway\bin\Debug\net8.0\appsettings.Development.json
+C:\Users\malik\Desktop\ZZ2\Service Web\Micro_Services\Gateway\bin\Debug\net8.0\appsettings.json
+C:\Users\malik\Desktop\ZZ2\Service Web\Micro_Services\Gateway\bin\Debug\net8.0\Gateway.exe
+C:\Users\malik\Desktop\ZZ2\Service Web\Micro_Services\Gateway\bin\Debug\net8.0\Gateway.deps.json
+C:\Users\malik\Desktop\ZZ2\Service Web\Micro_Services\Gateway\bin\Debug\net8.0\Gateway.runtimeconfig.json
+C:\Users\malik\Desktop\ZZ2\Service Web\Micro_Services\Gateway\bin\Debug\net8.0\Gateway.dll
+C:\Users\malik\Desktop\ZZ2\Service Web\Micro_Services\Gateway\bin\Debug\net8.0\Gateway.pdb
+C:\Users\malik\Desktop\ZZ2\Service Web\Micro_Services\Gateway\bin\Debug\net8.0\Microsoft.AspNetCore.OpenApi.dll
+C:\Users\malik\Desktop\ZZ2\Service Web\Micro_Services\Gateway\bin\Debug\net8.0\Microsoft.OpenApi.dll
+C:\Users\malik\Desktop\ZZ2\Service Web\Micro_Services\Gateway\bin\Debug\net8.0\Swashbuckle.AspNetCore.Swagger.dll
+C:\Users\malik\Desktop\ZZ2\Service Web\Micro_Services\Gateway\bin\Debug\net8.0\Swashbuckle.AspNetCore.SwaggerGen.dll
+C:\Users\malik\Desktop\ZZ2\Service Web\Micro_Services\Gateway\bin\Debug\net8.0\Swashbuckle.AspNetCore.SwaggerUI.dll
+C:\Users\malik\Desktop\ZZ2\Service Web\Micro_Services\Gateway\bin\Debug\net8.0\UserLib.dll
+C:\Users\malik\Desktop\ZZ2\Service Web\Micro_Services\Gateway\bin\Debug\net8.0\UserLib.pdb
+C:\Users\malik\Desktop\ZZ2\Service Web\Micro_Services\Gateway\obj\Debug\net8.0\Gateway.csproj.AssemblyReference.cache
+C:\Users\malik\Desktop\ZZ2\Service Web\Micro_Services\Gateway\obj\Debug\net8.0\Gateway.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\malik\Desktop\ZZ2\Service Web\Micro_Services\Gateway\obj\Debug\net8.0\Gateway.AssemblyInfoInputs.cache
+C:\Users\malik\Desktop\ZZ2\Service Web\Micro_Services\Gateway\obj\Debug\net8.0\Gateway.AssemblyInfo.cs
+C:\Users\malik\Desktop\ZZ2\Service Web\Micro_Services\Gateway\obj\Debug\net8.0\Gateway.csproj.CoreCompileInputs.cache
+C:\Users\malik\Desktop\ZZ2\Service Web\Micro_Services\Gateway\obj\Debug\net8.0\Gateway.MvcApplicationPartsAssemblyInfo.cs
+C:\Users\malik\Desktop\ZZ2\Service Web\Micro_Services\Gateway\obj\Debug\net8.0\Gateway.MvcApplicationPartsAssemblyInfo.cache
+C:\Users\malik\Desktop\ZZ2\Service Web\Micro_Services\Gateway\obj\Debug\net8.0\Gateway.sourcelink.json
+C:\Users\malik\Desktop\ZZ2\Service Web\Micro_Services\Gateway\obj\Debug\net8.0\staticwebassets.build.json
+C:\Users\malik\Desktop\ZZ2\Service Web\Micro_Services\Gateway\obj\Debug\net8.0\staticwebassets.development.json
+C:\Users\malik\Desktop\ZZ2\Service Web\Micro_Services\Gateway\obj\Debug\net8.0\staticwebassets\msbuild.Gateway.Microsoft.AspNetCore.StaticWebAssets.props
+C:\Users\malik\Desktop\ZZ2\Service Web\Micro_Services\Gateway\obj\Debug\net8.0\staticwebassets\msbuild.build.Gateway.props
+C:\Users\malik\Desktop\ZZ2\Service Web\Micro_Services\Gateway\obj\Debug\net8.0\staticwebassets\msbuild.buildMultiTargeting.Gateway.props
+C:\Users\malik\Desktop\ZZ2\Service Web\Micro_Services\Gateway\obj\Debug\net8.0\staticwebassets\msbuild.buildTransitive.Gateway.props
+C:\Users\malik\Desktop\ZZ2\Service Web\Micro_Services\Gateway\obj\Debug\net8.0\staticwebassets.pack.json
+C:\Users\malik\Desktop\ZZ2\Service Web\Micro_Services\Gateway\obj\Debug\net8.0\scopedcss\bundle\Gateway.styles.css
+C:\Users\malik\Desktop\ZZ2\Service Web\Micro_Services\Gateway\obj\Debug\net8.0\Gateway.csproj.CopyComplete
+C:\Users\malik\Desktop\ZZ2\Service Web\Micro_Services\Gateway\obj\Debug\net8.0\Gateway.dll
+C:\Users\malik\Desktop\ZZ2\Service Web\Micro_Services\Gateway\obj\Debug\net8.0\refint\Gateway.dll
+C:\Users\malik\Desktop\ZZ2\Service Web\Micro_Services\Gateway\obj\Debug\net8.0\Gateway.pdb
+C:\Users\malik\Desktop\ZZ2\Service Web\Micro_Services\Gateway\obj\Debug\net8.0\Gateway.genruntimeconfig.cache
+C:\Users\malik\Desktop\ZZ2\Service Web\Micro_Services\Gateway\obj\Debug\net8.0\ref\Gateway.dll
