@@ -1,0 +1,8 @@
+E:\Me\Csharp\Test\Micro_Services\API\obj\Debug\net8.0\API.csproj.AssemblyReference.cache
+E:\Me\Csharp\Test\Micro_Services\API\obj\Debug\net8.0\API.GeneratedMSBuildEditorConfig.editorconfig
+E:\Me\Csharp\Test\Micro_Services\API\obj\Debug\net8.0\API.AssemblyInfoInputs.cache
+E:\Me\Csharp\Test\Micro_Services\API\obj\Debug\net8.0\API.AssemblyInfo.cs
+E:\Me\Csharp\Test\Micro_Services\API\obj\Debug\net8.0\API.csproj.CoreCompileInputs.cache
+E:\Me\Csharp\Test\Micro_Services\API\obj\Debug\net8.0\API.MvcApplicationPartsAssemblyInfo.cs
+E:\Me\Csharp\Test\Micro_Services\API\obj\Debug\net8.0\API.MvcApplicationPartsAssemblyInfo.cache
+E:\Me\Csharp\Test\Micro_Services\API\obj\Debug\net8.0\API.sourcelink.json
