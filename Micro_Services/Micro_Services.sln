@@ -2,6 +2,10 @@
 Microsoft Visual Studio Solution File, Format Version 12.00
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Micro_Services", "Micro_Services\Micro_Services.csproj", "{54C68FE9-3481-42A4-B510-60E3130DC3DE}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "API", "API\API.csproj", "{B296198B-056C-448D-AB08-E78B5D90645C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Gateway", "Gateway\Gateway.csproj", "{63924E1B-8F41-49C2-AB49-950ECAC9A45E}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -12,5 +16,13 @@ Global
 		{54C68FE9-3481-42A4-B510-60E3130DC3DE}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{54C68FE9-3481-42A4-B510-60E3130DC3DE}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{54C68FE9-3481-42A4-B510-60E3130DC3DE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B296198B-056C-448D-AB08-E78B5D90645C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B296198B-056C-448D-AB08-E78B5D90645C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B296198B-056C-448D-AB08-E78B5D90645C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B296198B-056C-448D-AB08-E78B5D90645C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{63924E1B-8F41-49C2-AB49-950ECAC9A45E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{63924E1B-8F41-49C2-AB49-950ECAC9A45E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{63924E1B-8F41-49C2-AB49-950ECAC9A45E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{63924E1B-8F41-49C2-AB49-950ECAC9A45E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
