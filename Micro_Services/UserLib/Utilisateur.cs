@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace API;
+namespace UserLib;
 
 public class Utilisateur
 {
@@ -10,6 +10,7 @@ public class Utilisateur
     public string Email { get; set; }
     public string Pass { get; private set; }
     public string NomComplet => Nom + " " + Prenom;
+
     // Constructeur
     public Utilisateur(int id, string nom, string prenom, string email, string pass)
     {
@@ -19,11 +20,13 @@ public class Utilisateur
         Email = email;
         Pass = pass;
     }
-    public void changePass()
+
+    public void ChangePass()
     {
         this.Pass = "muchSecure";
     }
-    public bool isPassSecure()
+
+    public bool IsPassSecure()
     {
         if (Pass.Length > 6)
         {
