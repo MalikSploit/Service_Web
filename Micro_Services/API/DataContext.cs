@@ -3,7 +3,7 @@ using Microsoft.Extensions.Configuration;
 using System.Collections.Generic;
 using UserLib;
 
-namespace API;
+namespace Api;
 
 public class DataContext : DbContext
 {
@@ -17,7 +17,6 @@ public class DataContext : DbContext
         // Connexion a la base sqlite
         options.UseSqlite(Configuration.GetConnectionString("WebApiDatabase"));
     }
-    // On déclare que notre base aura une table Utilisateurs qui contiendra des
+
     public DbSet<Utilisateur> Utilisateurs { get; set; }
 }
-// API.csproj
