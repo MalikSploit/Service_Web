@@ -8,19 +8,19 @@
     "net8.0": []
   },
   "packageFolders": {
-    "C:\\Users\\malik\\.nuget\\packages\\": {}
+    "/home/thibault/.nuget/packages/": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\malik\\Desktop\\ZZ2\\Service_Web\\Micro_Services\\Micro_Services\\Micro_Services.csproj",
+      "projectUniqueName": "/home/thibault/Documents/ZZ2/F5/Service_Web/Micro_Services/Micro_Services/Micro_Services.csproj",
       "projectName": "Micro_Services",
-      "projectPath": "C:\\Users\\malik\\Desktop\\ZZ2\\Service_Web\\Micro_Services\\Micro_Services\\Micro_Services.csproj",
-      "packagesPath": "C:\\Users\\malik\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\malik\\Desktop\\ZZ2\\Service_Web\\Micro_Services\\Micro_Services\\obj\\",
+      "projectPath": "/home/thibault/Documents/ZZ2/F5/Service_Web/Micro_Services/Micro_Services/Micro_Services.csproj",
+      "packagesPath": "/home/thibault/.nuget/packages/",
+      "outputPath": "/home/thibault/Documents/ZZ2/F5/Service_Web/Micro_Services/Micro_Services/obj/",
       "projectStyle": "PackageReference",
       "configFilePaths": [
-        "C:\\Users\\malik\\AppData\\Roaming\\NuGet\\NuGet.Config"
+        "/home/thibault/.nuget/NuGet/NuGet.Config"
       ],
       "originalTargetFrameworks": [
         "net8.0"
@@ -62,7 +62,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.100/PortableRuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "/usr/share/dotnet/sdk/8.0.100/PortableRuntimeIdentifierGraph.json"
       }
     }
   }

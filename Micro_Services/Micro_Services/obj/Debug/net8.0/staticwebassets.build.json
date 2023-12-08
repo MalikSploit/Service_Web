@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "Hash": "6hLeri/BpRrqHs1ylfibWUhDlsnVW6B5xAe19WzZRa4=",
+  "Hash": "86aYksxJooSuuTpzlqtDw098tR3pZe0tA+NXPAFAuFM=",
   "Source": "Micro_Services",
   "BasePath": "_content/Micro_Services",
   "Mode": "Default",
@@ -8,19 +8,19 @@
   "ReferencedProjectsConfiguration": [],
   "DiscoveryPatterns": [
     {
-      "Name": "Micro_Services\\wwwroot",
+      "Name": "Micro_Services/wwwroot",
       "Source": "Micro_Services",
-      "ContentRoot": "C:\\Users\\malik\\Desktop\\ZZ2\\Service_Web\\Micro_Services\\Micro_Services\\wwwroot\\",
+      "ContentRoot": "/home/thibault/Documents/ZZ2/F5/Service_Web/Micro_Services/Micro_Services/wwwroot/",
       "BasePath": "_content/Micro_Services",
       "Pattern": "**"
     }
   ],
   "Assets": [
     {
-      "Identity": "C:\\Users\\malik\\Desktop\\ZZ2\\Service_Web\\Micro_Services\\Micro_Services\\obj\\Debug\\net8.0\\scopedcss\\bundle\\Micro_Services.styles.css",
+      "Identity": "/home/thibault/Documents/ZZ2/F5/Service_Web/Micro_Services/Micro_Services/obj/Debug/net8.0/scopedcss/bundle/Micro_Services.styles.css",
       "SourceId": "Micro_Services",
       "SourceType": "Computed",
-      "ContentRoot": "C:\\Users\\malik\\Desktop\\ZZ2\\Service_Web\\Micro_Services\\Micro_Services\\obj\\Debug\\net8.0\\scopedcss\\bundle\\",
+      "ContentRoot": "/home/thibault/Documents/ZZ2/F5/Service_Web/Micro_Services/Micro_Services/obj/Debug/net8.0/scopedcss/bundle/",
       "BasePath": "_content/Micro_Services",
       "RelativePath": "Micro_Services.styles.css",
       "AssetKind": "All",
@@ -33,13 +33,13 @@
       "AssetTraitValue": "ApplicationBundle",
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
-      "OriginalItemSpec": "C:\\Users\\malik\\Desktop\\ZZ2\\Service_Web\\Micro_Services\\Micro_Services\\obj\\Debug\\net8.0\\scopedcss\\bundle\\Micro_Services.styles.css"
+      "OriginalItemSpec": "/home/thibault/Documents/ZZ2/F5/Service_Web/Micro_Services/Micro_Services/obj/Debug/net8.0/scopedcss/bundle/Micro_Services.styles.css"
     },
     {
-      "Identity": "C:\\Users\\malik\\Desktop\\ZZ2\\Service_Web\\Micro_Services\\Micro_Services\\obj\\Debug\\net8.0\\scopedcss\\projectbundle\\Micro_Services.bundle.scp.css",
+      "Identity": "/home/thibault/Documents/ZZ2/F5/Service_Web/Micro_Services/Micro_Services/obj/Debug/net8.0/scopedcss/projectbundle/Micro_Services.bundle.scp.css",
       "SourceId": "Micro_Services",
       "SourceType": "Computed",
-      "ContentRoot": "C:\\Users\\malik\\Desktop\\ZZ2\\Service_Web\\Micro_Services\\Micro_Services\\obj\\Debug\\net8.0\\scopedcss\\projectbundle\\",
+      "ContentRoot": "/home/thibault/Documents/ZZ2/F5/Service_Web/Micro_Services/Micro_Services/obj/Debug/net8.0/scopedcss/projectbundle/",
       "BasePath": "_content/Micro_Services",
       "RelativePath": "Micro_Services.bundle.scp.css",
       "AssetKind": "All",
@@ -52,13 +52,13 @@
       "AssetTraitValue": "ProjectBundle",
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
-      "OriginalItemSpec": "C:\\Users\\malik\\Desktop\\ZZ2\\Service_Web\\Micro_Services\\Micro_Services\\obj\\Debug\\net8.0\\scopedcss\\projectbundle\\Micro_Services.bundle.scp.css"
+      "OriginalItemSpec": "/home/thibault/Documents/ZZ2/F5/Service_Web/Micro_Services/Micro_Services/obj/Debug/net8.0/scopedcss/projectbundle/Micro_Services.bundle.scp.css"
     },
     {
-      "Identity": "C:\\Users\\malik\\Desktop\\ZZ2\\Service_Web\\Micro_Services\\Micro_Services\\wwwroot\\app.css",
+      "Identity": "/home/thibault/Documents/ZZ2/F5/Service_Web/Micro_Services/Micro_Services/wwwroot/app.css",
       "SourceId": "Micro_Services",
       "SourceType": "Discovered",
-      "ContentRoot": "C:\\Users\\malik\\Desktop\\ZZ2\\Service_Web\\Micro_Services\\Micro_Services\\wwwroot\\",
+      "ContentRoot": "/home/thibault/Documents/ZZ2/F5/Service_Web/Micro_Services/Micro_Services/wwwroot/",
       "BasePath": "_content/Micro_Services",
       "RelativePath": "app.css",
       "AssetKind": "All",
@@ -71,13 +71,13 @@
       "AssetTraitValue": "",
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
-      "OriginalItemSpec": "wwwroot\\app.css"
+      "OriginalItemSpec": "wwwroot/app.css"
     },
     {
-      "Identity": "C:\\Users\\malik\\Desktop\\ZZ2\\Service_Web\\Micro_Services\\Micro_Services\\wwwroot\\bootstrap\\bootstrap.min.css",
+      "Identity": "/home/thibault/Documents/ZZ2/F5/Service_Web/Micro_Services/Micro_Services/wwwroot/bootstrap/bootstrap.min.css",
       "SourceId": "Micro_Services",
       "SourceType": "Discovered",
-      "ContentRoot": "C:\\Users\\malik\\Desktop\\ZZ2\\Service_Web\\Micro_Services\\Micro_Services\\wwwroot\\",
+      "ContentRoot": "/home/thibault/Documents/ZZ2/F5/Service_Web/Micro_Services/Micro_Services/wwwroot/",
       "BasePath": "_content/Micro_Services",
       "RelativePath": "bootstrap/bootstrap.min.css",
       "AssetKind": "All",
@@ -90,13 +90,13 @@
       "AssetTraitValue": "",
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
-      "OriginalItemSpec": "wwwroot\\bootstrap\\bootstrap.min.css"
+      "OriginalItemSpec": "wwwroot/bootstrap/bootstrap.min.css"
     },
     {
-      "Identity": "C:\\Users\\malik\\Desktop\\ZZ2\\Service_Web\\Micro_Services\\Micro_Services\\wwwroot\\bootstrap\\bootstrap.min.css.map",
+      "Identity": "/home/thibault/Documents/ZZ2/F5/Service_Web/Micro_Services/Micro_Services/wwwroot/bootstrap/bootstrap.min.css.map",
       "SourceId": "Micro_Services",
       "SourceType": "Discovered",
-      "ContentRoot": "C:\\Users\\malik\\Desktop\\ZZ2\\Service_Web\\Micro_Services\\Micro_Services\\wwwroot\\",
+      "ContentRoot": "/home/thibault/Documents/ZZ2/F5/Service_Web/Micro_Services/Micro_Services/wwwroot/",
       "BasePath": "_content/Micro_Services",
       "RelativePath": "bootstrap/bootstrap.min.css.map",
       "AssetKind": "All",
@@ -109,13 +109,13 @@
       "AssetTraitValue": "",
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
-      "OriginalItemSpec": "wwwroot\\bootstrap\\bootstrap.min.css.map"
+      "OriginalItemSpec": "wwwroot/bootstrap/bootstrap.min.css.map"
     },
     {
-      "Identity": "C:\\Users\\malik\\Desktop\\ZZ2\\Service_Web\\Micro_Services\\Micro_Services\\wwwroot\\favicon.png",
+      "Identity": "/home/thibault/Documents/ZZ2/F5/Service_Web/Micro_Services/Micro_Services/wwwroot/favicon.png",
       "SourceId": "Micro_Services",
       "SourceType": "Discovered",
-      "ContentRoot": "C:\\Users\\malik\\Desktop\\ZZ2\\Service_Web\\Micro_Services\\Micro_Services\\wwwroot\\",
+      "ContentRoot": "/home/thibault/Documents/ZZ2/F5/Service_Web/Micro_Services/Micro_Services/wwwroot/",
       "BasePath": "_content/Micro_Services",
       "RelativePath": "favicon.png",
       "AssetKind": "All",
@@ -128,7 +128,7 @@
       "AssetTraitValue": "",
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
-      "OriginalItemSpec": "wwwroot\\favicon.png"
+      "OriginalItemSpec": "wwwroot/favicon.png"
     }
   ]
 }

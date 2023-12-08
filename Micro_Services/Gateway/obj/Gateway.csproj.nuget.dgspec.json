@@ -1,20 +1,20 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\malik\\Desktop\\ZZ2\\Service_Web\\Micro_Services\\Gateway\\Gateway.csproj": {}
+    "/home/thibault/Documents/ZZ2/F5/Service_Web/Micro_Services/Gateway/Gateway.csproj": {}
   },
   "projects": {
-    "C:\\Users\\malik\\Desktop\\ZZ2\\Service_Web\\Micro_Services\\Gateway\\Gateway.csproj": {
+    "/home/thibault/Documents/ZZ2/F5/Service_Web/Micro_Services/Gateway/Gateway.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\malik\\Desktop\\ZZ2\\Service_Web\\Micro_Services\\Gateway\\Gateway.csproj",
+        "projectUniqueName": "/home/thibault/Documents/ZZ2/F5/Service_Web/Micro_Services/Gateway/Gateway.csproj",
         "projectName": "Gateway",
-        "projectPath": "C:\\Users\\malik\\Desktop\\ZZ2\\Service_Web\\Micro_Services\\Gateway\\Gateway.csproj",
-        "packagesPath": "C:\\Users\\malik\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\malik\\Desktop\\ZZ2\\Service_Web\\Micro_Services\\Gateway\\obj\\",
+        "projectPath": "/home/thibault/Documents/ZZ2/F5/Service_Web/Micro_Services/Gateway/Gateway.csproj",
+        "packagesPath": "/home/thibault/.nuget/packages/",
+        "outputPath": "/home/thibault/Documents/ZZ2/F5/Service_Web/Micro_Services/Gateway/obj/",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "C:\\Users\\malik\\AppData\\Roaming\\NuGet\\NuGet.Config"
+          "/home/thibault/.nuget/NuGet/NuGet.Config"
         ],
         "originalTargetFrameworks": [
           "net8.0"
@@ -66,7 +66,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.100/PortableRuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "/usr/share/dotnet/sdk/8.0.100/PortableRuntimeIdentifierGraph.json"
         }
       }
     }
