@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "skKhi15Htq1rHEEFp+U3cZ6vpGps1Mp5BTEeXfqrs+0nI27etitUzKEWNxIuv2ftuu/11KrlxuikUJU2+Zv0kA==",
+  "dgSpecHash": "v+6A4bn79JDK26nIqzGX5zISRX3GAM25XYaVkZWvksiNoI/MIstJwt2G59GBC/wpLjmCtJ73sHm+B3GIM3r6TQ==",
   "success": true,
-  "projectFilePath": "E:\\Me\\Csharp\\Test\\Micro_Services\\Micro_Services\\Micro_Services.csproj",
+  "projectFilePath": "E:\\Me\\Csharp\\Test\\Micro_Services\\Micro_Services\\MicroServices.csproj",
   "expectedPackageFiles": [],
   "logs": []
 }

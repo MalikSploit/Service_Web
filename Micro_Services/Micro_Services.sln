@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.8.34330.188
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Micro_Services", "Micro_Services\Micro_Services.csproj", "{54C68FE9-3481-42A4-B510-60E3130DC3DE}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MicroServices", "Micro_Services\MicroServices.csproj", "{54C68FE9-3481-42A4-B510-60E3130DC3DE}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "API", "API\API.csproj", "{B296198B-056C-448D-AB08-E78B5D90645C}"
 EndProject
@@ -36,5 +36,8 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {88FE1125-D430-4E48-8C6B-867F6CF4711F}
 	EndGlobalSection
 EndGlobal

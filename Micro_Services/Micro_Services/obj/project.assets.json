@@ -34,9 +34,9 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "E:\\Me\\Csharp\\Test\\Micro_Services\\Micro_Services\\Micro_Services.csproj",
-      "projectName": "Micro_Services",
-      "projectPath": "E:\\Me\\Csharp\\Test\\Micro_Services\\Micro_Services\\Micro_Services.csproj",
+      "projectUniqueName": "E:\\Me\\Csharp\\Test\\Micro_Services\\Micro_Services\\MicroServices.csproj",
+      "projectName": "MicroServices",
+      "projectPath": "E:\\Me\\Csharp\\Test\\Micro_Services\\Micro_Services\\MicroServices.csproj",
       "packagesPath": "C:\\Users\\TTD\\.nuget\\packages\\",
       "outputPath": "E:\\Me\\Csharp\\Test\\Micro_Services\\Micro_Services\\obj\\",
       "projectStyle": "PackageReference",

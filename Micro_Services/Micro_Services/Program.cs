@@ -1,4 +1,4 @@
-using Micro_Services.Components;
+using MicroServices.Components;
 
 var builder = WebApplication.CreateBuilder(args);
 
