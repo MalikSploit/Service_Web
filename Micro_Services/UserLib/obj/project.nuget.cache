@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "FI86JPB44SqhcCnhbXk5C3rPeLr75ghuMfHEFf68VHqywlwe/P5JrkhoDqFRL38Pbn472WX+kVj3VktoHrW//Q==",
+  "dgSpecHash": "moQ1Evth7JsKNfAX4ANUyLVJh+zTa3nA+qHYomV/0xDAHFo3yloej4kZ9XRl0Gl7BfN2n5mGLKDC6/FtzGxkqA==",
   "success": true,
-  "projectFilePath": "E:\\Me\\Csharp\\Test\\Micro_Services\\UserLib\\UserLib.csproj",
+  "projectFilePath": "C:\\Users\\malik\\Desktop\\ZZ2\\Service Web\\Micro_Services\\UserLib\\UserLib.csproj",
   "expectedPackageFiles": [],
   "logs": []
 }

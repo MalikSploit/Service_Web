@@ -32,3 +32,36 @@ E:\Me\Csharp\Test\Micro_Services\Micro_Services\obj\Debug\net8.0\refint\MicroSer
 E:\Me\Csharp\Test\Micro_Services\Micro_Services\obj\Debug\net8.0\MicroServices.pdb
 E:\Me\Csharp\Test\Micro_Services\Micro_Services\obj\Debug\net8.0\MicroServices.genruntimeconfig.cache
 E:\Me\Csharp\Test\Micro_Services\Micro_Services\obj\Debug\net8.0\ref\MicroServices.dll
+C:\Users\malik\Desktop\ZZ2\Service Web\Micro_Services\Micro_Services\bin\Debug\net8.0\appsettings.Development.json
+C:\Users\malik\Desktop\ZZ2\Service Web\Micro_Services\Micro_Services\bin\Debug\net8.0\appsettings.json
+C:\Users\malik\Desktop\ZZ2\Service Web\Micro_Services\Micro_Services\bin\Debug\net8.0\MicroServices.staticwebassets.runtime.json
+C:\Users\malik\Desktop\ZZ2\Service Web\Micro_Services\Micro_Services\bin\Debug\net8.0\MicroServices.exe
+C:\Users\malik\Desktop\ZZ2\Service Web\Micro_Services\Micro_Services\bin\Debug\net8.0\MicroServices.deps.json
+C:\Users\malik\Desktop\ZZ2\Service Web\Micro_Services\Micro_Services\bin\Debug\net8.0\MicroServices.runtimeconfig.json
+C:\Users\malik\Desktop\ZZ2\Service Web\Micro_Services\Micro_Services\bin\Debug\net8.0\MicroServices.dll
+C:\Users\malik\Desktop\ZZ2\Service Web\Micro_Services\Micro_Services\bin\Debug\net8.0\MicroServices.pdb
+C:\Users\malik\Desktop\ZZ2\Service Web\Micro_Services\Micro_Services\bin\Debug\net8.0\UserLib.dll
+C:\Users\malik\Desktop\ZZ2\Service Web\Micro_Services\Micro_Services\bin\Debug\net8.0\UserLib.pdb
+C:\Users\malik\Desktop\ZZ2\Service Web\Micro_Services\Micro_Services\obj\Debug\net8.0\MicroServices.csproj.AssemblyReference.cache
+C:\Users\malik\Desktop\ZZ2\Service Web\Micro_Services\Micro_Services\obj\Debug\net8.0\MicroServices.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\malik\Desktop\ZZ2\Service Web\Micro_Services\Micro_Services\obj\Debug\net8.0\MicroServices.AssemblyInfoInputs.cache
+C:\Users\malik\Desktop\ZZ2\Service Web\Micro_Services\Micro_Services\obj\Debug\net8.0\MicroServices.AssemblyInfo.cs
+C:\Users\malik\Desktop\ZZ2\Service Web\Micro_Services\Micro_Services\obj\Debug\net8.0\MicroServices.csproj.CoreCompileInputs.cache
+C:\Users\malik\Desktop\ZZ2\Service Web\Micro_Services\Micro_Services\obj\Debug\net8.0\MicroServices.MvcApplicationPartsAssemblyInfo.cache
+C:\Users\malik\Desktop\ZZ2\Service Web\Micro_Services\Micro_Services\obj\Debug\net8.0\MicroServices.sourcelink.json
+C:\Users\malik\Desktop\ZZ2\Service Web\Micro_Services\Micro_Services\obj\Debug\net8.0\staticwebassets.build.json
+C:\Users\malik\Desktop\ZZ2\Service Web\Micro_Services\Micro_Services\obj\Debug\net8.0\staticwebassets.development.json
+C:\Users\malik\Desktop\ZZ2\Service Web\Micro_Services\Micro_Services\obj\Debug\net8.0\staticwebassets\msbuild.MicroServices.Microsoft.AspNetCore.StaticWebAssets.props
+C:\Users\malik\Desktop\ZZ2\Service Web\Micro_Services\Micro_Services\obj\Debug\net8.0\staticwebassets\msbuild.build.MicroServices.props
+C:\Users\malik\Desktop\ZZ2\Service Web\Micro_Services\Micro_Services\obj\Debug\net8.0\staticwebassets\msbuild.buildMultiTargeting.MicroServices.props
+C:\Users\malik\Desktop\ZZ2\Service Web\Micro_Services\Micro_Services\obj\Debug\net8.0\staticwebassets\msbuild.buildTransitive.MicroServices.props
+C:\Users\malik\Desktop\ZZ2\Service Web\Micro_Services\Micro_Services\obj\Debug\net8.0\staticwebassets.pack.json
+C:\Users\malik\Desktop\ZZ2\Service Web\Micro_Services\Micro_Services\obj\Debug\net8.0\scopedcss\Components\Layout\MainLayout.razor.rz.scp.css
+C:\Users\malik\Desktop\ZZ2\Service Web\Micro_Services\Micro_Services\obj\Debug\net8.0\scopedcss\bundle\MicroServices.styles.css
+C:\Users\malik\Desktop\ZZ2\Service Web\Micro_Services\Micro_Services\obj\Debug\net8.0\scopedcss\projectbundle\MicroServices.bundle.scp.css
+C:\Users\malik\Desktop\ZZ2\Service Web\Micro_Services\Micro_Services\obj\Debug\net8.0\MicroServices.csproj.CopyComplete
+C:\Users\malik\Desktop\ZZ2\Service Web\Micro_Services\Micro_Services\obj\Debug\net8.0\MicroServices.dll
+C:\Users\malik\Desktop\ZZ2\Service Web\Micro_Services\Micro_Services\obj\Debug\net8.0\refint\MicroServices.dll
+C:\Users\malik\Desktop\ZZ2\Service Web\Micro_Services\Micro_Services\obj\Debug\net8.0\MicroServices.pdb
+C:\Users\malik\Desktop\ZZ2\Service Web\Micro_Services\Micro_Services\obj\Debug\net8.0\MicroServices.genruntimeconfig.cache
+C:\Users\malik\Desktop\ZZ2\Service Web\Micro_Services\Micro_Services\obj\Debug\net8.0\ref\MicroServices.dll

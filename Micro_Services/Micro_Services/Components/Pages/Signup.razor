@@ -1,0 +1,37 @@
+﻿@page "/signup"
+
+<div class="min-h-screen flex items-center justify-center bg-gray-100">
+    <div class="max-w-sm w-full bg-white rounded-lg shadow-md overflow-hidden">
+        <div class="px-4 py-4">
+            <h2 class="text-center text-3xl leading-9 font-extrabold text-gray-800">
+                Create your account
+            </h2>
+            <form class="mt-8">
+                <!-- Champ du prenom -->
+                <div class="rounded-md shadow-sm">
+                    <div>
+                        <input aria-label="Surname" name="surname" type="text" required class="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm sm:leading-5" placeholder="Surname">
+                    </div>
+                    <!-- Champ du nom -->
+                    <div class="-mt-px">
+                        <input aria-label="Name" name="name" type="text" required class="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm sm:leading-5" placeholder="Name">
+                    </div>
+                    <!-- Champ de l'email -->
+                    <div class="-mt-px">
+                        <input aria-label="Email address" name="email" type="email" required class="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm sm:leading-5" placeholder="Email address">
+                    </div>
+                    <!-- Champ du password -->
+                    <div class="-mt-px">
+                        <input aria-label="Password" name="password" type="password" required class="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-b-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm sm:leading-5" placeholder="Password">
+                    </div>
+                </div>
+
+                <div class="mt-6">
+                    <button type="submit" class="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm leading-5 font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-500 focus:outline-none focus:border-indigo-700 focus:ring-indigo active:bg-indigo-700 transition duration-150 ease-in-out">
+                        Sign up
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

@@ -9,47 +9,39 @@ build_property.EnforceExtendedAnalyzerRules =
 build_property._SupportedPlatformList = Linux,macOS,Windows
 build_property.RootNamespace = MicroServices
 build_property.RootNamespace = MicroServices
-build_property.ProjectDir = E:\Me\Csharp\Test\Micro_Services\Micro_Services\
+build_property.ProjectDir = C:\Users\malik\Desktop\ZZ2\Service Web\Micro_Services\Micro_Services\
 build_property.EnableComHosting = 
 build_property.EnableGeneratedComInterfaceComImportInterop = 
 build_property.RazorLangVersion = 8.0
 build_property.SupportLocalizedComponentNames = 
 build_property.GenerateRazorMetadataSourceChecksumAttributes = 
-build_property.MSBuildProjectDirectory = E:\Me\Csharp\Test\Micro_Services\Micro_Services
+build_property.MSBuildProjectDirectory = C:\Users\malik\Desktop\ZZ2\Service Web\Micro_Services\Micro_Services
 build_property._RazorSourceGeneratorDebug = 
 
-[E:/Me/Csharp/Test/Micro_Services/Micro_Services/Components/App.razor]
+[C:/Users/malik/Desktop/ZZ2/Service Web/Micro_Services/Micro_Services/Components/App.razor]
 build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xBcHAucmF6b3I=
 build_metadata.AdditionalFiles.CssScope = 
 
-[E:/Me/Csharp/Test/Micro_Services/Micro_Services/Components/Pages/Counter.razor]
-build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xDb3VudGVyLnJhem9y
+[C:/Users/malik/Desktop/ZZ2/Service Web/Micro_Services/Micro_Services/Components/Pages/Index.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xJbmRleC5yYXpvcg==
 build_metadata.AdditionalFiles.CssScope = 
 
-[E:/Me/Csharp/Test/Micro_Services/Micro_Services/Components/Pages/Error.razor]
-build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xFcnJvci5yYXpvcg==
+[C:/Users/malik/Desktop/ZZ2/Service Web/Micro_Services/Micro_Services/Components/Pages/Login.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xMb2dpbi5yYXpvcg==
 build_metadata.AdditionalFiles.CssScope = 
 
-[E:/Me/Csharp/Test/Micro_Services/Micro_Services/Components/Pages/Home.razor]
-build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xIb21lLnJhem9y
+[C:/Users/malik/Desktop/ZZ2/Service Web/Micro_Services/Micro_Services/Components/Pages/Signup.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xTaWdudXAucmF6b3I=
 build_metadata.AdditionalFiles.CssScope = 
 
-[E:/Me/Csharp/Test/Micro_Services/Micro_Services/Components/Pages/Weather.razor]
-build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xXZWF0aGVyLnJhem9y
-build_metadata.AdditionalFiles.CssScope = 
-
-[E:/Me/Csharp/Test/Micro_Services/Micro_Services/Components/Routes.razor]
+[C:/Users/malik/Desktop/ZZ2/Service Web/Micro_Services/Micro_Services/Components/Routes.razor]
 build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xSb3V0ZXMucmF6b3I=
 build_metadata.AdditionalFiles.CssScope = 
 
-[E:/Me/Csharp/Test/Micro_Services/Micro_Services/Components/_Imports.razor]
+[C:/Users/malik/Desktop/ZZ2/Service Web/Micro_Services/Micro_Services/Components/_Imports.razor]
 build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xfSW1wb3J0cy5yYXpvcg==
 build_metadata.AdditionalFiles.CssScope = 
 
-[E:/Me/Csharp/Test/Micro_Services/Micro_Services/Components/Layout/MainLayout.razor]
+[C:/Users/malik/Desktop/ZZ2/Service Web/Micro_Services/Micro_Services/Components/Layout/MainLayout.razor]
 build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xMYXlvdXRcTWFpbkxheW91dC5yYXpvcg==
 build_metadata.AdditionalFiles.CssScope = b-kklabauac6
-
-[E:/Me/Csharp/Test/Micro_Services/Micro_Services/Components/Layout/NavMenu.razor]
-build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xMYXlvdXRcTmF2TWVudS5yYXpvcg==
-build_metadata.AdditionalFiles.CssScope = b-j12w8qiz6b

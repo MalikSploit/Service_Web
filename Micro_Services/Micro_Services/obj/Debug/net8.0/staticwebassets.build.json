@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "Hash": "Xj49fKN+pDyfpXI3TA6AT4IYLadSostZaoFux3Pwpzk=",
+  "Hash": "qTR4oiiRyjlV9/d1msOjAtjpfVaRcGI9JjyQ4eCr5CU=",
   "Source": "MicroServices",
   "BasePath": "_content/MicroServices",
   "Mode": "Default",
@@ -10,17 +10,17 @@
     {
       "Name": "MicroServices\\wwwroot",
       "Source": "MicroServices",
-      "ContentRoot": "E:\\Me\\Csharp\\Test\\Micro_Services\\Micro_Services\\wwwroot\\",
+      "ContentRoot": "C:\\Users\\malik\\Desktop\\ZZ2\\Service Web\\Micro_Services\\Micro_Services\\wwwroot\\",
       "BasePath": "_content/MicroServices",
       "Pattern": "**"
     }
   ],
   "Assets": [
     {
-      "Identity": "E:\\Me\\Csharp\\Test\\Micro_Services\\Micro_Services\\obj\\Debug\\net8.0\\scopedcss\\bundle\\MicroServices.styles.css",
+      "Identity": "C:\\Users\\malik\\Desktop\\ZZ2\\Service Web\\Micro_Services\\Micro_Services\\obj\\Debug\\net8.0\\scopedcss\\bundle\\MicroServices.styles.css",
       "SourceId": "MicroServices",
       "SourceType": "Computed",
-      "ContentRoot": "E:\\Me\\Csharp\\Test\\Micro_Services\\Micro_Services\\obj\\Debug\\net8.0\\scopedcss\\bundle\\",
+      "ContentRoot": "C:\\Users\\malik\\Desktop\\ZZ2\\Service Web\\Micro_Services\\Micro_Services\\obj\\Debug\\net8.0\\scopedcss\\bundle\\",
       "BasePath": "_content/MicroServices",
       "RelativePath": "MicroServices.styles.css",
       "AssetKind": "All",
@@ -33,13 +33,13 @@
       "AssetTraitValue": "ApplicationBundle",
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
-      "OriginalItemSpec": "E:\\Me\\Csharp\\Test\\Micro_Services\\Micro_Services\\obj\\Debug\\net8.0\\scopedcss\\bundle\\MicroServices.styles.css"
+      "OriginalItemSpec": "C:\\Users\\malik\\Desktop\\ZZ2\\Service Web\\Micro_Services\\Micro_Services\\obj\\Debug\\net8.0\\scopedcss\\bundle\\MicroServices.styles.css"
     },
     {
-      "Identity": "E:\\Me\\Csharp\\Test\\Micro_Services\\Micro_Services\\obj\\Debug\\net8.0\\scopedcss\\projectbundle\\MicroServices.bundle.scp.css",
+      "Identity": "C:\\Users\\malik\\Desktop\\ZZ2\\Service Web\\Micro_Services\\Micro_Services\\obj\\Debug\\net8.0\\scopedcss\\projectbundle\\MicroServices.bundle.scp.css",
       "SourceId": "MicroServices",
       "SourceType": "Computed",
-      "ContentRoot": "E:\\Me\\Csharp\\Test\\Micro_Services\\Micro_Services\\obj\\Debug\\net8.0\\scopedcss\\projectbundle\\",
+      "ContentRoot": "C:\\Users\\malik\\Desktop\\ZZ2\\Service Web\\Micro_Services\\Micro_Services\\obj\\Debug\\net8.0\\scopedcss\\projectbundle\\",
       "BasePath": "_content/MicroServices",
       "RelativePath": "MicroServices.bundle.scp.css",
       "AssetKind": "All",
@@ -52,13 +52,13 @@
       "AssetTraitValue": "ProjectBundle",
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
-      "OriginalItemSpec": "E:\\Me\\Csharp\\Test\\Micro_Services\\Micro_Services\\obj\\Debug\\net8.0\\scopedcss\\projectbundle\\MicroServices.bundle.scp.css"
+      "OriginalItemSpec": "C:\\Users\\malik\\Desktop\\ZZ2\\Service Web\\Micro_Services\\Micro_Services\\obj\\Debug\\net8.0\\scopedcss\\projectbundle\\MicroServices.bundle.scp.css"
     },
     {
-      "Identity": "E:\\Me\\Csharp\\Test\\Micro_Services\\Micro_Services\\wwwroot\\app.css",
+      "Identity": "C:\\Users\\malik\\Desktop\\ZZ2\\Service Web\\Micro_Services\\Micro_Services\\wwwroot\\app.css",
       "SourceId": "MicroServices",
       "SourceType": "Discovered",
-      "ContentRoot": "E:\\Me\\Csharp\\Test\\Micro_Services\\Micro_Services\\wwwroot\\",
+      "ContentRoot": "C:\\Users\\malik\\Desktop\\ZZ2\\Service Web\\Micro_Services\\Micro_Services\\wwwroot\\",
       "BasePath": "_content/MicroServices",
       "RelativePath": "app.css",
       "AssetKind": "All",
@@ -74,10 +74,10 @@
       "OriginalItemSpec": "wwwroot\\app.css"
     },
     {
-      "Identity": "E:\\Me\\Csharp\\Test\\Micro_Services\\Micro_Services\\wwwroot\\bootstrap\\bootstrap.min.css",
+      "Identity": "C:\\Users\\malik\\Desktop\\ZZ2\\Service Web\\Micro_Services\\Micro_Services\\wwwroot\\bootstrap\\bootstrap.min.css",
       "SourceId": "MicroServices",
       "SourceType": "Discovered",
-      "ContentRoot": "E:\\Me\\Csharp\\Test\\Micro_Services\\Micro_Services\\wwwroot\\",
+      "ContentRoot": "C:\\Users\\malik\\Desktop\\ZZ2\\Service Web\\Micro_Services\\Micro_Services\\wwwroot\\",
       "BasePath": "_content/MicroServices",
       "RelativePath": "bootstrap/bootstrap.min.css",
       "AssetKind": "All",
@@ -93,10 +93,10 @@
       "OriginalItemSpec": "wwwroot\\bootstrap\\bootstrap.min.css"
     },
     {
-      "Identity": "E:\\Me\\Csharp\\Test\\Micro_Services\\Micro_Services\\wwwroot\\bootstrap\\bootstrap.min.css.map",
+      "Identity": "C:\\Users\\malik\\Desktop\\ZZ2\\Service Web\\Micro_Services\\Micro_Services\\wwwroot\\bootstrap\\bootstrap.min.css.map",
       "SourceId": "MicroServices",
       "SourceType": "Discovered",
-      "ContentRoot": "E:\\Me\\Csharp\\Test\\Micro_Services\\Micro_Services\\wwwroot\\",
+      "ContentRoot": "C:\\Users\\malik\\Desktop\\ZZ2\\Service Web\\Micro_Services\\Micro_Services\\wwwroot\\",
       "BasePath": "_content/MicroServices",
       "RelativePath": "bootstrap/bootstrap.min.css.map",
       "AssetKind": "All",
@@ -112,10 +112,10 @@
       "OriginalItemSpec": "wwwroot\\bootstrap\\bootstrap.min.css.map"
     },
     {
-      "Identity": "E:\\Me\\Csharp\\Test\\Micro_Services\\Micro_Services\\wwwroot\\favicon.png",
+      "Identity": "C:\\Users\\malik\\Desktop\\ZZ2\\Service Web\\Micro_Services\\Micro_Services\\wwwroot\\favicon.png",
       "SourceId": "MicroServices",
       "SourceType": "Discovered",
-      "ContentRoot": "E:\\Me\\Csharp\\Test\\Micro_Services\\Micro_Services\\wwwroot\\",
+      "ContentRoot": "C:\\Users\\malik\\Desktop\\ZZ2\\Service Web\\Micro_Services\\Micro_Services\\wwwroot\\",
       "BasePath": "_content/MicroServices",
       "RelativePath": "favicon.png",
       "AssetKind": "All",

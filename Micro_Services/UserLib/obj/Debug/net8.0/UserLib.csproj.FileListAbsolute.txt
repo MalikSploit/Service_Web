@@ -10,3 +10,15 @@ E:\Me\Csharp\Test\Micro_Services\UserLib\obj\Debug\net8.0\UserLib.dll
 E:\Me\Csharp\Test\Micro_Services\UserLib\obj\Debug\net8.0\refint\UserLib.dll
 E:\Me\Csharp\Test\Micro_Services\UserLib\obj\Debug\net8.0\UserLib.pdb
 E:\Me\Csharp\Test\Micro_Services\UserLib\obj\Debug\net8.0\ref\UserLib.dll
+C:\Users\malik\Desktop\ZZ2\Service Web\Micro_Services\UserLib\bin\Debug\net8.0\UserLib.deps.json
+C:\Users\malik\Desktop\ZZ2\Service Web\Micro_Services\UserLib\bin\Debug\net8.0\UserLib.dll
+C:\Users\malik\Desktop\ZZ2\Service Web\Micro_Services\UserLib\bin\Debug\net8.0\UserLib.pdb
+C:\Users\malik\Desktop\ZZ2\Service Web\Micro_Services\UserLib\obj\Debug\net8.0\UserLib.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\malik\Desktop\ZZ2\Service Web\Micro_Services\UserLib\obj\Debug\net8.0\UserLib.AssemblyInfoInputs.cache
+C:\Users\malik\Desktop\ZZ2\Service Web\Micro_Services\UserLib\obj\Debug\net8.0\UserLib.AssemblyInfo.cs
+C:\Users\malik\Desktop\ZZ2\Service Web\Micro_Services\UserLib\obj\Debug\net8.0\UserLib.csproj.CoreCompileInputs.cache
+C:\Users\malik\Desktop\ZZ2\Service Web\Micro_Services\UserLib\obj\Debug\net8.0\UserLib.sourcelink.json
+C:\Users\malik\Desktop\ZZ2\Service Web\Micro_Services\UserLib\obj\Debug\net8.0\UserLib.dll
+C:\Users\malik\Desktop\ZZ2\Service Web\Micro_Services\UserLib\obj\Debug\net8.0\refint\UserLib.dll
+C:\Users\malik\Desktop\ZZ2\Service Web\Micro_Services\UserLib\obj\Debug\net8.0\UserLib.pdb
+C:\Users\malik\Desktop\ZZ2\Service Web\Micro_Services\UserLib\obj\Debug\net8.0\ref\UserLib.dll

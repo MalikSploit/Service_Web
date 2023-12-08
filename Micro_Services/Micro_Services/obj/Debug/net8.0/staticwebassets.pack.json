@@ -1,23 +1,23 @@
 {
   "Files": [
     {
-      "Id": "E:\\Me\\Csharp\\Test\\Micro_Services\\Micro_Services\\obj\\Debug\\net8.0\\scopedcss\\projectbundle\\MicroServices.bundle.scp.css",
+      "Id": "C:\\Users\\malik\\Desktop\\ZZ2\\Service Web\\Micro_Services\\Micro_Services\\obj\\Debug\\net8.0\\scopedcss\\projectbundle\\MicroServices.bundle.scp.css",
       "PackagePath": "staticwebassets\\MicroServices.bundle.scp.css"
     },
     {
-      "Id": "E:\\Me\\Csharp\\Test\\Micro_Services\\Micro_Services\\wwwroot\\app.css",
+      "Id": "C:\\Users\\malik\\Desktop\\ZZ2\\Service Web\\Micro_Services\\Micro_Services\\wwwroot\\app.css",
       "PackagePath": "staticwebassets\\app.css"
     },
     {
-      "Id": "E:\\Me\\Csharp\\Test\\Micro_Services\\Micro_Services\\wwwroot\\bootstrap\\bootstrap.min.css",
+      "Id": "C:\\Users\\malik\\Desktop\\ZZ2\\Service Web\\Micro_Services\\Micro_Services\\wwwroot\\bootstrap\\bootstrap.min.css",
       "PackagePath": "staticwebassets\\bootstrap\\bootstrap.min.css"
     },
     {
-      "Id": "E:\\Me\\Csharp\\Test\\Micro_Services\\Micro_Services\\wwwroot\\bootstrap\\bootstrap.min.css.map",
+      "Id": "C:\\Users\\malik\\Desktop\\ZZ2\\Service Web\\Micro_Services\\Micro_Services\\wwwroot\\bootstrap\\bootstrap.min.css.map",
       "PackagePath": "staticwebassets\\bootstrap\\bootstrap.min.css.map"
     },
     {
-      "Id": "E:\\Me\\Csharp\\Test\\Micro_Services\\Micro_Services\\wwwroot\\favicon.png",
+      "Id": "C:\\Users\\malik\\Desktop\\ZZ2\\Service Web\\Micro_Services\\Micro_Services\\wwwroot\\favicon.png",
       "PackagePath": "staticwebassets\\favicon.png"
     },
     {
