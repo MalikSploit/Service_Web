@@ -7,7 +7,7 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\Gateway\Gateway.csproj" />
+      <ProjectReference Include="..\UserLib\UserLib.csproj" />
     </ItemGroup>
 
 </Project>

@@ -1749,6 +1749,16 @@
             "rid": "win"
           }
         }
+      },
+      "UserLib/1.0.0": {
+        "type": "project",
+        "framework": ".NETCoreApp,Version=v8.0",
+        "compile": {
+          "bin/placeholder/UserLib.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/UserLib.dll": {}
+        }
       }
     }
   },
@@ -4728,6 +4738,11 @@
         "system.windows.extensions.nuspec",
         "useSharedDesignerContext.txt"
       ]
+    },
+    "UserLib/1.0.0": {
+      "type": "project",
+      "path": "../UserLib/UserLib.csproj",
+      "msbuildProject": "../UserLib/UserLib.csproj"
     }
   },
   "projectFileDependencyGroups": {
@@ -4737,7 +4752,8 @@
       "Microsoft.EntityFrameworkCore.Design >= 8.0.0",
       "Microsoft.EntityFrameworkCore.SqlServer >= 8.0.0",
       "Microsoft.EntityFrameworkCore.Sqlite >= 8.0.0",
-      "Swashbuckle.AspNetCore >= 6.4.0"
+      "Swashbuckle.AspNetCore >= 6.4.0",
+      "UserLib >= 1.0.0"
     ]
   },
   "packageFolders": {
@@ -4775,7 +4791,11 @@
       "frameworks": {
         "net8.0": {
           "targetAlias": "net8.0",
-          "projectReferences": {}
+          "projectReferences": {
+            "E:\\Me\\Csharp\\Test\\Micro_Services\\UserLib\\UserLib.csproj": {
+              "projectPath": "E:\\Me\\Csharp\\Test\\Micro_Services\\UserLib\\UserLib.csproj"
+            }
+          }
         }
       },
       "warningProperties": {

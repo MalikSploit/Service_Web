@@ -5,6 +5,7 @@
         <Nullable>enable</Nullable>
         <ImplicitUsings>enable</ImplicitUsings>
         <InvariantGlobalization>true</InvariantGlobalization>
+        <OutputType>Exe</OutputType>
     </PropertyGroup>
 
     <ItemGroup>
@@ -17,6 +18,10 @@
         <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="8.0.0" />
         <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="8.0.0" />
         <PackageReference Include="Swashbuckle.AspNetCore" Version="6.4.0" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\UserLib\UserLib.csproj" />
     </ItemGroup>
 
 </Project>
