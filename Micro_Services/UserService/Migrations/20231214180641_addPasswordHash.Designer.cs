@@ -11,7 +11,7 @@ namespace UserService.Migrations
 {
     [DbContext(typeof(UserServiceContext))]
     [Migration("20231214180641_addPasswordHash")]
-    partial class addPasswordHash
+    partial class AddPasswordHash
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
