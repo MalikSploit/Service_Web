@@ -125,8 +125,7 @@ public class UsersController : ControllerBase
     [HttpPost("login")]
     public async Task<ActionResult<UserDTO>> Login(UserLogin userLogin)
     {
-
-        var user = await _context.User.FirstOrDefaultAsync(u => u.Name == userLogin.Name);
+        var user = await _context.User.FirstOrDefaultAsync(u => u.Email == userLogin.Email);
 
         if (user == null)
         {

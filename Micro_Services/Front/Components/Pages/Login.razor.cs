@@ -9,12 +9,12 @@ public partial class Login : ComponentBase
     [Inject] private NavigationManager _NavigationManager { get; set; }
 
     private string email;
-    private string password;
+    private string pass;
     private string errorMessage;
     
     private async Task HandleLogin()
     {
-        var userDto = await _loginService.AuthenticateUserAsync(email, password);
+        var userDto = await _loginService.AuthenticateUserAsync(email, pass);
         if (userDto != null)
         {
             // Ca marche :)

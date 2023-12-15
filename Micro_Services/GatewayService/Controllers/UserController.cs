@@ -2,7 +2,6 @@
 using Microsoft.AspNetCore.Mvc;
 using System.Net;
 using Entities;
-using Microsoft.AspNetCore.Http.HttpResults;
 
 namespace GatewayService.Controllers;
 
@@ -30,49 +29,59 @@ public class UserController : ControllerBase
     [HttpPost("login")]
     public async Task<IActionResult> Login(UserLogin model)
     {
-        // Create an HttpClient instance using the factory
-        using var client = CreateClient();
-
-        // Send a POST request to the login endpoint
-        HttpResponseMessage response = await client.PostAsJsonAsync("api/Users/login", model);
-
-        // Check if the response status code is 200 (OK)
-        if (response.StatusCode == HttpStatusCode.OK)
+        if (model == null || string.IsNullOrWhiteSpace(model.Email) || string.IsNullOrWhiteSpace(model.Pass))
         {
-            // You can deserialize the response content here if needed
-            var result = await response.Content.ReadFromJsonAsync<UserDTO>();
-            return Ok(result);
+            Console.WriteLine("Login attempt with incomplete credentials.");
+            return BadRequest("Email and password are required.");
         }
-        else
+
+        try
         {
-            return BadRequest("Login failed");
+            using var client = _httpClientFactory.CreateClient("ApiService");
+
+            var response = await client.PostAsJsonAsync("api/Users/login", model);
+
+            if (response.IsSuccessStatusCode)
+            {
+                var result = await response.Content.ReadFromJsonAsync<UserDTO>();
+                Console.WriteLine($"Successful login for user: {model.Email}");
+                return Ok(result);
+            }
+            else
+            {
+                Console.WriteLine($"Failed login attempt for user: {model.Email}. Status code: {response.StatusCode}");
+                return StatusCode((int)response.StatusCode, "Login failed");
+            }
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Exception occurred during login for user: {model.Email}. Error: {ex.Message}");
+            return StatusCode(500, "An internal server error occurred");
         }
     }
+
 
     // api/User/register
     [HttpPost("register")]
     public async Task<IActionResult> Register(UserCreateModel accountToCreate)
     {
         Console.WriteLine("Tentative de register de " + accountToCreate);
-        // Create an HttpClient instance using the factory
         using var client = CreateClient();
 
-        // Send a POST request to the login endpoint
         HttpResponseMessage response = await client.PostAsJsonAsync("api/Users/register", accountToCreate);
 
-        // Check if the response status code is 201 (Created)
-        if (response.StatusCode == HttpStatusCode.Created)
+        if (response.IsSuccessStatusCode)
         {
-            // You can deserialize the response content here if needed
-            var result = await response.Content.ReadFromJsonAsync<IActionResult>();
+            // Assuming UserDTO is the expected response type
+            var result = await response.Content.ReadFromJsonAsync<UserDTO>();
             Console.WriteLine("ok");
-
             return Ok(result);
         }
         else
         {
-            Console.WriteLine("Pas ok");
-            return BadRequest("Signup failed");
+            var errorResponse = await response.Content.ReadAsStringAsync();
+            Console.WriteLine($"Registration error response: {errorResponse}");
+            return BadRequest(errorResponse);
         }
     }
 

@@ -60,19 +60,27 @@ public class UserUpdateModel
 
 public class UserLogin
 {
-    public string Name { get; set; } = "";
+    public string Email { get; set; } = "";
     public string Pass { get; set; } = "";
 
 
-    public override string ToString() => Name + " " + Pass;
+    public override string ToString() => Email + " " + Pass;
 
 }
 
 public static class Extension
 {
     public static bool IsPasswordLengthOkay(this string s) => s.Length > 8;
-    public static bool IsPasswordRobust(this string s) => s.Length > 8 && s.ToList().TrueForAll(c => char.IsLetter(c));
-
+    
+    public static bool IsPasswordRobust(this string s)
+    {
+        return s.Length >= 8 &&
+               s.Any(char.IsUpper) && 
+               s.Any(char.IsLower) && 
+               s.Any(char.IsDigit) &&
+               s.Any(ch => !char.IsLetterOrDigit(ch));
+    }
+    
     public static bool IsEmailValid(this string s)
     {
         try

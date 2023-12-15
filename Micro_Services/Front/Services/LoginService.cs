@@ -14,22 +14,27 @@ public class LoginService
         _httpClient = httpClient;
     }
 
-    public async Task<UserDTO> AuthenticateUserAsync(string email, string password)
+    public async Task<UserDTO> AuthenticateUserAsync(string email, string pass)
     {
-        var content = new StringContent(JsonConvert.SerializeObject(new { email, password }), Encoding.UTF8, "application/json");
+        var payload = new { email, pass }; // Create an anonymous object with email and password
+        var jsonPayload = JsonConvert.SerializeObject(payload); // Serialize the object to JSON
+        //Console.WriteLine("The content is: " + jsonPayload); // Log the JSON string
 
-        var response = await _httpClient.PostAsync("http://localhost:5001/api/User/login", content);
-        
+        var content = new StringContent(jsonPayload, Encoding.UTF8, "application/json");
+
+        var response = await _httpClient.PostAsync("http://localhost:5000/api/User/login", content);
+    
         if (response.IsSuccessStatusCode)
         {
-            // Deserialize the response if authentication is successful
             var userDto = JsonConvert.DeserializeObject<UserDTO>(await response.Content.ReadAsStringAsync());
             return userDto;
         }
         else
         {
             // Handle authentication failure
+            Console.WriteLine("Authentication failed with status code: " + response.StatusCode);
             return null;
         }
     }
+
 }

@@ -8,7 +8,6 @@ public partial class Index : ComponentBase
 
     private void ToggleDropdown()
     {
-        Console.WriteLine("Dropdown visibility toggled: " + _isDropdownVisible);
         _isDropdownVisible = !_isDropdownVisible;
     }
     
