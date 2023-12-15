@@ -1,4 +1,5 @@
 ﻿@page "/signup"
+@inject HttpClient client
 
 <div class="min-h-screen flex items-center justify-center bg-gray-100">
     <div class="max-w-sm w-full bg-white rounded-lg shadow-md overflow-hidden">
@@ -6,6 +7,7 @@
             <h2 class="text-center text-3xl leading-9 font-extrabold text-gray-800">
                 Create your account
             </h2>
+
             <form class="mt-8" @onsubmit="HandleSignup">
                 <!-- Champ du prenom -->
                 <div class="rounded-md shadow-sm">
@@ -35,3 +37,26 @@
         </div>
     </div>
 </div>
+
+@code {
+    private UserCreateModel userCreateModel = new UserCreateModel();
+
+    private async Task HandleSignup()
+    {
+        var apiUrl = LoginService.URIprefix +  "api/User/register";
+
+        HttpResponseMessage response = await client.PostAsJsonAsync(apiUrl, userCreateModel);
+        Console.WriteLine("Tentative de Signup");
+
+        if (response.IsSuccessStatusCode)
+        {
+            var result = await response.Content.ReadFromJsonAsync<User>();
+            Console.WriteLine("Signup with success");
+        }
+        else
+        {
+            var errorMessage = await response.Content.ReadAsStringAsync();
+            Console.WriteLine($"Signup failed: {errorMessage}");
+        }
+    }
+}

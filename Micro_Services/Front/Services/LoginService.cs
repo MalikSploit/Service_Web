@@ -8,6 +8,7 @@ namespace Front.Services;
 
 public class LoginService
 {
+    public static readonly string URIprefix = "http://localhost:5000/";
     private readonly HttpClient _httpClient;
 
     public LoginService(HttpClient httpClient)
