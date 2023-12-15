@@ -31,7 +31,7 @@
         "workingDirectory": "C:\\Users\\malik\\Desktop\\ZZ2\\Service Web\\Micro_Services\\Front\\",
         "commandLineArgs": "watch run",
         "launchBrowser": true,
-        "applicationUrl": "http://localhost:5223",
+        "applicationUrl": "http://localhost:5052",
         "environmentVariables": {
           "ASPNETCORE_ENVIRONMENT": "Development"
         }
