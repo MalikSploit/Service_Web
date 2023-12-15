@@ -3,7 +3,11 @@
 using System.Text.Json.Serialization;
 using System.Xml.Linq;
 
+using System;
+using System.Net.Mail;
+
 namespace Entities;
+
 
 public class User
 {
@@ -43,7 +47,6 @@ public class UserCreateModel
 
     public override string ToString() => Name + " " + Email + " " + Password;
 }
-
 public class UserUpdateModel
 {
     public int Id { get; set; }
@@ -69,7 +72,24 @@ public static class Extension
 {
     public static bool IsPasswordLengthOkay(this string s) => s.Length > 8;
 
-    public static bool IsPasswordAsciiLetterOnly(this string s) => s.Length > 8 && s.ToList().TrueForAll(c => char.IsAsciiLetter(c));
+    public static bool IsEmailValid(this string s)
+    {
+        try
+        {
+            // Tentative de création d'une instance de MailAddress
+            MailAddress mailAddress = new MailAddress(s);
+            return true; // Si la création réussit, l'adresse e-mail est valide
+        }
+        catch (FormatException)
+        {
+            return false; // Une exception indique que l'adresse e-mail n'est pas valide
+        }
+    }
 
-    public static bool IsPasswordRobust(this string s) => s.IsPasswordLengthOkay() && s.IsPasswordAsciiLetterOnly();
+    public static bool IsNameValid(this string s)
+    {
+        // Vérification de la longueur et des caractères
+        return s.Length > 3 && s.Length < 20 && s.All(char.IsLetterOrDigit);
+
+    public static bool IsNameValid(this string s) => s.Length > 3 && s.Length < 20 && s.ToList().TrueForAll(c => char.IsLetter(c));
 }

@@ -95,6 +95,19 @@ public class UsersController : ControllerBase
     [HttpPost("register")]
     public async Task<ActionResult<User>> CreateUser(UserCreateModel userPayload)
     {
+        if (!userPayload.Password.IsPasswordRobust())
+        {
+            return BadRequest("Password is not robust enough");
+        }
+        if (!userPayload.Email.IsEmailValid())
+        {
+            return BadRequest("Email is not valid");
+        }
+        if (await _context.User.AnyAsync(u => u.Name == userPayload.Name))
+        {
+            return BadRequest("Username already exists");
+        }
+        
         var user = new User
         {
             Email = userPayload.Email,

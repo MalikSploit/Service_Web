@@ -1,8 +1,8 @@
 ﻿using Entities;
-using Microsoft.AspNetCore.Authentication;
-using Microsoft.AspNetCore.Identity;
-using System.ComponentModel.DataAnnotations;
-using System.Security.Claims;
+using System.Net.Http;
+using System.Threading.Tasks;
+using Newtonsoft.Json;
+using System.Text;
 
 namespace Front.Services;
 
@@ -16,14 +16,31 @@ public class LoginService
         _httpClient = httpClient;
     }
 
-    public UserDTO AuthenticateUser(string username, string password)
+    public async Task<UserDTO> AuthenticateUserAsync(string email, string password)
+    {
+        var content = new StringContent(JsonConvert.SerializeObject(new { email, password }), Encoding.UTF8, "application/json");
+
+        var response = await _httpClient.PostAsync("/api/Users/login", content);
+        
+        if (response.IsSuccessStatusCode)
+        {
+            // Deserialize the response if authentication is successful
+            var userDto = JsonConvert.DeserializeObject<UserDTO>(await response.Content.ReadAsStringAsync());
+            return userDto;
+        }
+        else
+        {
+            // Handle authentication failure
+            return null;
+        }
+    }
+
+    public UserDTO AuthenticateUser(string email, string password)
     {
         return new UserDTO
         {
             Id = 0,
-            Email = "test@test.fr",
-            Name = username,
+            Email = email
         };
     }
 }
-

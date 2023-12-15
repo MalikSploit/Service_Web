@@ -28,7 +28,7 @@
       "DotnetWatch": {
         "commandName": "Executable",
         "executablePath": "dotnet",
-        "workingDirectory": "/home/thibault/Documents/ZZ2/F5/Service_Web/Micro_Services/Front",
+        "workingDirectory": "C:\\Users\\malik\\Desktop\\ZZ2\\Service Web\\Micro_Services\\Front",
         "commandLineArgs": "watch run",
         "launchBrowser": true,
         "applicationUrl": "http://localhost:5052",
