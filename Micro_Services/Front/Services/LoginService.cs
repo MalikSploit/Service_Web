@@ -1,6 +1,4 @@
 ﻿using Entities;
-using System.Net.Http;
-using System.Threading.Tasks;
 using Newtonsoft.Json;
 using System.Text;
 
@@ -19,7 +17,7 @@ public class LoginService
     {
         var content = new StringContent(JsonConvert.SerializeObject(new { email, password }), Encoding.UTF8, "application/json");
 
-        var response = await _httpClient.PostAsync("/api/Users/login", content);
+        var response = await _httpClient.PostAsync("http://localhost:5001/api/User/login", content);
         
         if (response.IsSuccessStatusCode)
         {
@@ -32,14 +30,5 @@ public class LoginService
             // Handle authentication failure
             return null;
         }
-    }
-
-    public UserDTO AuthenticateUser(string email, string password)
-    {
-        return new UserDTO
-        {
-            Id = 0,
-            Email = email
-        };
     }
 }

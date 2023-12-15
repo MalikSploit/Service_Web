@@ -7,7 +7,7 @@ namespace TaskService.Controllers;
 
 [Route("api/[controller]")]
 [ApiController]
-public class TasksController : ControllerBase
+public class  TasksController : ControllerBase
 {
 
     private List<EntityTask> _tasks;
