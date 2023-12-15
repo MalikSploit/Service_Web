@@ -6,36 +6,35 @@ using UserService.Data;
 
 #nullable disable
 
-namespace UserService.Migrations
+namespace UserService.Migrations;
+
+[DbContext(typeof(UserServiceContext))]
+partial class UserServiceContextModelSnapshot : ModelSnapshot
 {
-    [DbContext(typeof(UserServiceContext))]
-    partial class UserServiceContextModelSnapshot : ModelSnapshot
+    protected override void BuildModel(ModelBuilder modelBuilder)
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
-        {
 #pragma warning disable 612, 618
-            modelBuilder.HasAnnotation("ProductVersion", "8.0.0");
+        modelBuilder.HasAnnotation("ProductVersion", "8.0.0");
 
-            modelBuilder.Entity("UserService.Entities.User", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("INTEGER");
+        modelBuilder.Entity("UserService.Entities.User", b =>
+            {
+                b.Property<int>("Id")
+                    .ValueGeneratedOnAdd()
+                    .HasColumnType("INTEGER");
 
-                    b.Property<string>("Email")
-                        .HasColumnType("TEXT");
+                b.Property<string>("Email")
+                    .HasColumnType("TEXT");
 
-                    b.Property<string>("Name")
-                        .HasColumnType("TEXT");
+                b.Property<string>("Name")
+                    .HasColumnType("TEXT");
 
-                    b.Property<string>("PasswordHash")
-                        .HasColumnType("TEXT");
+                b.Property<string>("PasswordHash")
+                    .HasColumnType("TEXT");
 
-                    b.HasKey("Id");
+                b.HasKey("Id");
 
-                    b.ToTable("User");
-                });
+                b.ToTable("User");
+            });
 #pragma warning restore 612, 618
-        }
     }
 }
