@@ -86,10 +86,5 @@ public static class Extension
         }
     }
 
-    public static bool IsNameValid(this string s)
-    {
-        // Vérification de la longueur et des caractères
-        return s.Length > 3 && s.Length < 20 && s.All(char.IsLetterOrDigit);
-
     public static bool IsNameValid(this string s) => s.Length > 3 && s.Length < 20 && s.ToList().TrueForAll(c => char.IsLetter(c));
 }
