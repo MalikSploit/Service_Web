@@ -17,12 +17,11 @@ public partial class Login : ComponentBase
         var userDto = await _loginService.AuthenticateUserAsync(email, pass);
         if (userDto != null)
         {
-            // Ca marche :)
+            Console.WriteLine("Signup with success");
             _NavigationManager.NavigateTo("/dashboard");
         }
         else
         {
-            // Erreur
             errorMessage = "Invalid username or password.";
         }
     }

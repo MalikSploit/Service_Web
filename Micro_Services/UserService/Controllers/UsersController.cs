@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using UserService.Data;
@@ -29,7 +24,7 @@ public class UsersController : ControllerBase
     public async Task<ActionResult<IEnumerable<UserDTO>>> GetAllUsers()
     {
         return await _context.User
-            .Select(u => UserToDTO(u))
+            .Select(u => UserToDto(u))
             .ToListAsync();
     }
 
@@ -44,16 +39,16 @@ public class UsersController : ControllerBase
             return NotFound();
         }
 
-        return UserToDTO(user);
+        return UserToDto(user);
     }
 
     // PUT: api/Users/5
     [HttpPut("{id}")]
-    public async Task<IActionResult> UpdateUser(int id, UserUpdateModel userUdpate)
+    public async Task<IActionResult> UpdateUser(int id, UserUpdateModel userUpdate)
     {
-        if (id != userUdpate.Id)
+        if (id != userUpdate.Id)
         {
-            return BadRequest();
+            return BadRequest("Mismatched user ID");
         }
 
         var user = await _context.User.FindAsync(id);
@@ -63,11 +58,44 @@ public class UsersController : ControllerBase
             return NotFound();
         }
 
-        if(userUdpate.Name != null) user.Name = userUdpate.Name;
-        if(userUdpate.Email != null) user.Email = userUdpate.Email;
+        // Update name if provided
+        if (!string.IsNullOrWhiteSpace(userUpdate.Name))
+        {
+            user.Name = userUpdate.Name;
+        }
+        
+        // Update name if provided
+        if (!string.IsNullOrWhiteSpace(userUpdate.Surname))
+        {
+            user.Surname = userUpdate.Surname;
+        }
 
-        if(userUdpate.Password != null) {
-            user.PasswordHash = _passwordHasher.HashPassword(user, userUdpate.Password);
+        // Update email if provided and valid
+        if (!string.IsNullOrWhiteSpace(userUpdate.Email))
+        {
+            if (!userUpdate.Email.IsEmailValid())
+            {
+                return BadRequest("Invalid email format");
+            }
+
+            // Check for email uniqueness
+            if (await _context.User.AnyAsync(u => u.Email == userUpdate.Email && u.Id != id))
+            {
+                return BadRequest("Email already in use by another user");
+            }
+
+            user.Email = userUpdate.Email;
+        }
+
+        // Update password if provided
+        if (!string.IsNullOrWhiteSpace(userUpdate.Password))
+        {
+            if (!userUpdate.Password.IsPasswordRobust())
+            {
+                return BadRequest("Password is not robust enough");
+            }
+
+            user.PasswordHash = _passwordHasher.HashPassword(user, userUpdate.Password);
         }
 
         _context.Entry(user).State = EntityState.Modified;
@@ -97,28 +125,29 @@ public class UsersController : ControllerBase
     {
         if (!userPayload.Password.IsPasswordRobust())
         {
-            return BadRequest("Password is not robust enough");
+            return BadRequest("Password is not robust enough, Please enter 8 characters with 1 Uppercase, 1 Lowercase, 1 nNumber and 1 Symbol");
         }
         if (!userPayload.Email.IsEmailValid())
         {
             return BadRequest("Email is not valid");
         }
-        if (await _context.User.AnyAsync(u => u.Name == userPayload.Name))
+        if (await _context.User.AnyAsync(u => u.Email == userPayload.Email))
         {
-            return BadRequest("Username already exists");
+            return BadRequest("Email already in use");
         }
         
         var user = new User
         {
             Email = userPayload.Email,
             Name = userPayload.Name,
+            Surname = userPayload.Surname
         };
         user.PasswordHash = _passwordHasher.HashPassword(user, userPayload.Password);
 
         _context.User.Add(user);
         await _context.SaveChangesAsync();
 
-        return CreatedAtAction("GetUser", new { id = user.Id }, user);
+        return CreatedAtAction("GetUser", new { id = user.Id }, UserToDto(user));
     }
 
     // POST: api/Users/login
@@ -133,18 +162,15 @@ public class UsersController : ControllerBase
             return NotFound();
         }
 
-        var passwordVerificationResult = _passwordHasher.VerifyHashedPassword(user, user.PasswordHash!, userLogin.Pass);
+        var passwordVerificationResult = _passwordHasher.VerifyHashedPassword(user, user.PasswordHash, userLogin.Pass);
 
         if (passwordVerificationResult == PasswordVerificationResult.Success)
         {
             // Passwords match, authentication successful
-            return Ok(UserToDTO(user));
+            return Ok(UserToDto(user));
         }
-        else
-        {
-            // Passwords do not match, authentication failed
-            return NotFound();
-        }
+        // Passwords do not match, authentication failed
+        return NotFound();
     }
 
     // DELETE: api/Users/5
@@ -168,12 +194,13 @@ public class UsersController : ControllerBase
         return _context.User.Any(e => e.Id == id);
     }
 
-    private static UserDTO UserToDTO(User user)
+    private static UserDTO UserToDto(User user)
     {
         return new UserDTO
         {
             Id = user.Id,
             Name = user.Name,
+            Surname = user.Surname,
             Email = user.Email,
         };
     }

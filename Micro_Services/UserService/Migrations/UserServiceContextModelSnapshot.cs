@@ -6,35 +6,43 @@ using UserService.Data;
 
 #nullable disable
 
-namespace UserService.Migrations;
-
-[DbContext(typeof(UserServiceContext))]
-partial class UserServiceContextModelSnapshot : ModelSnapshot
+namespace UserService.Migrations
 {
-    protected override void BuildModel(ModelBuilder modelBuilder)
+    [DbContext(typeof(UserServiceContext))]
+    partial class UserServiceContextModelSnapshot : ModelSnapshot
     {
+        protected override void BuildModel(ModelBuilder modelBuilder)
+        {
 #pragma warning disable 612, 618
-        modelBuilder.HasAnnotation("ProductVersion", "8.0.0");
+            modelBuilder.HasAnnotation("ProductVersion", "8.0.0");
 
-        modelBuilder.Entity("UserService.Entities.User", b =>
-            {
-                b.Property<int>("Id")
-                    .ValueGeneratedOnAdd()
-                    .HasColumnType("INTEGER");
+            modelBuilder.Entity("Entities.User", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
 
-                b.Property<string>("Email")
-                    .HasColumnType("TEXT");
+                    b.Property<string>("Email")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
 
-                b.Property<string>("Name")
-                    .HasColumnType("TEXT");
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
 
-                b.Property<string>("PasswordHash")
-                    .HasColumnType("TEXT");
+                    b.Property<string>("PasswordHash")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
 
-                b.HasKey("Id");
+                    b.Property<string>("Surname")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
 
-                b.ToTable("User");
-            });
+                    b.HasKey("Id");
+
+                    b.ToTable("User");
+                });
 #pragma warning restore 612, 618
+        }
     }
 }

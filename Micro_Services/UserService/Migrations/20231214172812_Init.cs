@@ -16,13 +16,15 @@ public partial class Init : Migration
             {
                 Id = table.Column<int>(type: "INTEGER", nullable: false)
                     .Annotation("Sqlite:Autoincrement", true),
-                Name = table.Column<string>(type: "TEXT", nullable: false),
-                Email = table.Column<string>(type: "TEXT", nullable: false),
-                Password = table.Column<string>(type: "TEXT", nullable: false)
+                Name = table.Column<string>(type: "TEXT", maxLength: 50, nullable: false),
+                Surname = table.Column<string>(type: "TEXT", maxLength: 50, nullable: false),
+                Email = table.Column<string>(type: "TEXT", maxLength: 100, nullable: false),
+                PasswordHash = table.Column<string>(type: "TEXT", nullable: false)
             },
             constraints: table =>
             {
                 table.PrimaryKey("PK_User", x => x.Id);
+                table.UniqueConstraint("AK_User_Email", x => x.Email);
             });
     }
 

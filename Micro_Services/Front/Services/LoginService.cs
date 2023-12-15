@@ -6,7 +6,7 @@ namespace Front.Services;
 
 public class LoginService
 {
-    public static readonly string URIprefix = "http://localhost:5000/";
+    public static readonly string Urlprefix = "http://localhost:5000/";
     private readonly HttpClient _httpClient;
 
     public LoginService(HttpClient httpClient)
@@ -22,7 +22,9 @@ public class LoginService
 
         var content = new StringContent(jsonPayload, Encoding.UTF8, "application/json");
 
-        var response = await _httpClient.PostAsync("http://localhost:5000/api/User/login", content);
+        var apiUrl = Urlprefix + "api/User/login";
+
+        var response = await _httpClient.PostAsync(apiUrl, content);
     
         if (response.IsSuccessStatusCode)
         {

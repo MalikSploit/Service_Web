@@ -1,10 +1,4 @@
-﻿
-
-using System.Text.Json.Serialization;
-using System.Xml.Linq;
-
-using System;
-using System.Net.Mail;
+﻿using System.Text.RegularExpressions;
 
 namespace Entities;
 
@@ -13,12 +7,13 @@ public class User
 {
     public int Id { get; set; }
     public string Name { get; set; } = "";
+    public string Surname { get; set; } = "";
     public string Email { get; set; } = "";
     public string PasswordHash { get; set; } = "";
 
     public override string ToString()
     {
-        return $"Id: ${Id} Name: ${Name} Email : ${Email} Pass: ${PasswordHash}";
+        return $"Id: ${Id} Name: ${Name} Surname: ${Surname} Email : ${Email} Pass: ${PasswordHash}";
     }
 }
 
@@ -26,26 +21,29 @@ public class UserDTO
 {
     public int Id { get; set; }
     public string Name { get; set; } = "";
+    public string Surname { get; set; } = "";
     public string Email { get; set; } = "";
 
-    public override string ToString() => Id + " " + Name + " " + Email;
+    public override string ToString() => Id + " " + Name + " " + Surname + " " + Email;
 
 }
 
 public class UserCreateModel
 {
     public string Password { get; set; }
+    public string Surname { get; set; }
     public string Name { get; set; }
     public string Email { get; set; }
 
-    public UserCreateModel(string password = "", string name = "", string email = "")
+    public UserCreateModel(string password = "", string name = "", string email = "", string surname = "")
     {
         Password = password;
         Name = name;
+        Surname = surname;
         Email = email;
     }
 
-    public override string ToString() => Name + " " + Email + " " + Password;
+    public override string ToString() => Name + " " + Surname + " " + Email + " " + Password;
 }
 public class UserUpdateModel
 {
@@ -53,8 +51,9 @@ public class UserUpdateModel
     public string Password { get; set; } = "";
     public string Name { get; set; }  = "";
     public string Email { get; set; } = "";
-
-    public override string ToString() => Id + " " + Name + " " + Email + " " + Password;
+    public string Surname { get; set; } = "";
+    
+    public override string ToString() => Id + " " + Name + " " + Surname + " " + Email + " " + Password;
 
 }
 
@@ -70,30 +69,27 @@ public class UserLogin
 
 public static class Extension
 {
-    public static bool IsPasswordLengthOkay(this string s) => s.Length > 8;
-    
-    public static bool IsPasswordRobust(this string s)
+    private static readonly Regex EmailRegex = new Regex(@"^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$", RegexOptions.Compiled);
+    private static readonly Regex NameRegex = new Regex(@"^[a-zA-Z]+([ '-][a-zA-Z]+)*$", RegexOptions.Compiled);
+    private static readonly Regex PasswordRegex = new Regex(@"^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^a-zA-Z\d]).{8,}$", RegexOptions.Compiled);
+
+    public static bool IsPasswordRobust(this string password)
     {
-        return s.Length >= 8 &&
-               s.Any(char.IsUpper) && 
-               s.Any(char.IsLower) && 
-               s.Any(char.IsDigit) &&
-               s.Any(ch => !char.IsLetterOrDigit(ch));
+        return PasswordRegex.IsMatch(password);
     }
     
-    public static bool IsEmailValid(this string s)
+    public static bool IsEmailValid(this string email)
     {
-        try
-        {
-            // Tentative de création d'une instance de MailAddress
-            MailAddress mailAddress = new MailAddress(s);
-            return true; // Si la création réussit, l'adresse e-mail est valide
-        }
-        catch (FormatException)
-        {
-            return false; // Une exception indique que l'adresse e-mail n'est pas valide
-        }
+        return !string.IsNullOrWhiteSpace(email) && EmailRegex.IsMatch(email);
     }
 
-    public static bool IsNameValid(this string s) => s.Length > 3 && s.Length < 20 && s.ToList().TrueForAll(c => char.IsLetter(c));
+    public static bool IsNameValid(this string name)
+    {
+        return !string.IsNullOrWhiteSpace(name) && NameRegex.IsMatch(name) && name.Length >= 3 && name.Length <= 20;
+    }
+
+    public static bool IsSurnameValid(this string surname)
+    {
+        return IsNameValid(surname);
+    }
 }

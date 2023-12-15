@@ -1,5 +1,5 @@
 ﻿@page "/signup"
-@inject HttpClient client
+@inject HttpClient Client
 
 <div class="min-h-screen flex items-center justify-center bg-gray-100">
     <div class="max-w-sm w-full bg-white rounded-lg shadow-md overflow-hidden">
@@ -12,19 +12,19 @@
                 <!-- Champ du prenom -->
                 <div class="rounded-md shadow-sm">
                     <div>
-                        <input aria-label="Surname" name="surname" type="text" required class="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm sm:leading-5" placeholder="Surname">
+                        <input @bind="_userCreateModel.Surname" aria-label="Surname" name="surname" type="text" required class="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm sm:leading-5" placeholder="Surname">
                     </div>
                     <!-- Champ du nom -->
                     <div class="-mt-px">
-                        <input aria-label="Name" name="name" type="text" required class="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm sm:leading-5" placeholder="Name">
+                        <input @bind="_userCreateModel.Name" aria-label="Name" name="name" type="text" required class="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm sm:leading-5" placeholder="Name">
                     </div>
                     <!-- Champ de l'email -->
                     <div class="-mt-px">
-                        <input aria-label="Email address" name="email" type="email" required class="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm sm:leading-5" placeholder="Email address">
+                        <input @bind="_userCreateModel.Email" aria-label="Email address" name="email" type="email" required class="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm sm:leading-5" placeholder="Email address">
                     </div>
                     <!-- Champ du password -->
                     <div class="-mt-px">
-                        <input aria-label="Password" name="password" type="password" required class="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-b-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm sm:leading-5" placeholder="Password">
+                        <input  @bind="_userCreateModel.Password" aria-label="Password" name="password" type="password" required class="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-b-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm sm:leading-5" placeholder="Password">
                     </div>
                 </div>
 
@@ -37,26 +37,3 @@
         </div>
     </div>
 </div>
-
-@code {
-    private UserCreateModel userCreateModel = new UserCreateModel();
-
-    private async Task HandleSignup()
-    {
-        var apiUrl = LoginService.URIprefix +  "api/User/register";
-
-        HttpResponseMessage response = await client.PostAsJsonAsync(apiUrl, userCreateModel);
-        Console.WriteLine("Tentative de Signup");
-
-        if (response.IsSuccessStatusCode)
-        {
-            var result = await response.Content.ReadFromJsonAsync<User>();
-            Console.WriteLine("Signup with success");
-        }
-        else
-        {
-            var errorMessage = await response.Content.ReadAsStringAsync();
-            Console.WriteLine($"Signup failed: {errorMessage}");
-        }
-    }
-}

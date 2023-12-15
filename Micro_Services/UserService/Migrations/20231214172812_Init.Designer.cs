@@ -32,6 +32,10 @@ namespace UserService.Migrations
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("TEXT");
+                    
+                    b.Property<string>("Surname")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
 
                     b.Property<string>("Password")
                         .IsRequired()
