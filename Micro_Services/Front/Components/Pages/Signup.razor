@@ -2,38 +2,43 @@
 @inject HttpClient Client
 
 <div class="min-h-screen flex items-center justify-center bg-gray-100">
-    <div class="max-w-sm w-full bg-white rounded-lg shadow-md overflow-hidden">
-        <div class="px-4 py-4">
-            <h2 class="text-center text-3xl leading-9 font-extrabold text-gray-800">
-                Create your account
+    <div class="max-w-md w-full space-y-8 bg-white p-10 rounded-xl shadow-lg">
+        <div>
+            <h2 class="text-center text-3xl font-bold text-gray-900 mb-2">
+                Create an IzziBooks Account
             </h2>
-
-            <form class="mt-8" @onsubmit="HandleSignup">
-                <!-- Champ du prenom -->
-                <div class="rounded-md shadow-sm">
-                    <div>
-                        <input @bind="_userCreateModel.Surname" aria-label="Surname" name="surname" type="text" required class="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm sm:leading-5" placeholder="Surname">
-                    </div>
-                    <!-- Champ du nom -->
-                    <div class="-mt-px">
-                        <input @bind="_userCreateModel.Name" aria-label="Name" name="name" type="text" required class="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm sm:leading-5" placeholder="Name">
-                    </div>
-                    <!-- Champ de l'email -->
-                    <div class="-mt-px">
-                        <input @bind="_userCreateModel.Email" aria-label="Email address" name="email" type="email" required class="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm sm:leading-5" placeholder="Email address">
-                    </div>
-                    <!-- Champ du password -->
-                    <div class="-mt-px">
-                        <input  @bind="_userCreateModel.Password" aria-label="Password" name="password" type="password" required class="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-b-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm sm:leading-5" placeholder="Password">
-                    </div>
-                </div>
-
-                <div class="mt-6">
-                    <button type="submit" class="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm leading-5 font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-500 focus:outline-none focus:border-indigo-700 focus:ring-indigo active:bg-indigo-700 transition duration-150 ease-in-out">
-                        Sign up
-                    </button>
-                </div>
-            </form>
+            <p class="text-center text-sm text-gray-600">
+                Enter your details below.
+            </p>
         </div>
+         <form class="mt-8" @onsubmit="HandleSignup">
+            <!-- Champ du prenom -->
+            <div class="rounded-md shadow-sm">
+                <div>
+                    <input @bind="_userCreateModel.Surname" aria-label="Surname" name="surname" type="text" required class="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm sm:leading-5" placeholder="Surname">
+                </div>
+                <!-- Champ du nom -->
+                <div class="-mt-px">
+                    <input @bind="_userCreateModel.Name" aria-label="Name" name="name" type="text" required class="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm sm:leading-5" placeholder="Name">
+                </div>
+                <!-- Champ de l'email -->
+                <div class="-mt-px">
+                    <input @bind="_userCreateModel.Email" aria-label="Email address" name="email" type="email" required class="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm sm:leading-5" placeholder="Email address">
+                </div>
+                <!-- Champ du password -->
+                <div class="-mt-px">
+                    <input  @bind="_userCreateModel.Password" aria-label="Password" name="password" type="password" required class="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-b-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm sm:leading-5" placeholder="Password : 8 char, 1 upper, 1 lower, 1 num, 1 symbol">
+                </div>
+            </div>
+
+            <div class="mt-6">
+                <button type="submit" class="group relative w-full flex justify-center py-3 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
+                    Sign up
+                </button>
+            </div>
+         </form>
+        <p class="mt-2 text-center text-sm text-gray-600">
+            Already have an account? <a href="/login" class="font-medium text-blue-600 hover:text-blue-500">Sign in</a>
+        </p>
     </div>
 </div>
