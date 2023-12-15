@@ -48,5 +48,11 @@ public class UserLogin
 
 public static class Extension
 {
-    public static bool IsPasswordRobust(this string s) => s.Length > 8 && s.ToList().TrueForAll(c => char.IsAsciiLetter(c));
+    // public static bool IsPasswordRobust(this string s) => s.Length > 8 && s.ToList().TrueForAll(c => char.IsAsciiLetter(c));
+
+    public static bool IsPasswordRobust(this string s) => s.Length > 8 && s.ToList().TrueForAll(c => char.IsLetter(c));
+
+    public static bool IsEmailValid(this string s) => s.Contains("@") && s.Contains(".");
+
+    public static bool IsNameValid(this string s) => s.Length > 3 && s.Length < 20 && s.ToList().TrueForAll(c => char.IsLetter(c));
 }
