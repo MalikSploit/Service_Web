@@ -5,7 +5,7 @@
 namespace UserService.Migrations;
 
 /// <inheritdoc />
-public partial class addPasswordHash : Migration
+public partial class AddPasswordHash : Migration
 {
     /// <inheritdoc />
     protected override void Up(MigrationBuilder migrationBuilder)
