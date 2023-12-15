@@ -1,5 +1,7 @@
 ﻿
 
+using System.Text.Json.Serialization;
+
 namespace Entities;
 
 public class User
@@ -41,4 +43,10 @@ public class UserLogin
 {
     public required string Name { get; set; }
     public required string Pass { get; set; }
+
+}
+
+public static class Extension
+{
+    public static bool IsPasswordRobust(this string s) => s.Length > 8 && s.ToList().TrueForAll(c => char.IsAsciiLetter(c));
 }
