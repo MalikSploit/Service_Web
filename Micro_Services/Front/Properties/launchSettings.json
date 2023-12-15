@@ -24,6 +24,17 @@
         "environmentVariables": {
           "ASPNETCORE_ENVIRONMENT": "Development"
         }
+      },
+      "DotnetWatch": {
+        "commandName": "Executable",
+        "executablePath": "dotnet",
+        "workingDirectory": "C:\\Users\\malik\\Desktop\\ZZ2\\Service Web\\Micro_Services\\Front\\",
+        "commandLineArgs": "watch run",
+        "launchBrowser": true,
+        "applicationUrl": "http://localhost:5223",
+        "environmentVariables": {
+          "ASPNETCORE_ENVIRONMENT": "Development"
+        }
       }
     }
   }
