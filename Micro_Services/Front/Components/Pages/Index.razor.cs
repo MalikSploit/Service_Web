@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Components;
 
-namespace MicroServices.Components.Pages;
+namespace Front.Components.Pages;
 
 public partial class Index : ComponentBase
 {

@@ -1,10 +1,10 @@
 ﻿using Microsoft.AspNetCore.Components;
 
-namespace MicroServices.Components.Pages;
+namespace Front.Components.Pages;
 
 public partial class Login : ComponentBase
 {
-    private async Task HandleLogin()
+    public async Task HandleLogin()
     {
         //A faire :/
     }
