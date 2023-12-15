@@ -48,5 +48,9 @@ public class UserLogin
 
 public static class Extension
 {
-    public static bool IsPasswordRobust(this string s) => s.Length > 8 && s.ToList().TrueForAll(c => char.IsAsciiLetter(c));
+    public static bool IsPasswordLengthOkay(this string s) => s.Length > 8;
+
+    public static bool IsPasswordAsciiLetterOnly(this string s) => s.Length > 8 && s.ToList().TrueForAll(c => char.IsAsciiLetter(c));
+
+    public static bool IsPasswordRobust(this string s) => s.IsPasswordLengthOkay() && s.IsPasswordAsciiLetterOnly();
 }
