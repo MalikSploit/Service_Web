@@ -34,7 +34,6 @@ public class UserCreateModel
     public required string Name { get; set; }
     public required string Email { get; set; }
 }
-
 public class UserUpdateModel
 {
     public int Id { get; set; }
@@ -73,23 +72,7 @@ public static class Extension
     public static bool IsNameValid(this string s)
     {
         // Vérification de la longueur et des caractères
-        bool isLengthValid = s.Length > 3 && s.Length < 20 && s.All(char.IsLetterOrDigit);
+        return s.Length > 3 && s.Length < 20 && s.All(char.IsLetterOrDigit);
 
-        if (!isLengthValid)
-        {
-            return false; // Le nom ne respecte pas les conditions de longueur ou de caractères
-        }
-
-        // Vérification que le nom n'existe pas dans la base de données
-        bool isNotInDatabase = !IsUsernameInDatabase(s);
-
-        return isNotInDatabase;
-    }
-
-    // Méthode de vérification de l'existence du nom d'utilisateur dans la base de données
-    private static bool IsUsernameInDatabase(string username)
-    {
-        // Code de vérification de l'existence du nom d'utilisateur dans la base de données
-        return false;
     }
 }
