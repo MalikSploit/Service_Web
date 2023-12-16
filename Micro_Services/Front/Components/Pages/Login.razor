@@ -1,4 +1,4 @@
-﻿@page "/login"
+﻿@page "/Login"
 
 <div class="min-h-screen flex items-center justify-center bg-gray-100">
     <div class="max-w-md w-full space-y-6 bg-white p-10 rounded-lg shadow-xl">
@@ -10,15 +10,24 @@
                 Sign in to continue
             </p>
         </div>
-        <form class="mt-8 space-y-6" @onsubmit="HandleLogin">
+        
+        @if (!string.IsNullOrEmpty(_errorMessage))
+            {
+                <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative" role="alert">
+                    <strong class="font-bold">Error: </strong>
+                    <span class="block sm:inline">@_errorMessage</span>
+                </div>
+            }
+        
+        <form class="mt-8 space-y-6" @onsubmit="HandleLoginAsync">
             <div class="rounded-md shadow-sm">
                 <div>
                     <label for="email-address" class="sr-only">Email address</label>
-                    <input @bind="email" id="email-address" name="email" type="email" autocomplete="email" required class="appearance-none rounded-t-lg relative block w-full px-3 py-3 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-blue-500 focus:border-blue-500 focus:z-10 sm:text-sm" placeholder="Email address">
+                    <input @bind="_email" id="email-address" name="email" type="email" autocomplete="email" required class="appearance-none rounded-t-lg relative block w-full px-3 py-3 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-blue-500 focus:border-blue-500 focus:z-10 sm:text-sm" placeholder="Email address">
                 </div>
                 <div class="-mt-1">
                     <label for="password" class="sr-only">Password</label>
-                    <input @bind="pass" id="password" name="password" type="password" autocomplete="current-password" required class="appearance-none rounded-b-lg relative block w-full px-3 py-3 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-blue-500 focus:border-blue-500 focus:z-10 sm:text-sm" placeholder="Password">
+                    <input @bind="_pass" id="password" name="password" type="password" autocomplete="current-password" required class="appearance-none rounded-b-lg relative block w-full px-3 py-3 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-blue-500 focus:border-blue-500 focus:z-10 sm:text-sm" placeholder="Password">
                 </div>
             </div>
 
@@ -44,7 +53,7 @@
             </div>
         </form>
         <p class="mt-2 text-center text-sm text-gray-600">
-            Don't have an account? <a href="/signup" class="font-medium text-blue-600 hover:text-blue-500">Sign up now</a>
+            Don't have an account? <a href="/Signup" class="font-medium text-blue-600 hover:text-blue-500">Sign up now</a>
         </p>
     </div>
 </div>

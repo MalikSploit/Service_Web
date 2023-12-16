@@ -11,7 +11,15 @@
                 Enter your details below.
             </p>
         </div>
-         <form class="mt-8" @onsubmit="HandleSignup">
+        
+        @if (!string.IsNullOrEmpty(_errorMessage))
+        {
+            <div class="text-center text-sm text-red-500">
+                @_errorMessage
+            </div>
+        }
+        
+        <form class="mt-8" @onsubmit="HandleSignup">
             <!-- Champ du prenom -->
             <div class="rounded-md shadow-sm">
                 <div>
@@ -38,7 +46,7 @@
             </div>
          </form>
         <p class="mt-2 text-center text-sm text-gray-600">
-            Already have an account? <a href="/login" class="font-medium text-blue-600 hover:text-blue-500">Sign in</a>
+            Already have an account? <a href="/Login" class="font-medium text-blue-600 hover:text-blue-500">Sign in</a>
         </p>
     </div>
 </div>

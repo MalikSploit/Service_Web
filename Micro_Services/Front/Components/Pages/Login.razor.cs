@@ -5,24 +5,38 @@ namespace Front.Components.Pages;
 
 public partial class Login : ComponentBase
 {
-    [Inject] private LoginService _loginService { get; set; }
-    [Inject] private NavigationManager _NavigationManager { get; set; }
+    [Inject] private LoginService? LoginService { get; set; }
+    [Inject] private NavigationManager? NavigationManager { get; set; }
 
-    private string email;
-    private string pass;
-    private string errorMessage;
+    private string _email="";
+    private string _pass="";
+    private string _errorMessage="";
+    private int _attemptCount;
     
-    private async Task HandleLogin()
+    private async Task HandleLoginAsync()
     {
-        var userDto = await _loginService.AuthenticateUserAsync(email, pass);
-        if (userDto != null)
+        if (_attemptCount >= 5)
         {
-            Console.WriteLine("Signup with success");
-            _NavigationManager.NavigateTo("/dashboard");
+            _errorMessage = "You've reached the maximum number of login attempts. Please try again later.";
+            return;
+        }
+
+        var (isSuccess, userDto, error) = await LoginService.AuthenticateUserAsync(_email, _pass);
+        if (isSuccess)
+        {
+            if (NavigationManager is not null)
+            {
+                NavigationManager.NavigateTo("/Logged");
+            }
+            else
+            {
+                Console.WriteLine("Navigation Manager is Null");
+            }
         }
         else
         {
-            errorMessage = "Invalid username or password.";
+            _attemptCount++;
+            _errorMessage = error;
         }
     }
 }

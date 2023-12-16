@@ -1,6 +1,4 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-using System.Net;
+﻿using Microsoft.AspNetCore.Mvc;
 using Entities;
 
 namespace GatewayService.Controllers;
@@ -29,7 +27,9 @@ public class UserController : ControllerBase
     [HttpPost("login")]
     public async Task<IActionResult> Login(UserLogin model)
     {
-        if (model == null || string.IsNullOrWhiteSpace(model.Email) || string.IsNullOrWhiteSpace(model.Pass))
+        Console.WriteLine(model.Email);
+        Console.WriteLine(model.Pass);
+        if (string.IsNullOrWhiteSpace(model.Email) || string.IsNullOrWhiteSpace(model.Pass))
         {
             Console.WriteLine("Login attempt with incomplete credentials.");
             return BadRequest("Email and password are required.");
@@ -47,11 +47,8 @@ public class UserController : ControllerBase
                 Console.WriteLine($"Successful login for user: {model.Email}");
                 return Ok(result);
             }
-            else
-            {
-                Console.WriteLine($"Failed login attempt for user: {model.Email}. Status code: {response.StatusCode}");
-                return StatusCode((int)response.StatusCode, "Login failed");
-            }
+            Console.WriteLine($"Failed login attempt for user: {model.Email}. Status code: {response.StatusCode}");
+            return StatusCode((int)response.StatusCode, "Login failed");
         }
         catch (Exception ex)
         {
