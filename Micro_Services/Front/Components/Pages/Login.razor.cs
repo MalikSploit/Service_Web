@@ -1,5 +1,6 @@
 ﻿using Front.Services;
 using Microsoft.AspNetCore.Components;
+using Blazored.LocalStorage;
 
 namespace Front.Components.Pages;
 
@@ -7,6 +8,7 @@ public partial class Login : ComponentBase
 {
     [Inject] private LoginService? LoginService { get; set; }
     [Inject] private NavigationManager? NavigationManager { get; set; }
+    [Inject] private ILocalStorageService? LocalStorage { get; set; }
 
     private string _email="";
     private string _pass="";
@@ -22,16 +24,13 @@ public partial class Login : ComponentBase
         }
 
         var (isSuccess, userDto, error) = await LoginService.AuthenticateUserAsync(_email, _pass);
-        if (isSuccess)
+        if (isSuccess && userDto?.Token != null)
         {
-            if (NavigationManager is not null)
-            {
-                NavigationManager.NavigateTo("/Logged");
-            }
-            else
-            {
-                Console.WriteLine("Navigation Manager is Null");
-            }
+            //Console.WriteLine("Login Success. Token: " + userDto.Token);
+            // Store the token in local storage
+            await LocalStorage.SetItemAsync("jwtToken", userDto.Token);
+            
+            NavigationManager.NavigateTo("/Logged");
         }
         else
         {

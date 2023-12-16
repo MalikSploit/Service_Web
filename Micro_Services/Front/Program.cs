@@ -3,6 +3,7 @@ using Front.Services;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Components.Server.ProtectedBrowserStorage;
+using Blazored.LocalStorage;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -17,7 +18,7 @@ builder.Services
         options.DefaultChallengeScheme = CookieAuthenticationDefaults.AuthenticationScheme;
     })
     .AddCookie(options => {
-        options.LoginPath = "/login";
+        options.LoginPath = "/Login";
         options.ExpireTimeSpan = TimeSpan.FromMinutes(6000);
     });
 builder.Services.AddAuthenticationCore();
@@ -27,6 +28,8 @@ builder.Services.AddScoped<ProtectedLocalStorage>();
 builder.Services.AddScoped<AuthenticationStateProvider, CustomAuthenticationStateProvider>();
 builder.Services.AddScoped<LoginService>();
 
+// Register Blazored LocalStorage
+builder.Services.AddBlazoredLocalStorage();
 
 var app = builder.Build();
 

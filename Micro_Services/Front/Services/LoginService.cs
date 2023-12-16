@@ -29,9 +29,15 @@ public class LoginService
             return (true, userDto, string.Empty);
         }
        
-        var errorMessage = "Authentication failed. Please check your credentials and try again.";
+        var errorMessage = response.StatusCode switch
+        {
+            System.Net.HttpStatusCode.Unauthorized => "Invalid credentials. Please try again.",
+            System.Net.HttpStatusCode.BadRequest => "Bad request. Check your input.",
+            System.Net.HttpStatusCode.InternalServerError => "Server error. Try again later.",
+            _ => "Authentication failed. Please try again."
+        };
         
-        Console.WriteLine("Authentication failed with status code: " + response.StatusCode);
+        Console.WriteLine($"Authentication failed with status code: {response.StatusCode}");
         return (false, null, errorMessage);
     }
 }

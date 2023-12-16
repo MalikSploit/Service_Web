@@ -1,6 +1,5 @@
 ﻿@page "/Logged"
-<h3>Logged</h3>
+@attribute [Authorize]
 
-@code {
-    
-}
+<h3>Logged</h3>
+<p>Welcome, @_userName!</p>

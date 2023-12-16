@@ -3,6 +3,10 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using UserService.Data;
 using Entities;
+using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
+using System.Text;
+using Microsoft.IdentityModel.Tokens;
 
 namespace UserService.Controllers;
 
@@ -17,6 +21,29 @@ public class UsersController : ControllerBase
     {
         _context = context;
         _passwordHasher = passwordHasher;
+    }
+    
+    private string GenerateJwtToken(User user)
+    {
+        var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("YourVeryLongSecureKeyHere123456789."));
+        var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
+
+        var claims = new[]
+        {
+            new Claim(JwtRegisteredClaimNames.Email, user.Email),
+            new Claim("surname", user.Surname),
+            new Claim("name", user.Name),
+            new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString())
+        };
+
+        var token = new JwtSecurityToken(
+            issuer: "Malik",
+            audience: "ISIMA",
+            claims: claims,
+            expires: DateTime.Now.AddMinutes(60),
+            signingCredentials: creds);
+
+        return new JwtSecurityTokenHandler().WriteToken(token);
     }
 
     // GET: api/Users
@@ -158,19 +185,20 @@ public class UsersController : ControllerBase
 
         if (user == null)
         {
-            // User with the given username does not exist
-            return NotFound();
+            return NotFound("User not found.");
         }
 
         var passwordVerificationResult = _passwordHasher.VerifyHashedPassword(user, user.PasswordHash, userLogin.Pass);
 
         if (passwordVerificationResult == PasswordVerificationResult.Success)
         {
-            // Passwords match, authentication successful
-            return Ok(UserToDto(user));
+            var token = GenerateJwtToken(user);
+            var userDto = UserToDto(user);
+            userDto.Token = token; 
+            return Ok(userDto);
         }
-        // Passwords do not match, authentication failed
-        return NotFound();
+
+        return Unauthorized("Invalid credentials.");
     }
 
     // DELETE: api/Users/5
