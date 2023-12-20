@@ -22,15 +22,16 @@ public partial class Login : ComponentBase
             _errorMessage = "You've reached the maximum number of login attempts. Please try again later.";
             return;
         }
-
+        
         var (isSuccess, userDto, error) = await LoginService.AuthenticateUserAsync(_email, _pass);
+        
         
         if (isSuccess && userDto?.Token != null)
         {
             // Store the token in local storage
             await LocalStorage.SetItemAsync("jwtToken", userDto.Token);
             
-            NavigationManager.NavigateTo("/Logged");
+            NavigationManager.NavigateTo("/");
         }
         else
         {

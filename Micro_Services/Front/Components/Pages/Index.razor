@@ -11,11 +11,30 @@
                     </a>
                 </div>
                 
-                <!-- Les éléments de navigation -->
-                <div class="hidden md:flex items-center space-x-1 ml-auto">
-                    <a href="/Signup" class="py-4 px-2 text-gray-500 font-semibold hover:text-green-500 transition duration-300">Signup</a>
-                    <a href="/Login" class="py-4 px-2 text-gray-500 font-semibold hover:text-green-500 transition duration-300">Login</a>
-                </div>
+               <!-- Les éléments de navigation -->
+               <div class="hidden md:flex items-center space-x-1 ml-auto">
+                   @if (_isLoggedIn)
+                   {
+                       <div class="flex items-center">
+                           <!-- Profile Icon -->
+                           <a href="/Profile" class="py-4 px-2 flex items-center text-gray-500 font-semibold hover:text-green-500 transition duration-300">
+                               <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 mr-2 align-middle" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M 12 14 C 14.5 14 16.5 12 16.5 9.5 S 14.5 5 12 5 S 7.5 7 7.5 9.5 S 9.5 14 12 14 Z M 12 16 C 9.67 16 5 17.17 5 19.5 V 21 H 19 V 19.5 C 19 17.17 14.33 16 12 16 Z"/>
+                               </svg>
+                               Profile
+                           </a>
+                           
+                           <!-- Logout Button -->
+                           <!-- Logout Button -->
+                           <button @onclick="Logout" class="py-4 px-2 text-gray-500 font-semibold hover:text-green-500 transition duration-300">Logout</button>
+                       </div>
+                   }
+                   else
+                   {
+                       <a href="/Signup" class="py-4 px-2 text-gray-500 font-semibold hover:text-green-500 transition duration-300">Signup</a>
+                       <a href="/Login" class="py-4 px-2 text-gray-500 font-semibold hover:text-green-500 transition duration-300">Login</a>
+                   }
+               </div>
                 
                 <!-- Menu pour téléphone -->
                 <div class="md:hidden flex items-center">
@@ -31,15 +50,32 @@
         <!-- Menu pour téléphone -->
         <div class="@GetDropdownClass()">
             <ul>
-                <li><a href="Signup" class="block text-sm px-2 py-4 hover:bg-green-500 transition duration-300">Signup</a></li>
-                <li><a href="Login" class="block text-sm px-2 py-4 hover:bg-green-500 transition duration-300">Login</a></li>
+                @if (_isLoggedIn)
+                {
+                    <li>
+                        <a href="/Profile" class="block text-sm px-2 py-4 hover:bg-green-500 transition duration-300 flex items-center">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2 align-middle" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 11c2.5 0 4.5-2 4.5-4.5S14.5 2 12 2 7.5 4 7.5 6.5 9.5 11 12 11zm0 2c-2.33 0-7 1.17-7 3.5V18h14v-1.5c0-2.33-4.67-3.5-7-3.5z"/>
+                            </svg>
+                            Profile
+                        </a>
+                    </li>
+                    <li>
+                        <button @onclick="Logout" class="block text-sm px-2 py-4 hover:bg-green-500 transition duration-300 w-full text-left">Logout</button>
+                    </li>
+                }
+                else
+                {
+                    <li><a href="Signup" class="block text-sm px-2 py-4 hover:bg-green-500 transition duration-300">Signup</a></li>
+                    <li><a href="Login" class="block text-sm px-2 py-4 hover:bg-green-500 transition duration-300">Login</a></li>
+                }
             </ul>
         </div>
     </nav>
     
     <!-- Hero Section -->
     <div class="text-center p-16 bg-gradient-to-r from-blue-800 to-purple-600 text-white">
-        <h1 class="text-6xl font-bold mb-4">Find Your Next Read</h1>
+        <h1 class="text-6xl font-bold mb-4 outline-none">Find Your Next Read</h1>
         <p class="text-xl mb-8">Dive into our diverse collection of books and genres.</p>
         <a href="/Explore" class="inline-block bg-pink-500 hover:bg-pink-600 text-white py-3 px-6 rounded-lg text-lg font-medium transition duration-300 ease-in-out transform hover:-translate-y-1">Explore Books</a>
     </div>
