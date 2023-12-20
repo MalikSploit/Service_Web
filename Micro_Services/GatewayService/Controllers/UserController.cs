@@ -27,8 +27,7 @@ public class UserController : ControllerBase
     [HttpPost("login")]
     public async Task<IActionResult> Login(UserLogin model)
     {
-        Console.WriteLine(model.Email);
-        Console.WriteLine(model.Pass);
+        
         if (string.IsNullOrWhiteSpace(model.Email) || string.IsNullOrWhiteSpace(model.Pass))
         {
             Console.WriteLine("Login attempt with incomplete credentials.");
@@ -69,17 +68,14 @@ public class UserController : ControllerBase
 
         if (response.IsSuccessStatusCode)
         {
-            // Assuming UserDTO is the expected response type
             var result = await response.Content.ReadFromJsonAsync<UserDTO>();
             Console.WriteLine("ok");
             return Ok(result);
         }
-        else
-        {
-            var errorResponse = await response.Content.ReadAsStringAsync();
-            Console.WriteLine($"Registration error response: {errorResponse}");
-            return BadRequest(errorResponse);
-        }
+       
+        var errorResponse = await response.Content.ReadAsStringAsync();
+        Console.WriteLine($"Registration error response: {errorResponse}");
+        return BadRequest(errorResponse);
     }
 
 }

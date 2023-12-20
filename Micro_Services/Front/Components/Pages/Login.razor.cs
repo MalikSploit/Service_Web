@@ -24,9 +24,9 @@ public partial class Login : ComponentBase
         }
 
         var (isSuccess, userDto, error) = await LoginService.AuthenticateUserAsync(_email, _pass);
+        
         if (isSuccess && userDto?.Token != null)
         {
-            //Console.WriteLine("Login Success. Token: " + userDto.Token);
             // Store the token in local storage
             await LocalStorage.SetItemAsync("jwtToken", userDto.Token);
             
