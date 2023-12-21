@@ -7,7 +7,7 @@
                 <div>
                     <!-- Logo du site web -->
                     <a href="/" class="flex items-center py-4 px-2">
-                        <span class="font-semibold text-gray-500 text-lg">IzziBooks</span>
+                        <img src="Images/Logo.svg" alt="IzziBooks Logo" class="h-8 mr-2"/>
                     </a>
                 </div>
                 
@@ -16,9 +16,7 @@
                    
                     <!-- Cart Icon -->
                     <a href="/Cart" class="py-4 px-2 flex items-center text-gray-500 font-semibold hover:text-green-500 transition duration-300">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 mr-2 align-middle" viewBox="0 0 24 24" fill="none" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M17,18A2,2 0 0,1 19,20A2,2 0 0,1 17,22C15.89,22 15,21.1 15,20C15,18.89 15.89,18 17,18M1,2H4.27L5.21,4H20A1,1 0 0,1 21,5C21,5.17 20.95,5.34 20.88,5.5L17.3,11.97C16.96,12.58 16.3,13 15.55,13H8.1L7.2,14.63L7.17,14.75A0.25,0.25 0 0,0 7.42,15H19V17H7C5.89,17 5,16.1 5,15C5,14.65 5.09,14.32 5.24,14.04L6.6,11.59L3,4H1V2M7,18A2,2 0 0,1 9,20A2,2 0 0,1 7,22C5.89,22 5,21.1 5,20C5,18.89 5.89,18 7,18M16,11L18.78,6H6.14L8.5,11H16Z"/>
-                        </svg>
+                        <span class="material-icons align-middle mr-2">shopping_cart</span>
                         Cart
                     </a>
 
@@ -27,15 +25,18 @@
                         <div class="flex items-center">
                             <!-- Profile Icon -->
                             <a href="/Profile" class="py-4 px-2 flex items-center text-gray-500 font-semibold hover:text-green-500 transition duration-300">
-                                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 mr-2 align-middle" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                @*<svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 mr-2 align-middle" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M 12 14 C 14.5 14 16.5 12 16.5 9.5 S 14.5 5 12 5 S 7.5 7 7.5 9.5 S 9.5 14 12 14 Z M 12 16 C 9.67 16 5 17.17 5 19.5 V 21 H 19 V 19.5 C 19 17.17 14.33 16 12 16 Z"/>
-                                </svg>
+                                </svg>*@
+                                <span class="material-icons align-middle mr-2">account_circle</span>
                                 Profile
                             </a>
 
                             <!-- Logout Button -->
-                            <!-- Logout Button -->
-                            <button @onclick="Logout" class="py-4 px-2 text-gray-500 font-semibold hover:text-green-500 transition duration-300">Logout</button>
+                            <button @onclick="Logout" class="py-4 px-2 text-gray-500 font-semibold hover:text-green-500 transition duration-300 flex items-center">
+                                <span class="material-icons align-middle mr-2">exit_to_app</span>
+                                Logout
+                            </button>
                         </div>
                     }
                     else
@@ -61,31 +62,33 @@
             <ul>
                 <li>
                     <!-- Cart Icon -->
-                    <a href="/Cart" class="block text-sm px-2 py-4 hover:bg-green-500 transition duration-300 flex items-center">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2 align-middle" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M17,18A2,2 0 0,1 19,20A2,2 0 0,1 17,22C15.89,22 15,21.1 15,20C15,18.89 15.89,18 17,18M1,2H4.27L5.21,4H20A1,1 0 0,1 21,5C21,5.17 20.95,5.34 20.88,5.5L17.3,11.97C16.96,12.58 16.3,13 15.55,13H8.1L7.2,14.63L7.17,14.75A0.25,0.25 0 0,0 7.42,15H19V17H7C5.89,17 5,16.1 5,15C5,14.65 5.09,14.32 5.24,14.04L6.6,11.59L3,4H1V2M7,18A2,2 0 0,1 9,20A2,2 0 0,1 7,22C5.89,22 5,21.1 5,20C5,18.89 5.89,18 7,18M16,11L18.78,6H6.14L8.5,11H16Z"/>
-                        </svg>
+                    <a href="/Cart" class="text-sm px-2 py-4 hover:bg-green-500 transition duration-300 flex items-center text-gray-500 font-semibold">
+                        <span class="material-icons align-middle mr-2">shopping_cart</span>
                         Cart
                     </a>
                 </li>
                 @if (_isLoggedIn)
                 {
                     <li>
-                        <a href="/Profile" class="block text-sm px-2 py-4 hover:bg-green-500 transition duration-300 flex items-center">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2 align-middle" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <a href="/Profile" class="text-sm px-2 py-4 hover:bg-green-500 transition duration-300 flex items-center text-gray-500 font-semibold">
+                            @*<svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2 align-middle" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 11c2.5 0 4.5-2 4.5-4.5S14.5 2 12 2 7.5 4 7.5 6.5 9.5 11 12 11zm0 2c-2.33 0-7 1.17-7 3.5V18h14v-1.5c0-2.33-4.67-3.5-7-3.5z"/>
-                            </svg>
+                            </svg>*@
+                            <span class="material-icons align-middle mr-2">account_circle</span>
                             Profile
                         </a>
                     </li>
                     <li>
-                        <button @onclick="Logout" class="block text-sm px-2 py-4 hover:bg-green-500 transition duration-300 w-full text-left">Logout</button>
+                        <button @onclick="Logout" class="text-sm px-2 py-4 hover:bg-green-500 transition duration-300 w-full text-left text-gray-500 font-semibold">
+                            <span class="material-icons align-middle mr-2">exit_to_app</span>
+                            Logout
+                        </button>
                     </li>
                 }
                 else
                 {
-                    <li><a href="Signup" class="block text-sm px-2 py-4 hover:bg-green-500 transition duration-300">Signup</a></li>
-                    <li><a href="Login" class="block text-sm px-2 py-4 hover:bg-green-500 transition duration-300">Login</a></li>
+                    <li><a href="Signup" class="text-sm px-2 py-4 hover:bg-green-500 transition duration-300 text-gray-500 font-semibold">Signup</a></li>
+                    <li><a href="Login" class="text-sm px-2 py-4 hover:bg-green-500 transition duration-300 text-gray-500 font-semibold">Login</a></li>
                 }
             </ul>
         </div>
