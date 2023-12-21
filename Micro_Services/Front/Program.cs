@@ -14,13 +14,17 @@ builder.Services.AddRazorComponents()
 
 builder.Services
     .AddAuthentication(options => {
-        options.DefaultScheme = CookieAuthenticationDefaults.AuthenticationScheme; ;
+        options.DefaultScheme = CookieAuthenticationDefaults.AuthenticationScheme;
         options.DefaultChallengeScheme = CookieAuthenticationDefaults.AuthenticationScheme;
     })
     .AddCookie(options => {
         options.LoginPath = "/Login";
         options.ExpireTimeSpan = TimeSpan.FromMinutes(6000);
     });
+
+// Register your BookService
+builder.Services.AddScoped<BookService>();
+
 builder.Services.AddAuthenticationCore();
 builder.Services.AddHttpClient();
 builder.Services.AddCascadingAuthenticationState();
