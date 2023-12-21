@@ -1,13 +1,40 @@
 ﻿@page "/Explore"
 
-<div class="container mx-auto px-4 py-8">
-    <!-- Search Bar and Other Content Here -->
+<div class="container mx-auto">
+    <!-- Top Menu -->
+    <nav class="flex justify-between items-center bg-white p-4 shadow-md w-full">
+        <!-- Logo and Home Link -->
+        <a href="/" class="text-xl font-semibold text-gray-700 hover:text-gray-900 transition duration-300">
+            IzziBooks
+        </a>
+
+        <!-- Menu Items -->
+        <div class="flex items-center space-x-4">
+            <a href="/Cart" class="text-gray-500 hover:text-green-500 transition duration-300">
+                Cart
+            </a>
+            <a href="/Profile" class="text-gray-500 hover:text-green-500 transition duration-300">
+                Profile
+            </a>
+            <a href="/" class="text-gray-500 hover:text-green-500 transition duration-300">
+                Home
+            </a>
+        </div>
+    </nav>
+
+    <!-- Search Bar -->
+    <div class="flex items-center rounded overflow-hidden shadow-lg my-8 mx-4">
+        <input type="search" class="w-full px-4 py-2" placeholder="Search books..." @bind="searchTerm" @oninput="UpdateSearch"/>
+        <button class="bg-blue-500 hover:bg-blue-700 text-white px-4 py-2 flex items-center justify-center">
+            <span class="material-icons">search</span>
+        </button>
+    </div>
     
     <!-- Books Section -->
     <section class="py-12">
-        <h2 class="text-4xl font-semibold text-center text-gray-800 mb-12">Featured Books</h2>
+        <h2 class="text-4xl font-semibold text-center text-gray-800 mb-12">All Books</h2>
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
-            @foreach (var book in books)
+            @foreach (var book in filteredBooks)
             {
                 <!-- Book Template -->
                 <div class="bg-white rounded-lg overflow-hidden shadow-lg hover:shadow-2xl transition-shadow duration-300">
