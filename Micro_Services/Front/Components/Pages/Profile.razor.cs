@@ -30,6 +30,11 @@ public partial class Profile : ComponentBase
 
     private async Task UpdateProfile()
     {
+        // Réinitialise les erreurs avant la validation
+        showNameError = false;
+        showEmailError = false;
+        showPasswordError = false;
+
         // Validation des champs ici avec la classe Extension
         if (!_userUpdateModel.Name.IsNameValid())
         {
