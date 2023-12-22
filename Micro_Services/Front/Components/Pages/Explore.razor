@@ -3,27 +3,46 @@
 <div class="container mx-auto">
     <!-- Top Menu -->
     <nav class="flex justify-between items-center bg-white p-4 shadow-md w-full">
-        <!-- Logo and Home Link -->
-        <a href="/" class="text-xl font-semibold text-gray-700 hover:text-gray-900 transition duration-300">
-            <img src="Images/Logo.svg" alt="IzziBooks Logo" class="h-8 mr-2"/>
-        </a>
-
-        <!-- Menu Items -->
-        <div class="flex items-center space-x-4">
-            <a href="/Cart" class="py-4 px-2 flex items-center text-gray-500 font-semibold hover:text-green-500 transition duration-300">
-                <span class="material-icons align-middle mr-2">shopping_cart</span>
-                Cart
+            <!-- Logo and Home Link -->
+            <a href="/" class="text-xl font-semibold text-gray-700 hover:text-gray-900 transition duration-300">
+                <img src="Images/Logo.svg" alt="IzziBooks Logo" class="h-8 mr-2"/>
             </a>
-            <a href="/Profile" class="py-4 px-2 flex items-center text-gray-500 font-semibold hover:text-green-500 transition duration-300">
-                <span class="material-icons align-middle mr-2">account_circle</span>
-                Profile
-            </a>
-            <a href="/" class="py-4 px-2 flex items-center text-gray-500 font-semibold hover:text-green-500 transition duration-300">
-                <span class="material-icons align-middle mr-2">home</span>
-                Home
-            </a>
-        </div>
-    </nav>
+    
+            <!-- Menu Items -->
+            <div class="flex items-center space-x-4">
+                <a href="/Cart" class="py-4 px-2 flex items-center text-gray-500 font-semibold hover:text-green-500 transition duration-300">
+                    <span class="material-icons align-middle mr-2">shopping_cart</span>
+                    Cart
+                </a>
+    
+                @if (_isLoggedIn)
+                {
+                    <a href="/Profile" class="py-4 px-2 flex items-center text-gray-500 font-semibold hover:text-green-500 transition duration-300">
+                        <span class="material-icons align-middle mr-2">account_circle</span>
+                        Profile
+                    </a>
+                    <button @onclick="Logout" class="py-4 px-2 text-gray-500 font-semibold hover:text-green-500 transition duration-300 flex items-center">
+                        <span class="material-icons align-middle mr-2">exit_to_app</span>
+                        Logout
+                    </button>
+                }
+                else
+                {
+                    <a href="/Signup" class="py-4 px-2 text-gray-500 font-semibold hover:text-green-500 transition duration-300">
+                        <span class="material-icons align-middle mr-2">person_add</span>
+                        Signup
+                    </a>
+                    <a href="/Login" class="py-4 px-2 text-gray-500 font-semibold hover:text-green-500 transition duration-300">
+                        <span class="material-icons align-middle mr-2">login</span>
+                        Login
+                    </a>
+                }
+                <a href="/" class="py-4 px-2 flex items-center text-gray-500 font-semibold hover:text-green-500 transition duration-300">
+                    <span class="material-icons align-middle mr-2">home</span>
+                    Home
+                </a>
+            </div>
+        </nav>
 
     <!-- Search Bar -->
     <div class="flex items-center rounded overflow-hidden shadow-lg my-8 mx-4">
