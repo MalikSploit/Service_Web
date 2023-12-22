@@ -70,7 +70,7 @@ namespace Front.Components.Pages
         
         private string GetDropdownClass()
         {
-            return isDropdownOpen ? "block bg-white shadow-lg absolute w-full z-10" : "hidden";
+            return isDropdownOpen ? "block z-10" : "hidden";
         }
 
         private void ToggleDropdown()
