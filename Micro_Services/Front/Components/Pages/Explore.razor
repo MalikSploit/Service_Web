@@ -11,7 +11,7 @@
                 </a>
                 
                 <button @onclick="ToggleDropdown" class="md:hidden p-2">
-                    <svg class="w-6 h-6 text-gray-500 hover:text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <svg class="w-6 h-6 text-gray-500 hover:text-green-500" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
                         <path d="M4 6h16M4 12h16M4 18h16"></path>
                     </svg>
                 </button>
@@ -56,18 +56,48 @@
         <!-- Dropdown Menu for Mobile -->
         <div class="@GetDropdownClass() max-w-6xl mx-auto">
             <ul class="py-4 px-2 bg-white shadow-lg">
-                <li><a href="/Cart" class="block text-gray-700 hover:bg-green-500 hover:text-white px-2 py-2 rounded transition duration-300">Cart</a></li>
+                <li>
+                    <a href="/Cart" class="text-sm px-2 py-4 hover:bg-green-500 transition duration-300 flex items-center text-gray-500 font-semibold">
+                        <span class="material-icons align-middle mr-2">shopping_cart</span>
+                        Cart
+                    </a>
+                </li>
                 @if (_isLoggedIn)
                 {
-                    <li><a href="/Profile" class="block text-gray-700 hover:bg-green-500 hover:text-white px-2 py-2 rounded transition duration-300">Profile</a></li>
-                    <li><button @onclick="Logout" class="w-full text-left text-gray-700 hover:bg-green-500 hover:text-white px-2 py-2 rounded transition duration-300">Logout</button></li>
+                    <li>
+                        <a href="/Profile" class="text-sm px-2 py-4 hover:bg-green-500 transition duration-300 flex items-center text-gray-500 font-semibold">
+                            <span class="material-icons align-middle mr-2">account_circle</span>
+                            Profile
+                        </a>
+                    </li>
+                    <li>
+                        <button @onclick="Logout" class="text-sm px-2 py-4 hover:bg-green-500 transition duration-300 flex items-center text-gray-500 font-semibold">
+                            <span class="material-icons align-middle mr-2">exit_to_app</span>
+                            Logout
+                        </button>
+                    </li>
                 }
                 else
                 {
-                    <li><a href="/Signup" class="block text-gray-700 hover:bg-green-500 hover:text-white px-2 py-2 rounded transition duration-300">Signup</a></li>
-                    <li><a href="/Login" class="block text-gray-700 hover:bg-green-500 hover:text-white px-2 py-2 rounded transition duration-300">Login</a></li>
+                    <li>
+                        <a href="/Signup" class="text-sm px-2 py-4 hover:bg-green-500 transition duration-300 flex items-center text-gray-500 font-semibold">
+                            <span class="material-icons align-middle mr-2">person_add</span>
+                            Signup
+                        </a>
+                    </li>
+                    <li>
+                        <a href="/Login" class="text-sm px-2 py-4 hover:bg-green-500 transition duration-300 flex items-center text-gray-500 font-semibold">
+                            <span class="material-icons align-middle mr-2">login</span>
+                            Login
+                        </a>
+                    </li>
                 }
-                <li><a href="/" class="block text-gray-700 hover:bg-green-500 hover:text-white px-2 py-2 rounded transition duration-300">Home</a></li>
+                <li>
+                    <a href="/" class="text-sm px-2 py-4 hover:bg-green-500 transition duration-300 flex items-center text-gray-500 font-semibold">
+                        <span class="material-icons align-middle mr-2">home</span>
+                        Home
+                    </a>
+                </li>
             </ul>
         </div>
     </nav>
