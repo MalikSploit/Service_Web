@@ -16,10 +16,8 @@ namespace Front.Components.Pages
 #pragma warning restore CS8618 // Un champ non-nullable doit contenir une valeur non-null lors de la fermeture du constructeur. Envisagez de déclarer le champ comme nullable.
 
         private bool _isLoggedIn;
-        
-
-
         private string searchTerm = string.Empty;
+        private bool isDropdownOpen = false;
 
         protected override async Task OnInitializedAsync()
         {
@@ -44,6 +42,16 @@ namespace Front.Components.Pages
         {
             await LocalStorage.RemoveItemAsync("jwtToken");
             NavigationManager.NavigateTo("/", true);
+        }
+        
+        private string GetDropdownClass()
+        {
+            return isDropdownOpen ? "block bg-white shadow-lg absolute w-full z-10" : "hidden";
+        }
+
+        private void ToggleDropdown()
+        {
+            isDropdownOpen = !isDropdownOpen;
         }
     }
 }
