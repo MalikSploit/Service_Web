@@ -32,10 +32,34 @@ namespace Front.Components.Pages
             return !string.IsNullOrEmpty(jwtToken);
         }
 
+        private struct SearchScore 
+        {
+            public int Score;
+            public Book Livre;
+
+            public SearchScore(int score, Book b)
+            {
+                Score = score;
+                this.Livre = b;
+            }
+        }
+
         private void UpdateSearch(ChangeEventArgs e)
         {
-            searchTerm = e.Value!.ToString()!;
-            filteredBooks = string.IsNullOrWhiteSpace(searchTerm) ? books : books.Where(b => b.Title.Contains(searchTerm, StringComparison.OrdinalIgnoreCase));
+            searchTerm = e.Value!.ToString()!.ToLowerInvariant();
+
+            if (string.IsNullOrWhiteSpace(searchTerm)) 
+            {
+                filteredBooks = books;
+            }
+            var terms = searchTerm.Split();
+
+            List<SearchScore> s = books.Select(b =>
+                new SearchScore(b.Title.Split(' ').Select(s => StringDistance.LevenshteinDistance(s.ToLowerInvariant(), searchTerm)).Min(), b)
+                ).Where(s=>s.Score <= 4).ToList();
+            s.Sort((a, b) => a.Score.CompareTo(b.Score));
+
+            filteredBooks = string.IsNullOrWhiteSpace(searchTerm) ? books : s.Select(a => a.Livre);
         }
         
         private async Task Logout()
