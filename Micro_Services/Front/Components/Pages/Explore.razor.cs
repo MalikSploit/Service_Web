@@ -1,4 +1,5 @@
 ﻿using Blazored.LocalStorage;
+using Entities;
 using Front.Services;
 using Microsoft.AspNetCore.Components;
 
@@ -6,15 +7,17 @@ namespace Front.Components.Pages
 {
     public partial class Explore : ComponentBase
     {
-        [Inject] private BookService _BookService { get; set; }
+#pragma warning disable CS8618 // Un champ non-nullable doit contenir une valeur non-null lors de la fermeture du constructeur. Envisagez de déclarer le champ comme nullable.
+        [Inject] private BookService BookService { get; set; }
         [Inject] private ILocalStorageService LocalStorage { get; set; }
         [Inject] private NavigationManager NavigationManager { get; set; }
-
-        private bool _isLoggedIn;
-        
         private IEnumerable<Book> books;
         private IEnumerable<Book> filteredBooks;
 #pragma warning restore CS8618 // Un champ non-nullable doit contenir une valeur non-null lors de la fermeture du constructeur. Envisagez de déclarer le champ comme nullable.
+
+        private bool _isLoggedIn;
+        
+
 
         private string searchTerm = string.Empty;
 
