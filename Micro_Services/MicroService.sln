@@ -9,9 +9,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GatewayService", "GatewaySe
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Front", "Front\Front.csproj", "{B5785C2C-8768-49D4-80DB-7E3EF605800A}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TaskService", "TaskService\TaskService.csproj", "{82AB1F7D-56A6-435B-A2AE-E7FCEB6A77A5}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BookService", "TaskService\BookService.csproj", "{82AB1F7D-56A6-435B-A2AE-E7FCEB6A77A5}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Entities", "Entities\Entities.csproj", "{76B0CF77-A266-48AA-8692-E6AAADDAA708}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Entities", "Entities\Entities.csproj", "{76B0CF77-A266-48AA-8692-E6AAADDAA708}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

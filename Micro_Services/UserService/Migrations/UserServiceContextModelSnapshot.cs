@@ -16,7 +16,7 @@ namespace UserService.Migrations
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "8.0.0");
 
-            modelBuilder.Entity("Entities.User", b =>
+            modelBuilder.Entity(typeof(Entities.User).FullName, b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()

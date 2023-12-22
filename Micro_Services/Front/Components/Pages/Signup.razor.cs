@@ -7,8 +7,10 @@ namespace Front.Components.Pages;
 
 public partial class Signup : ComponentBase
 {
-    [Inject] private NavigationManager? NavigationManager { get; set; }
-    
+#pragma warning disable CS8618 // Un champ non-nullable doit contenir une valeur non-null lors de la fermeture du constructeur. Envisagez de déclarer le champ comme nullable.
+    [Inject] private NavigationManager NavigationManager { get; set; }
+#pragma warning restore CS8618 // Un champ non-nullable doit contenir une valeur non-null lors de la fermeture du constructeur. Envisagez de déclarer le champ comme nullable.
+
     private readonly UserCreateModel _userCreateModel = new ();
     
     private string _errorMessage="";

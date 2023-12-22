@@ -1,9 +1,11 @@
-﻿namespace Front.Services;
+﻿using Entities;
+
+namespace Front.Services;
 
 public class BookService
 {
-    private readonly List<Book> books = new List<Book>
-    {
+    private readonly List<Book> books =
+    [
         new Book
         {
             Title = "Cult of the Dead Cow",
@@ -69,7 +71,7 @@ public class BookService
             Price = 24.99m
         },
         
-    };
+    ];
 
     public Task<IEnumerable<Book>> GetBooksAsync()
     {

@@ -9,14 +9,14 @@ public partial class Logged
 {
     private string _userName = "";
 
-    [Inject]
-    NavigationManager NavigationManager { set; get; }
-    [Inject]
-    private ILocalStorageService? LocalStorage { get; set; }
+#pragma warning disable CS8618 // Un champ non-nullable doit contenir une valeur non-null lors de la fermeture du constructeur. Envisagez de déclarer le champ comme nullable.
+    [Inject] NavigationManager NavigationManager { set; get; }
+    [Inject] private ILocalStorageService? LocalStorage { get; set; }
+#pragma warning restore CS8618 // Un champ non-nullable doit contenir une valeur non-null lors de la fermeture du constructeur. Envisagez de déclarer le champ comme nullable.
 
     protected override async Task OnInitializedAsync()
     {
-        var jwtToken = await LocalStorage.GetItemAsStringAsync("jwtToken");
+        var jwtToken = await LocalStorage!.GetItemAsStringAsync("jwtToken");
 
         if (!string.IsNullOrEmpty(jwtToken))
         {
@@ -28,7 +28,7 @@ public partial class Logged
                     var payload = parts[1];
                     var jsonBytes = ParseBase64WithoutPadding(payload);
                     var jsonPayload = Encoding.UTF8.GetString(jsonBytes);
-                    var jwtPayload = JsonConvert.DeserializeObject<Dictionary<string, object>>(jsonPayload);
+                    var jwtPayload = JsonConvert.DeserializeObject<Dictionary<string, object>>(jsonPayload)!;
 
                     if (jwtPayload.TryGetValue("exp", out var expValue) &&
                         long.TryParse(expValue.ToString(), out var exp) &&
