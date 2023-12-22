@@ -1,6 +1,61 @@
-﻿@page "/Profile"
-<h3>Profile</h3>
+﻿@page "/profile"
+@inject UserService UserService
+@inject NavigationManager NavigationManager
 
-@code {
-    
+<h3>User Profile</h3>
+
+@if (user != null)
+{
+    <form @onsubmit="UpdateProfile">
+        <div class="mb-4">
+            <label for="Name">Username:</label>
+            <input id="Name" @bind="_userUpdateModel.Name" class="form-input" />
+            <ValidationMessage For="@(() => _userUpdateModel.Name)" />
+        </div>
+
+        <button type="submit" class="btn btn-primary">Update Username</button>
+    </form>
+
+    <form @onsubmit="UpdateProfile">
+        <div class="mb-4">
+            <label for="Email">Email:</label>
+            <input id="Email" @bind="_userUpdateModel.Email" class="form-input" />
+            <ValidationMessage For="@(() => _userUpdateModel.Email)" />
+        </div>
+
+        <button type="submit" class="btn btn-primary">Update Email</button>
+    </form>
+
+    <form @onsubmit="UpdateProfile">
+        <div class="mb-4">
+            <label for="Password">Password:</label>
+            <input id="Password" type="password" @bind="_userUpdateModel.Password" class="form-input" />
+            <ValidationMessage For="@(() => _userUpdateModel.Password)" />
+        </div>
+
+        <button type="submit" class="btn btn-primary">Update Password</button>
+    </form>
+
+    <!-- Ajout des divs conditionnelles pour afficher les messages d'erreur -->
+    @if (showNameError)
+    {
+        <div class="error-window">
+            Name is invalid. Please enter a valid name (minimum 3 characters).
+        </div>
+    }
+
+    @if (showEmailError)
+    {
+        <div class="error-window">
+            Email is invalid. Please enter a valid email address.
+        </div>
+    }
+
+    @if (showPasswordError)
+    {
+        <div class="error-window">
+            Password is invalid. Please enter a password with at least 8 characters, including an uppercase letter, a lowercase letter, a number, and a symbol.
+        </div>
+    }
 }
+
