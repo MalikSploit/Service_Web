@@ -1,0 +1,207 @@
+﻿@using System.Text
+@using Blazored.LocalStorage
+@using Newtonsoft.Json
+@inject NavigationManager NavigationManager
+@inject AuthenticationStateProvider AuthenticationStateProvider
+@inject ILocalStorageService LocalStorage
+
+<nav class="bg-white shadow-lg">
+    <div class="max-w-6xl mx-auto px-4">
+        <div class="flex justify-between items-center">
+            <!-- Logo -->
+            <a href="/" class="flex items-center py-4 px-2">
+                <img src="Images/Logo.svg" alt="Logo" class="h-8 mr-2"/>
+            </a>
+
+            <!-- Toggle Button for Mobile -->
+            <button @onclick="ToggleDropdown" class="md:hidden p-2">
+                <svg class="w-6 h-6 text-gray-500 hover:text-green-500" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                    <path d="M4 6h16M4 12h16M4 18h16"></path>
+                </svg>
+            </button>
+
+            <!-- Desktop Navigation Items -->
+            @if (IsExplorePage())
+            {
+                @ExplorePageNavItems()
+            }
+            else
+            {
+                @IndexPageNavItems()
+            }
+        </div>
+    </div>
+
+    <!-- Dropdown Menu for Mobile -->
+    @MobileDropdownMenu()
+</nav>
+
+@code {
+    private bool _isLoggedIn;
+    private bool _isDropdownVisible = false;
+
+    protected override async Task OnInitializedAsync()
+    {
+        var authState = await AuthenticationStateProvider.GetAuthenticationStateAsync();
+        _isLoggedIn = await IsUserLoggedIn();
+    }
+
+    private void ToggleDropdown()
+    {
+        _isDropdownVisible = !_isDropdownVisible;
+    }
+
+    private async Task<bool> IsUserLoggedIn()
+    {
+        var jwtToken = await LocalStorage.GetItemAsStringAsync("jwtToken");
+        if (string.IsNullOrEmpty(jwtToken))
+        {
+            return false;
+        }
+
+        try
+        {
+            var parts = jwtToken.Split('.');
+            if (parts.Length == 3)
+            {
+                var payload = parts[1];
+                var jsonBytes = ParseBase64WithoutPadding(payload);
+                var jsonPayload = Encoding.UTF8.GetString(jsonBytes);
+                var jwtPayload = JsonConvert.DeserializeObject<Dictionary<string, object>>(jsonPayload);
+
+                if (jwtPayload != null && jwtPayload.TryGetValue("exp", out var expValue) &&
+                    long.TryParse(expValue.ToString(), out var exp) &&
+                    DateTimeOffset.FromUnixTimeSeconds(exp) > DateTimeOffset.UtcNow)
+                {
+                    return true;
+                }
+                
+                await LocalStorage.RemoveItemAsync("jwtToken");
+            }
+            return false;
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine("Error processing JWT token: " + ex.Message);
+            return false;
+        }
+    }
+    
+    private byte[] ParseBase64WithoutPadding(string base64)
+    {
+        base64 = base64.Replace('-', '+').Replace('_', '/');
+        switch (base64.Length % 4)
+        {
+            case 2: base64 += "=="; break;
+            case 3: base64 += "="; break;
+        }
+        return Convert.FromBase64String(base64);
+    }
+
+    private async Task Logout()
+    {
+        await LocalStorage.RemoveItemAsync("jwtToken");
+        NavigationManager.NavigateTo("/", true);
+    }
+    
+    private bool IsExplorePage() => NavigationManager.Uri.EndsWith("/Explore");
+
+    private RenderFragment ExplorePageNavItems() => (__builder) =>
+    {
+        <div class="hidden md:flex items-center space-x-1 ml-auto">
+            <a href="/Cart" class="py-4 px-2 flex items-center text-gray-500 font-semibold hover:text-green-500 transition duration-300">
+                <span class="material-icons align-middle mr-2">shopping_cart</span>
+                Cart
+            </a>
+            @AuthNavItems()
+        </div>
+    };
+
+    private RenderFragment IndexPageNavItems() => (__builder) =>
+    {
+        <div class="hidden md:flex items-center space-x-1 ml-auto">
+            @AuthNavItems()
+        </div>
+    };
+
+    private RenderFragment AuthNavItems() => (__builder) =>
+    {
+        @if (_isLoggedIn)
+        {
+            <a href="/Profile" class="py-4 px-2 flex items-center text-gray-500 font-semibold hover:text-green-500 transition duration-300">
+                <span class="material-icons align-middle mr-2">account_circle</span>
+                Profile
+            </a>
+            <button @onclick="Logout" class="py-4 px-2 text-gray-500 font-semibold hover:text-green-500 transition duration-300 flex items-center">
+                <span class="material-icons align-middle mr-2">exit_to_app</span>
+                Logout
+            </button>
+        }
+        else
+        {
+            <a href="/Signup" class="py-4 px-2 text-gray-500 font-semibold hover:text-green-500 transition duration-300">
+                <span class="material-icons align-middle mr-2">person_add</span>
+                Signup
+            </a>
+            <a href="/Login" class="py-4 px-2 text-gray-500 font-semibold hover:text-green-500 transition duration-300">
+                <span class="material-icons align-middle mr-2">login</span>
+                Login
+            </a>
+        }
+    };
+
+    private RenderFragment MobileDropdownMenu() => (__builder) =>
+    {
+        <div class="@GetDropdownClass() max-w-6xl mx-auto">
+            <ul class="py-4 px-2 bg-white shadow-lg">
+                <!-- Repeated content for mobile view -->
+                <li>
+                    <a href="/Cart" class="text-sm px-2 py-4 hover:bg-green-500 transition duration-300 flex items-center text-gray-500 font-semibold">
+                        <span class="material-icons align-middle mr-2">shopping_cart</span>
+                        Cart
+                    </a>
+                </li>
+                @MobileAuthNavItems()
+            </ul>
+        </div>
+    };
+
+    private RenderFragment MobileAuthNavItems() => (__builder) =>
+    {
+        @if (_isLoggedIn)
+        {
+            <li>
+                <a href="/Profile" class="text-sm px-2 py-4 hover:bg-green-500 transition duration-300 flex items-center text-gray-500 font-semibold">
+                    <span class="material-icons align-middle mr-2">account_circle</span>
+                    Profile
+                </a>
+            </li>
+            <li>
+                <button @onclick="Logout" class="text-sm px-2 py-4 hover:bg-green-500 transition duration-300 w-full text-left text-gray-500 font-semibold">
+                    <span class="material-icons align-middle mr-2">exit_to_app</span>
+                    Logout
+                </button>
+            </li>
+        }
+        else
+        {
+            <li>
+                <a href="/Signup" class="text-sm px-2 py-4 hover:bg-green-500 transition duration-300 text-gray-500 font-semibold">
+                    <span class="material-icons align-middle mr-2">person_add</span>
+                    Signup
+                </a>
+            </li>
+            <li>
+                <a href="/Login" class="text-sm px-2 py-4 hover:bg-green-500 transition duration-300 text-gray-500 font-semibold">
+                    <span class="material-icons align-middle mr-2">login</span>
+                    Login
+                </a>
+            </li>
+        }
+    };
+
+    private string GetDropdownClass()
+    {
+        return "hidden";
+    }
+}
