@@ -55,7 +55,7 @@ public class UserController : ControllerBase
     {
         if (string.IsNullOrWhiteSpace(model.Email) || string.IsNullOrWhiteSpace(model.Pass))
         {
-            Console.WriteLine("Login attempt with incomplete credentials.");
+            //Console.WriteLine("Login attempt with incomplete credentials.");
             return BadRequest("Email and password are required.");
         }
 
@@ -71,15 +71,15 @@ public class UserController : ControllerBase
                 var token = GenerateJwtToken(userDto);
                 userDto.Token = token;
 
-                Console.WriteLine($"Successful login for user: {model.Email}");
+                //Console.WriteLine($"Successful login for user: {model.Email}");
                 return Ok(userDto);
             }
-            Console.WriteLine($"Failed login attempt for user: {model.Email}. Status code: {response.StatusCode}");
+            //Console.WriteLine($"Failed login attempt for user: {model.Email}. Status code: {response.StatusCode}");
             return StatusCode((int)response.StatusCode, "Login failed");
         }
-        catch (Exception ex)
+        catch (Exception)
         {
-            Console.WriteLine($"Exception occurred during login for user: {model.Email}. Error: {ex.Message}");
+            //Console.WriteLine($"Exception occurred during login for user: {model.Email}. Error: {ex.Message}");
             return StatusCode(500, "An internal server error occurred");
         }
     }
@@ -88,7 +88,7 @@ public class UserController : ControllerBase
     [HttpPost("register")]
     public async Task<IActionResult> Register(UserCreateModel accountToCreate)
     {
-        Console.WriteLine("Tentative de register de " + accountToCreate);
+        //Console.WriteLine("Tentative de register de " + accountToCreate);
         using var client = CreateClient();
 
         HttpResponseMessage response = await client.PostAsJsonAsync("api/Users/register", accountToCreate);
@@ -96,12 +96,58 @@ public class UserController : ControllerBase
         if (response.IsSuccessStatusCode)
         {
             var result = await response.Content.ReadFromJsonAsync<UserDTO>();
-            Console.WriteLine("ok");
+            //Console.WriteLine("ok");
             return Ok(result);
         }
        
         var errorResponse = await response.Content.ReadAsStringAsync();
-        Console.WriteLine($"Registration error response: {errorResponse}");
+        //Console.WriteLine($"Registration error response: {errorResponse}");
         return BadRequest(errorResponse);
+    }
+    
+    [HttpPut("{id}")]
+    public async Task<IActionResult> UpdateUser(int id, UserUpdateModel userUpdate)
+    {
+        if (id != userUpdate.Id)
+        {
+            return BadRequest("Mismatched user ID");
+        }
+
+        try
+        {
+            using var client = _httpClientFactory.CreateClient("ApiService");
+            var response = await client.PutAsJsonAsync($"api/Users/{id}", userUpdate);
+
+            if (response.IsSuccessStatusCode)
+            {
+                return Ok("User updated successfully.");
+            } 
+            return StatusCode((int)response.StatusCode, await response.Content.ReadAsStringAsync());
+        }
+        catch (Exception)
+        {
+            return StatusCode(500, "An error occurred while updating the user.");
+        }
+    }
+    
+    [HttpDelete("{id}")]
+    public async Task<IActionResult> DeleteUser(int id)
+    {
+        try
+        {
+            using var client = _httpClientFactory.CreateClient("ApiService");
+            var response = await client.DeleteAsync($"api/Users/{id}");
+
+            if (response.IsSuccessStatusCode)
+            {
+                return Ok("User deleted successfully.");
+            }
+         
+            return StatusCode((int)response.StatusCode, await response.Content.ReadAsStringAsync());
+        }
+        catch (Exception)
+        {
+            return StatusCode(500, "An error occurred while deleting the user.");
+        }
     }
 }
