@@ -7,17 +7,16 @@ namespace Front.Components.Pages
 {
     public partial class Explore : ComponentBase
     {
-#pragma warning disable CS8618 // Un champ non-nullable doit contenir une valeur non-null lors de la fermeture du constructeur. Envisagez de déclarer le champ comme nullable.
+        #pragma warning disable CS8618
         [Inject] private BookService BookService { get; set; }
         [Inject] private ILocalStorageService LocalStorage { get; set; }
         [Inject] private NavigationManager NavigationManager { get; set; }
         private IEnumerable<Book> books;
         private IEnumerable<Book> filteredBooks;
-#pragma warning restore CS8618 // Un champ non-nullable doit contenir une valeur non-null lors de la fermeture du constructeur. Envisagez de déclarer le champ comme nullable.
 
         private bool _isLoggedIn;
         private string searchTerm = string.Empty;
-        private bool isDropdownOpen = false;
+        private bool isDropdownOpen;
 
         protected override async Task OnInitializedAsync()
         {

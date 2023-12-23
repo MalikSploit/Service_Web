@@ -1,52 +1,103 @@
-﻿@page "/signup"
+﻿@page "/Signup"
 @inject HttpClient Client
 
-<div class="min-h-screen flex items-center justify-center bg-gray-100">
-    <div class="max-w-md w-full space-y-8 bg-white p-10 rounded-xl shadow-lg">
-        <div>
-            <h2 class="text-center text-3xl font-bold text-gray-900 mb-2">
-                Create an IzziBooks Account
-            </h2>
-            <p class="text-center text-sm text-gray-600">
-                Enter your details below.
-            </p>
+<div class="flex flex-col min-h-screen">
+    <!-- Top Menu -->
+    <nav class="bg-white shadow-lg">
+        <div class="max-w-6xl mx-auto px-4">
+            <div class="flex justify-between items-center">
+                <!-- Logo du site web -->
+                <a href="/" class="flex items-center py-4 px-2">
+                    <img src="Images/Logo.svg" alt="IzziBooks Logo" class="h-8 mr-2"/>
+                </a>
+                
+                <button @onclick="ToggleDropdown" class="md:hidden p-2">
+                    <svg class="w-6 h-6 text-gray-500 hover:text-green-500" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                        <path d="M4 6h16M4 12h16M4 18h16"></path>
+                    </svg>
+                </button>
+
+                <!-- Desktop Menu -->
+                <div class="hidden md:flex items-center space-x-1 ml-auto">
+                    <a href="/Cart" class="py-4 px-2 flex items-center text-gray-500 font-semibold hover:text-green-500 transition duration-300">
+                        <span class="material-icons align-middle mr-2">shopping_cart</span>
+                        Cart
+                    </a>
+
+                    <a href="/" class="py-4 px-2 flex items-center text-gray-500 font-semibold hover:text-green-500 transition duration-300">
+                        <span class="material-icons align-middle mr-2">home</span>
+                        Home
+                    </a>
+                </div>
+            </div>
         </div>
         
-        @if (!string.IsNullOrEmpty(_errorMessage))
-        {
-            <div class="text-center text-sm text-red-500">
-                @_errorMessage
-            </div>
-        }
-        
-        <form class="mt-8" @onsubmit="HandleSignup">
-            <!-- Champ du prenom -->
-            <div class="rounded-md shadow-sm">
-                <div>
-                    <input @bind="_userCreateModel.Surname" aria-label="Surname" name="surname" type="text" required class="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm sm:leading-5" placeholder="Surname">
-                </div>
-                <!-- Champ du nom -->
-                <div class="-mt-px">
-                    <input @bind="_userCreateModel.Name" aria-label="Name" name="name" type="text" required class="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm sm:leading-5" placeholder="Name">
-                </div>
-                <!-- Champ de l'email -->
-                <div class="-mt-px">
-                    <input @bind="_userCreateModel.Email" aria-label="Email address" name="email" type="email" required class="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm sm:leading-5" placeholder="Email address">
-                </div>
-                <!-- Champ du password -->
-                <div class="-mt-px">
-                    <input  @bind="_userCreateModel.Password" aria-label="Password" name="password" type="password" required class="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-b-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm sm:leading-5" placeholder="Password : 8 char, 1 upper, 1 lower, 1 num, 1 symbol">
-                </div>
-            </div>
+        <!-- Dropdown Menu for Mobile -->
+        <div class="@GetDropdownClass() max-w-6xl mx-auto">
+            <ul class="py-4 px-2 bg-white shadow-lg">
+                <li>
+                    <a href="/Cart" class="text-sm px-2 py-4 hover:bg-green-500 transition duration-300 flex items-center text-gray-500 font-semibold">
+                        <span class="material-icons align-middle mr-2">shopping_cart</span>
+                        Cart
+                    </a>
+                </li>
+                <li>
+                    <a href="/" class="text-sm px-2 py-4 hover:bg-green-500 transition duration-300 flex items-center text-gray-500 font-semibold">
+                        <span class="material-icons align-middle mr-2">home</span>
+                        Home
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </nav>
 
-            <div class="mt-6">
-                <button type="submit" class="group relative w-full flex justify-center py-3 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
-                    Sign up
-                </button>
+    <div class="flex-grow flex items-center justify-center bg-gray-100">
+        <div class="max-w-md w-full space-y-8 bg-white p-10 rounded-xl shadow-lg">
+            <div>
+                <h2 class="text-center text-3xl font-bold text-gray-900 mb-2">
+                    Create an IzziBooks Account
+                </h2>
+                <p class="text-center text-sm text-gray-600">
+                    Enter your details below.
+                </p>
             </div>
-         </form>
-        <p class="mt-2 text-center text-sm text-gray-600">
-            Already have an account? <a href="/Login" class="font-medium text-blue-600 hover:text-blue-500">Sign in</a>
-        </p>
+            
+            @if (!string.IsNullOrEmpty(_errorMessage))
+            {
+                <div class="text-center text-sm text-red-500">
+                    @_errorMessage
+                </div>
+            }
+            
+            <form class="mt-8" @onsubmit="HandleSignup">
+                <!-- Champ du prenom -->
+                <div class="rounded-md shadow-sm">
+                    <div>
+                        <input @bind="_userCreateModel.Surname" aria-label="Surname" name="surname" type="text" required class="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm sm:leading-5" placeholder="Surname">
+                    </div>
+                    <!-- Champ du nom -->
+                    <div class="-mt-px">
+                        <input @bind="_userCreateModel.Name" aria-label="Name" name="name" type="text" required class="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm sm:leading-5" placeholder="Name">
+                    </div>
+                    <!-- Champ de l'email -->
+                    <div class="-mt-px">
+                        <input @bind="_userCreateModel.Email" aria-label="Email address" name="email" type="email" required class="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm sm:leading-5" placeholder="Email address">
+                    </div>
+                    <!-- Champ du password -->
+                    <div class="-mt-px">
+                        <input  @bind="_userCreateModel.Password" aria-label="Password" name="password" type="password" required class="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-b-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm sm:leading-5" placeholder="Password : 8 char, 1 upper, 1 lower, 1 num, 1 symbol">
+                    </div>
+                </div>
+
+                <div class="mt-6">
+                    <button type="submit" class="group relative w-full flex justify-center py-3 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
+                        Sign up
+                    </button>
+                </div>
+             </form>
+            <p class="mt-2 text-center text-sm text-gray-600">
+                Already have an account? <a href="/Login" class="font-medium text-blue-600 hover:text-blue-500">Sign in</a>
+            </p>
+        </div>
     </div>
 </div>

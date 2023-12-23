@@ -85,7 +85,7 @@ public static class Extension
 
     public static bool IsNameValid(this string name)
     {
-        return !string.IsNullOrWhiteSpace(name) && NameRegex.IsMatch(name) && name.Length >= 3 && name.Length <= 20;
+        return !string.IsNullOrWhiteSpace(name) && NameRegex.IsMatch(name) && name.Length is >= 3 and <= 20;
     }
 
     public static bool IsSurnameValid(this string surname)

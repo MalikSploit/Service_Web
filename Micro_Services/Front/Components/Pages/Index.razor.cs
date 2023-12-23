@@ -47,22 +47,20 @@ public partial class Index : ComponentBase
         try
         {
             var parts = jwtToken.Split('.');
-            if (parts.Length == 3)
-            {
-                var payload = parts[1];
-                var jsonBytes = ParseBase64WithoutPadding(payload);
-                var jsonPayload = Encoding.UTF8.GetString(jsonBytes);
-                var jwtPayload = JsonConvert.DeserializeObject<Dictionary<string, object>>(jsonPayload);
+            if (parts.Length != 3) return false;
+            var payload = parts[1];
+            var jsonBytes = ParseBase64WithoutPadding(payload);
+            var jsonPayload = Encoding.UTF8.GetString(jsonBytes);
+            var jwtPayload = JsonConvert.DeserializeObject<Dictionary<string, object>>(jsonPayload);
 
-                if (jwtPayload != null && jwtPayload.TryGetValue("exp", out var expValue) &&
-                    long.TryParse(expValue.ToString(), out var exp) &&
-                    DateTimeOffset.FromUnixTimeSeconds(exp) > DateTimeOffset.UtcNow)
-                {
-                    return true;
-                }
-                
-                await LocalStorage.RemoveItemAsync("jwtToken");
+            if (jwtPayload != null && jwtPayload.TryGetValue("exp", out var expValue) &&
+                long.TryParse(expValue.ToString(), out var exp) &&
+                DateTimeOffset.FromUnixTimeSeconds(exp) > DateTimeOffset.UtcNow)
+            {
+                return true;
             }
+                
+            await LocalStorage.RemoveItemAsync("jwtToken");
             return false;
         }
         catch (Exception ex)

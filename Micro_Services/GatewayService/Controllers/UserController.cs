@@ -1,6 +1,5 @@
 ﻿using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
-using System.Text;
 using Microsoft.AspNetCore.Mvc;
 using Entities;
 using Microsoft.IdentityModel.Tokens;
@@ -29,22 +28,24 @@ public class UserController : ControllerBase
     
     private string GenerateJwtToken(UserDTO userDto)
     {
-        var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("YourVeryLongSecureKeyHere123456789."));
+        var key = new SymmetricSecurityKey("YourVeryLongSecureKeyHere123456789."u8.ToArray());
         var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
 
-        var claims = new[]
+        var claims = new List<Claim>
         {
-            new Claim(JwtRegisteredClaimNames.Email, userDto.Email),
-            new Claim("surname", userDto.Surname),
-            new Claim("name", userDto.Name),
-            new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString())
+            new (JwtRegisteredClaimNames.Email, userDto.Email),
+            new ("surname", userDto.Surname),
+            new ("name", userDto.Name),
+            new (JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
+            new (JwtRegisteredClaimNames.Sub, userDto.Id.ToString())
         };
+
 
         var token = new JwtSecurityToken(
             issuer: "Malik",
             audience: "ISIMA",
             claims: claims,
-            expires: DateTime.Now.AddMinutes(1),
+            expires: DateTime.Now.AddMinutes(60),
             signingCredentials: creds);
 
         return new JwtSecurityTokenHandler().WriteToken(token);
@@ -55,7 +56,6 @@ public class UserController : ControllerBase
     {
         if (string.IsNullOrWhiteSpace(model.Email) || string.IsNullOrWhiteSpace(model.Pass))
         {
-            //Console.WriteLine("Login attempt with incomplete credentials.");
             return BadRequest("Email and password are required.");
         }
 
@@ -70,16 +70,13 @@ public class UserController : ControllerBase
                 var userDto = await response.Content.ReadFromJsonAsync<UserDTO>();
                 var token = GenerateJwtToken(userDto);
                 userDto.Token = token;
-
-                //Console.WriteLine($"Successful login for user: {model.Email}");
+                
                 return Ok(userDto);
             }
-            //Console.WriteLine($"Failed login attempt for user: {model.Email}. Status code: {response.StatusCode}");
             return StatusCode((int)response.StatusCode, "Login failed");
         }
         catch (Exception)
         {
-            //Console.WriteLine($"Exception occurred during login for user: {model.Email}. Error: {ex.Message}");
             return StatusCode(500, "An internal server error occurred");
         }
     }
@@ -88,7 +85,23 @@ public class UserController : ControllerBase
     [HttpPost("register")]
     public async Task<IActionResult> Register(UserCreateModel accountToCreate)
     {
-        //Console.WriteLine("Tentative de register de " + accountToCreate);
+        if (!accountToCreate.Email.IsEmailValid())
+        {
+            return BadRequest("Invalid email format.");
+        }
+        if (!accountToCreate.Name.IsNameValid())
+        {
+            return BadRequest("Invalid name format, minimum 3 characters");
+        }
+        if (!accountToCreate.Surname.IsSurnameValid())
+        {
+            return BadRequest("Invalid surname format, minimum 3 characters");
+        }
+        if (!accountToCreate.Password.IsPasswordRobust())
+        {
+            return BadRequest("Invalid password format, minimum 8 characters, at least one uppercase letter, one lowercase letter, one digit, and one special character");
+        }
+        
         using var client = CreateClient();
 
         HttpResponseMessage response = await client.PostAsJsonAsync("api/Users/register", accountToCreate);
@@ -96,12 +109,10 @@ public class UserController : ControllerBase
         if (response.IsSuccessStatusCode)
         {
             var result = await response.Content.ReadFromJsonAsync<UserDTO>();
-            //Console.WriteLine("ok");
             return Ok(result);
         }
        
         var errorResponse = await response.Content.ReadAsStringAsync();
-        //Console.WriteLine($"Registration error response: {errorResponse}");
         return BadRequest(errorResponse);
     }
     
@@ -111,6 +122,19 @@ public class UserController : ControllerBase
         if (id != userUpdate.Id)
         {
             return BadRequest("Mismatched user ID");
+        }
+        
+        if (!userUpdate.Name.IsNameValid())
+        {
+            return BadRequest("Invalid name format, minimum 3 characters");
+        }
+        if (!userUpdate.Surname.IsSurnameValid())
+        {
+            return BadRequest("Invalid surname format, minimum 3 characters");
+        }
+        if (!userUpdate.Email.IsEmailValid())
+        {
+            return BadRequest("Invalid email format.");
         }
 
         try

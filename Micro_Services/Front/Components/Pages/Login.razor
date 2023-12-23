@@ -1,59 +1,110 @@
 ﻿@page "/Login"
 
-<div class="min-h-screen flex items-center justify-center bg-gray-100">
-    <div class="max-w-md w-full space-y-6 bg-white p-10 rounded-lg shadow-xl">
-        <div>
-            <h2 class="text-center text-3xl font-bold text-gray-900 mb-2">
-                Welcome to IzziBooks
-            </h2>
-            <p class="text-center text-sm text-gray-600">
-                Sign in to continue
-            </p>
-        </div>
-        
-        @if (!string.IsNullOrEmpty(_errorMessage))
-            {
-                <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative" role="alert">
-                    <strong class="font-bold">Error: </strong>
-                    <span class="block sm:inline">@_errorMessage</span>
-                </div>
-            }
-        
-        <form class="mt-8 space-y-6" @onsubmit="HandleLoginAsync">
-            <div class="rounded-md shadow-sm">
-                <div>
-                    <label for="email-address" class="sr-only">Email address</label>
-                    <input @bind="_email" id="email-address" name="email" type="email" autocomplete="email" required class="appearance-none rounded-t-lg relative block w-full px-3 py-3 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-blue-500 focus:border-blue-500 focus:z-10 sm:text-sm" placeholder="Email address">
-                </div>
-                <div class="-mt-1">
-                    <label for="password" class="sr-only">Password</label>
-                    <input @bind="_pass" id="password" name="password" type="password" autocomplete="current-password" required class="appearance-none rounded-b-lg relative block w-full px-3 py-3 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-blue-500 focus:border-blue-500 focus:z-10 sm:text-sm" placeholder="Password">
-                </div>
-            </div>
+<div class="flex flex-col min-h-screen">
+    <!-- Top Menu -->
+    <nav class="bg-white shadow-lg">
+        <div class="max-w-6xl mx-auto px-4">
+            <div class="flex justify-between items-center">
+                <!-- Logo du site web -->
+                <a href="/" class="flex items-center py-4 px-2">
+                    <img src="Images/Logo.svg" alt="IzziBooks Logo" class="h-8 mr-2"/>
+                </a>
+                
+                <button @onclick="ToggleDropdown" class="md:hidden p-2">
+                    <svg class="w-6 h-6 text-gray-500 hover:text-green-500" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                        <path d="M4 6h16M4 12h16M4 18h16"></path>
+                    </svg>
+                </button>
 
-            <div class="flex items-center justify-between">
-                <div class="flex items-center">
-                    <input id="remember_me" name="remember_me" type="checkbox" class="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded">
-                    <label for="remember_me" class="ml-2 block text-sm text-gray-900">
-                        Remember me
-                    </label>
-                </div>
+                <!-- Desktop Menu -->
+                <div class="hidden md:flex items-center space-x-1 ml-auto">
+                    <a href="/Cart" class="py-4 px-2 flex items-center text-gray-500 font-semibold hover:text-green-500 transition duration-300">
+                        <span class="material-icons align-middle mr-2">shopping_cart</span>
+                        Cart
+                    </a>
 
-                <div class="text-sm">
-                    <a href="#" class="font-medium text-blue-600 hover:text-blue-500">
-                        Forgot your password?
+                    <a href="/" class="py-4 px-2 flex items-center text-gray-500 font-semibold hover:text-green-500 transition duration-300">
+                        <span class="material-icons align-middle mr-2">home</span>
+                        Home
                     </a>
                 </div>
             </div>
+        </div>
+        
+        <!-- Dropdown Menu for Mobile -->
+        <div class="@GetDropdownClass() max-w-6xl mx-auto">
+            <ul class="py-4 px-2 bg-white shadow-lg">
+                <li>
+                    <a href="/Cart" class="text-sm px-2 py-4 hover:bg-green-500 transition duration-300 flex items-center text-gray-500 font-semibold">
+                        <span class="material-icons align-middle mr-2">shopping_cart</span>
+                        Cart
+                    </a>
+                </li>
+                <li>
+                    <a href="/" class="text-sm px-2 py-4 hover:bg-green-500 transition duration-300 flex items-center text-gray-500 font-semibold">
+                        <span class="material-icons align-middle mr-2">home</span>
+                        Home
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </nav>
 
+    <div class="flex-grow flex justify-center items-center bg-gray-100">
+        <div class="max-w-md w-full space-y-6 bg-white p-10 rounded-lg shadow-xl">
             <div>
-                <button type="submit" class="group relative w-full flex justify-center py-3 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
-                    Sign in
-                </button>
+                <h2 class="text-center text-3xl font-bold text-gray-900 mb-2">
+                    Welcome to IzziBooks
+                </h2>
+                <p class="text-center text-sm text-gray-600">
+                    Sign in to continue
+                </p>
             </div>
-        </form>
-        <p class="mt-2 text-center text-sm text-gray-600">
-            Don't have an account? <a href="/Signup" class="font-medium text-blue-600 hover:text-blue-500">Sign up now</a>
-        </p>
+            
+            @if (!string.IsNullOrEmpty(_errorMessage))
+                {
+                    <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative" role="alert">
+                        <strong class="font-bold">Error: </strong>
+                        <span class="block sm:inline">@_errorMessage</span>
+                    </div>
+                }
+            
+            <form class="mt-8 space-y-6" @onsubmit="HandleLoginAsync">
+                <div class="rounded-md shadow-sm">
+                    <div>
+                        <label for="email-address" class="sr-only">Email address</label>
+                        <input @bind="_email" id="email-address" name="email" type="email" autocomplete="email" required class="appearance-none rounded-t-lg relative block w-full px-3 py-3 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-blue-500 focus:border-blue-500 focus:z-10 sm:text-sm" placeholder="Email address">
+                    </div>
+                    <div class="-mt-1">
+                        <label for="password" class="sr-only">Password</label>
+                        <input @bind="_pass" id="password" name="password" type="password" autocomplete="current-password" required class="appearance-none rounded-b-lg relative block w-full px-3 py-3 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-blue-500 focus:border-blue-500 focus:z-10 sm:text-sm" placeholder="Password">
+                    </div>
+                </div>
+
+                <div class="flex items-center justify-between">
+                    <div class="flex items-center">
+                        <input id="remember_me" name="remember_me" type="checkbox" class="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded">
+                        <label for="remember_me" class="ml-2 block text-sm text-gray-900">
+                            Remember me
+                        </label>
+                    </div>
+
+                    <div class="text-sm">
+                        <a href="#" class="font-medium text-blue-600 hover:text-blue-500">
+                            Forgot your password?
+                        </a>
+                    </div>
+                </div>
+
+                <div>
+                    <button type="submit" class="group relative w-full flex justify-center py-3 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
+                        Sign in
+                    </button>
+                </div>
+            </form>
+            <p class="mt-2 text-center text-sm text-gray-600">
+                Don't have an account? <a href="/Signup" class="font-medium text-blue-600 hover:text-blue-500">Sign up now</a>
+            </p>
+        </div>
     </div>
 </div>
