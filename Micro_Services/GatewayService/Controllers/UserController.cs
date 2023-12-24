@@ -1,7 +1,9 @@
 ﻿using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
+using System.Text;
 using Microsoft.AspNetCore.Mvc;
 using Entities;
+using GatewayService.Services;
 using Microsoft.IdentityModel.Tokens;
 
 namespace GatewayService.Controllers;
@@ -12,10 +14,14 @@ public class UserController : ControllerBase
 {
 
     private readonly IHttpClientFactory _httpClientFactory;
+    private readonly IConfiguration _configuration;
+    private readonly JwtTokenValidationService _jwtTokenValidationService;
 
-    public UserController(IHttpClientFactory httpClientFactory)
+    public UserController(IHttpClientFactory httpClientFactory, IConfiguration configuration, JwtTokenValidationService jwtTokenValidationService)
     {
         _httpClientFactory = httpClientFactory;
+        _configuration = configuration;
+        _jwtTokenValidationService = jwtTokenValidationService;
     }
 
     private static Uri UserServiceUri => new ("http://localhost:5001/");
@@ -28,22 +34,26 @@ public class UserController : ControllerBase
     
     private string GenerateJwtToken(UserDTO userDto)
     {
-        var key = new SymmetricSecurityKey("YourVeryLongSecureKeyHere123456789."u8.ToArray());
+        var jwtSettings = _configuration.GetSection("JwtSettings");
+        var secretKey = jwtSettings["Secret"];
+        var issuer = jwtSettings["Issuer"];
+        var audience = jwtSettings["Audience"];
+
+        var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(secretKey));
         var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
 
         var claims = new List<Claim>
         {
-            new (JwtRegisteredClaimNames.Email, userDto.Email),
-            new ("surname", userDto.Surname),
-            new ("name", userDto.Name),
-            new (JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
-            new (JwtRegisteredClaimNames.Sub, userDto.Id.ToString())
+            new Claim(JwtRegisteredClaimNames.Email, userDto.Email),
+            new Claim("surname", userDto.Surname),
+            new Claim("name", userDto.Name),
+            new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
+            new Claim(JwtRegisteredClaimNames.Sub, userDto.Id.ToString())
         };
 
-
         var token = new JwtSecurityToken(
-            issuer: "Malik",
-            audience: "ISIMA",
+            issuer: issuer,
+            audience: audience,
             claims: claims,
             expires: DateTime.Now.AddMinutes(60),
             signingCredentials: creds);
@@ -119,11 +129,31 @@ public class UserController : ControllerBase
     [HttpPut("{id}")]
     public async Task<IActionResult> UpdateUser(int id, UserUpdateModel userUpdate)
     {
-        if (id != userUpdate.Id)
+        var tokenWithQuotes = HttpContext.Request.Headers["Authorization"].FirstOrDefault()?.Split(" ").Last();
+        if (string.IsNullOrEmpty(tokenWithQuotes))
         {
-            return BadRequest("Mismatched user ID");
+            return Unauthorized("Authorization token is missing.");
         }
-        
+            
+        var token = tokenWithQuotes.Trim('"');
+
+        ClaimsPrincipal principal;
+        try
+        {
+            principal = _jwtTokenValidationService.ValidateToken(token);
+        }
+        catch
+        {
+            return Unauthorized("Invalid token.");
+        }
+
+        var userIdClaim = principal.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+
+        if (string.IsNullOrEmpty(userIdClaim) || int.Parse(userIdClaim) != id)
+        {
+            return Unauthorized("You can only update your own account.");
+        }
+
         if (!userUpdate.Name.IsNameValid())
         {
             return BadRequest("Invalid name format, minimum 3 characters");
@@ -148,17 +178,48 @@ public class UserController : ControllerBase
             } 
             return StatusCode((int)response.StatusCode, await response.Content.ReadAsStringAsync());
         }
-        catch (Exception)
+        catch (Exception ex)
         {
-            return StatusCode(500, "An error occurred while updating the user.");
+            return StatusCode(500, $"An error occurred while updating the user: {ex.Message}");
         }
     }
+
     
     [HttpDelete("{id}")]
     public async Task<IActionResult> DeleteUser(int id)
     {
         try
         {
+            var tokenWithQuotes = HttpContext.Request.Headers["Authorization"].FirstOrDefault()?.Split(" ").Last();
+            if (string.IsNullOrEmpty(tokenWithQuotes))
+            {
+                return Unauthorized("Authorization token is missing.");
+            }
+            
+            var token = tokenWithQuotes.Trim('"');
+
+            ClaimsPrincipal principal;
+            try
+            {
+                Console.WriteLine("Before");
+                principal = _jwtTokenValidationService.ValidateToken(token);
+                Console.WriteLine("After");
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error {ex}");
+                return Unauthorized("Invalid token.");
+            }
+            
+            // Extract user ID from token
+            var userIdClaim = principal.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+        
+            if (string.IsNullOrEmpty(userIdClaim) || int.Parse(userIdClaim) != id)
+            {
+                return Unauthorized("You can only delete your own account.");
+            }
+
+            // Proceed with user deletion
             using var client = _httpClientFactory.CreateClient("ApiService");
             var response = await client.DeleteAsync($"api/Users/{id}");
 
@@ -166,12 +227,12 @@ public class UserController : ControllerBase
             {
                 return Ok("User deleted successfully.");
             }
-         
+
             return StatusCode((int)response.StatusCode, await response.Content.ReadAsStringAsync());
         }
-        catch (Exception)
+        catch (Exception ex)
         {
-            return StatusCode(500, "An error occurred while deleting the user.");
+            return StatusCode(500, $"An error occurred while deleting the user: {ex.Message}");
         }
     }
 }
