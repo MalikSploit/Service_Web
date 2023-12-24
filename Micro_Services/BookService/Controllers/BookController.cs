@@ -1,10 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Entities;
 using BookService.Data;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-
-// For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
 namespace BookService.Controllers;
 
@@ -24,24 +21,30 @@ public class  BookController : ControllerBase
     [HttpGet]
     public IEnumerable<Book> Get() => Books.ToList();
 
-    // GET api/Books/5
+    // GET api/Books/id
     [HttpGet("{id}")]
-    public Book? Get(int id) => Books.FirstOrDefault(t => t.Id == id);
+    public IActionResult Get(int id)
+    {
+        var book = Books.FirstOrDefault(t => t.Id == id);
 
+        if (book == null)
+        {
+            return NotFound();
+        }
+
+        return Ok(book);
+    }
 
     // POST api/Books
     [HttpPost]
-    public async Task<ActionResult<Book>> CreateTask(BookCreate bc)
+    public async Task<ActionResult<Book>> CreateBook(Book book)
     {
-        var b = new Book(0, bc.Title, bc.Author, bc.Description, bc.ImageUrl, bc.Price);
-        Books.Add(b);
+        Books.Add(book);
         await _context.SaveChangesAsync();
-        return CreatedAtAction("GetBook", new { id = b.Id }, b);
+
+        return CreatedAtAction(nameof(Get), new { id = book.Id }, book);
     }
-
-
-    private bool BookExists(int id) => Books.Any(t => t.Id == id);
-
+    
     // PUT api/Books/5
     [HttpPut("{id}")]
     public async Task<IActionResult> UpdateBook(int id, Book bookToUpdate)
@@ -51,10 +54,19 @@ public class  BookController : ControllerBase
             return BadRequest("Mismatched book ID");
         }
 
-        var b = await Books.FindAsync(id);
-        if(b == null) { return BadRequest("Unknow book ID"); }
-        _context.Entry(b!).State = EntityState.Modified;
-        
+        var book = await _context.Books.FindAsync(id);
+
+        if (book == null)
+        {
+            return NotFound();
+        }
+
+        book.Title = bookToUpdate.Title;
+        book.Author = bookToUpdate.Author;
+        book.Description = bookToUpdate.Description;
+        book.ImageUrl = bookToUpdate.ImageUrl;
+        book.Price = bookToUpdate.Price;
+
         try
         {
             await _context.SaveChangesAsync();
@@ -65,10 +77,7 @@ public class  BookController : ControllerBase
             {
                 return NotFound();
             }
-            else
-            {
-                throw;
-            }
+            throw;
         }
 
         return NoContent();
@@ -78,10 +87,18 @@ public class  BookController : ControllerBase
     [HttpDelete("{id}")]
     public async Task<IActionResult> DeleteBook(int id)
     {
-        var user = await Books.FindAsync(id);
-        if (user == null) { return NotFound(); }
-        Books.Remove(user);
+        var book = await Books.FindAsync(id);
+
+        if (book == null)
+        {
+            return NotFound();
+        }
+
+        Books.Remove(book);
         await _context.SaveChangesAsync();
+
         return NoContent();
     }
+
+    private bool BookExists(int id) => Books.Any(t => t.Id == id);
 }

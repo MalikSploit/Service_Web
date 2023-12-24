@@ -23,6 +23,7 @@ builder.Services
     });
 
 builder.Services.AddScoped<BookService>();
+builder.Services.AddHttpClient<BookService>();
 builder.Services.AddAuthenticationCore();
 builder.Services.AddHttpClient();
 builder.Services.AddCascadingAuthenticationState();

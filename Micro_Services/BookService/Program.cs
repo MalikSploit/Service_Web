@@ -1,15 +1,11 @@
-﻿using BookService.Controllers;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.EntityFrameworkCore;
-using Entities;
-using Microsoft.IdentityModel.Tokens;
+﻿using Microsoft.EntityFrameworkCore;
 using BookService.Data;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Database context setup
 builder.Services.AddDbContext<BookServiceContext>(options =>
-    options.UseSqlite(builder.Configuration.GetConnectionString("UserServiceContext") ?? throw new InvalidOperationException("Connection string 'UserServiceContext' not found.")));
+    options.UseSqlite(builder.Configuration.GetConnectionString("BookServiceContext") ?? throw new InvalidOperationException("Connection string 'BookServiceContext' not found.")));
 
 
 // Add services to the container.
