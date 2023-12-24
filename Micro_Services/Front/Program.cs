@@ -22,15 +22,14 @@ builder.Services
         options.ExpireTimeSpan = TimeSpan.FromMinutes(6000);
     });
 
-// Register your BookService
 builder.Services.AddScoped<BookService>();
-
 builder.Services.AddAuthenticationCore();
 builder.Services.AddHttpClient();
 builder.Services.AddCascadingAuthenticationState();
 builder.Services.AddScoped<ProtectedLocalStorage>();
 builder.Services.AddScoped<AuthenticationStateProvider, CustomAuthenticationStateProvider>();
 builder.Services.AddScoped<LoginService>();
+builder.Services.AddScoped<CartStateService>();
 
 // Register Blazored LocalStorage
 builder.Services.AddBlazoredLocalStorage();

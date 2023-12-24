@@ -2,6 +2,7 @@ using System.IdentityModel.Tokens.Jwt;
 using Microsoft.AspNetCore.Components;
 using Entities;
 using Blazored.LocalStorage;
+using Front.Services;
 using JwtRegisteredClaimNames = Microsoft.IdentityModel.JsonWebTokens.JwtRegisteredClaimNames;
 
 namespace Front.Components.Pages;
@@ -15,13 +16,18 @@ public partial class Profile
     private string successMessage = string.Empty;
     private bool isDropdownOpen;
     private bool showConfirmationDialog;
+    private int CartItemCount { get; set; }
 
     [Inject] private ILocalStorageService LocalStorage { get; set; }
     [Inject] private NavigationManager NavigationManager { get; set; }
     [Inject] private HttpClient HttpClient { get; set; }
+    [Inject] private CartStateService CartStateService { get; set; }
 
     protected override async Task OnInitializedAsync()
     {
+        CartStateService.OnChange += UpdateCartCount;
+        UpdateCartCount();
+        
         var jwtTokenWithQuotes = await LocalStorage.GetItemAsStringAsync("jwtToken");
         if (!string.IsNullOrEmpty(jwtTokenWithQuotes))
         {
@@ -34,6 +40,12 @@ public partial class Profile
                 userUpdateModel.Surname = jwtPayload.Claims.FirstOrDefault(c => c.Type == "surname")?.Value;
             }
         }
+    }
+    
+    private async void UpdateCartCount()
+    {
+        CartItemCount = await CartStateService.GetCartItemCountAsync();
+        StateHasChanged();
     }
     
     private static JwtSecurityToken? ParseJwtPayload(string jwtToken)

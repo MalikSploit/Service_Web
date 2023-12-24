@@ -15,9 +15,17 @@
                 <div class="hidden md:flex items-center space-x-1 ml-auto">
                    
                     <!-- Cart Icon -->
-                    <a href="/Cart" class="py-4 px-2 flex items-center text-gray-500 font-semibold hover:text-green-500 transition duration-300">
-                        <span class="material-icons align-middle mr-2">shopping_cart</span>
-                        Cart
+                    <a href="/Cart" class="py-4 px-2 flex items-center text-gray-500 font-semibold hover:text-green-500 transition duration-300 relative">
+                        <div class="relative inline-block">
+                            <span class="material-icons align-middle mr-2">shopping_cart</span>
+                            Cart
+                            @if (CartItemCount > 0)
+                            {
+                                <span class="absolute -top-2 -left-2 rounded-full bg-red-600 text-white text-xs font-semibold h-5 w-5 flex items-center justify-center text-center">
+                                    @CartItemCount
+                                </span>
+                            }
+                        </div>
                     </a>
 
                     @if (_isLoggedIn)
@@ -68,9 +76,17 @@
             <ul>
                 <li>
                     <!-- Cart Icon -->
-                    <a href="/Cart" class="text-sm px-2 py-4 hover:bg-green-500 transition duration-300 flex items-center text-gray-500 font-semibold">
-                        <span class="material-icons align-middle mr-2">shopping_cart</span>
-                        Cart
+                    <a href="/Cart" class="text-sm px-2 py-4 hover:bg-green-500 transition duration-300 flex items-center text-gray-500 font-semibold relative">
+                        <div class="relative inline-block">
+                            <span class="material-icons align-middle mr-2">shopping_cart</span>
+                            Cart
+                            @if (CartItemCount > 0)
+                            {
+                                <span class="absolute -top-2 -left-2 rounded-full bg-red-600 text-white text-xs font-semibold h-5 w-5 flex items-center justify-center text-center">
+                                    @CartItemCount
+                                </span>
+                            }
+                        </div>
                     </a>
                 </li>
                 @if (_isLoggedIn)
@@ -135,6 +151,7 @@
                             <div class="mt-4 flex justify-between items-center">
                                 <span class="text-lg font-bold">$@book.Price</span>
                                 <a href="#" class="text-blue-500 hover:text-blue-600 transition-colors duration-300">Details</a>
+                                <button @onclick="() => AddToCart(book)" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">Add to Cart</button>
                             </div>
                         </div>
                     </div>

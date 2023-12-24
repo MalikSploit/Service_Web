@@ -8,10 +8,25 @@ public partial class Signup : ComponentBase
 {
     #pragma warning disable CS8618 
     [Inject] private NavigationManager NavigationManager { get; set; }
+    [Inject] private CartStateService CartStateService { get; set; }
 
     private readonly UserCreateModel _userCreateModel = new ();
     private string _errorMessage="";
     private bool isDropdownOpen;
+    private int CartItemCount { get; set; }
+    
+    protected override Task OnInitializedAsync()
+    {
+        CartStateService.OnChange += UpdateCartCount;
+        UpdateCartCount();
+        return Task.CompletedTask;
+    }
+    
+    private async void UpdateCartCount()
+    {
+        CartItemCount = await CartStateService.GetCartItemCountAsync();
+        StateHasChanged();
+    }
     
     private bool ValidateInput()
     {

@@ -18,9 +18,17 @@
 
             <!-- Desktop Menu -->
             <div class="hidden md:flex items-center space-x-1 ml-auto">
-                <a href="/Cart" class="py-4 px-2 flex items-center text-gray-500 font-semibold hover:text-green-500 transition duration-300">
-                    <span class="material-icons align-middle mr-2">shopping_cart</span>
-                    Cart
+                <a href="/Cart" class="py-4 px-2 flex items-center text-gray-500 font-semibold hover:text-green-500 transition duration-300 relative">
+                    <div class="relative inline-block">
+                        <span class="material-icons align-middle mr-2">shopping_cart</span>
+                        Cart
+                        @if (CartItemCount > 0)
+                        {
+                            <span class="absolute -top-2 -left-2 rounded-full bg-red-600 text-white text-xs font-semibold h-5 w-5 flex items-center justify-center text-center">
+                                @CartItemCount
+                            </span>
+                        }
+                    </div>
                 </a>
 
                 <a href="/" class="py-4 px-2 flex items-center text-gray-500 font-semibold hover:text-green-500 transition duration-300">
@@ -40,9 +48,17 @@
     <div class="@GetDropdownClass() max-w-6xl mx-auto">
         <ul class="py-4 px-2 bg-white shadow-lg">
             <li>
-                <a href="/Cart" class="text-sm px-2 py-4 hover:bg-green-500 transition duration-300 flex items-center text-gray-500 font-semibold">
-                    <span class="material-icons align-middle mr-2">shopping_cart</span>
-                    Cart
+                <a href="/Cart" class="text-sm px-2 py-4 hover:bg-green-500 transition duration-300 flex items-center text-gray-500 font-semibold relative">
+                    <div class="relative inline-block">
+                        <span class="material-icons align-middle mr-2">shopping_cart</span>
+                        Cart
+                        @if (CartItemCount > 0)
+                        {
+                            <span class="absolute -top-2 -left-2 rounded-full bg-red-600 text-white text-xs font-semibold h-5 w-5 flex items-center justify-center text-center">
+                                @CartItemCount
+                            </span>
+                        }
+                    </div>
                 </a>
             </li>
             <li>

@@ -11,13 +11,29 @@ public partial class Login : ComponentBase
     [Inject] private LoginService LoginService { get; set; }
     [Inject] private NavigationManager NavigationManager { get; set; }
     [Inject] private ILocalStorageService LocalStorage { get; set; }
+    [Inject] private CartStateService CartStateService { get; set; }
 
     private string _email="";
     private string _pass="";
     private string _errorMessage="";
     private int _attemptCount;
-    private bool isDropdownOpen ;
-    
+    private bool isDropdownOpen;
+
+    private int CartItemCount { get; set; }
+
+    protected override Task OnInitializedAsync()
+    {
+        CartStateService.OnChange += UpdateCartCount;
+        UpdateCartCount();
+        return Task.CompletedTask;
+    }
+
+    private async void UpdateCartCount()
+    {
+        CartItemCount = await CartStateService.GetCartItemCountAsync();
+        StateHasChanged();
+    }
+
     private async Task HandleLoginAsync()
     {
         if (!_email.IsEmailValid() || !_pass.IsPasswordRobust())
@@ -46,7 +62,7 @@ public partial class Login : ComponentBase
             _errorMessage = error;
         }
     }
-    
+
     private string GetDropdownClass()
     {
         return isDropdownOpen ? "block z-10" : "hidden";
