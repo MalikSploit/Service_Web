@@ -6,9 +6,9 @@ namespace Entities;
 public class User
 {
     public int Id { get; set; }
-    public string Name { get; set; } = "";
-    public string Surname { get; set; } = "";
-    public string Email { get; set; } = "";
+    public string? Name { get; set; } = "";
+    public string? Surname { get; set; } = "";
+    public string? Email { get; set; } = "";
     public string PasswordHash { get; set; } = "";
 
     public override string ToString()
@@ -20,10 +20,10 @@ public class User
 public class UserDTO
 {
     public int Id { get; set; }
-    public string Name { get; set; } = "";
-    public string Surname { get; set; } = "";
-    public string Email { get; set; } = "";
-    public string Token { get; set; } = "";
+    public string? Name { get; set; } = "";
+    public string? Surname { get; set; } = "";
+    public string? Email { get; set; } = "";
+    public string? Token { get; set; } = "";
 
     public override string ToString() => Id + " " + Name + " " + Surname + " " + Email + " " + Token;
 }
@@ -49,9 +49,9 @@ public class UserUpdateModel
 {
     public int Id { get; set; }
     public string Password { get; set; } = "";
-    public string Name { get; set; }  = "";
-    public string Email { get; set; } = "";
-    public string Surname { get; set; } = "";
+    public string? Name { get; set; }  = "";
+    public string? Email { get; set; } = "";
+    public string? Surname { get; set; } = "";
     
     public override string ToString() => Id + " " + Name + " " + Surname + " " + Email + " " + Password;
 
@@ -78,17 +78,17 @@ public static class Extension
         return PasswordRegex.IsMatch(password);
     }
     
-    public static bool IsEmailValid(this string email)
+    public static bool IsEmailValid(this string? email)
     {
         return !string.IsNullOrWhiteSpace(email) && EmailRegex.IsMatch(email);
     }
 
-    public static bool IsNameValid(this string name)
+    public static bool IsNameValid(this string? name)
     {
         return !string.IsNullOrWhiteSpace(name) && NameRegex.IsMatch(name) && name.Length is >= 3 and <= 20;
     }
 
-    public static bool IsSurnameValid(this string surname)
+    public static bool IsSurnameValid(this string? surname)
     {
         return IsNameValid(surname);
     }

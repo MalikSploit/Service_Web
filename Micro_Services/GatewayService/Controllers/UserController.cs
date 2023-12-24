@@ -10,38 +10,33 @@ namespace GatewayService.Controllers;
 
 [Route("api/[controller]")]
 [ApiController]
-public class UserController : ControllerBase
+public class UserController(
+    IHttpClientFactory httpClientFactory,
+    IConfiguration configuration,
+    JwtTokenValidationService jwtTokenValidationService)
+    : ControllerBase
 {
-
-    private readonly IHttpClientFactory _httpClientFactory;
-    private readonly IConfiguration _configuration;
-    private readonly JwtTokenValidationService _jwtTokenValidationService;
-
-    public UserController(IHttpClientFactory httpClientFactory, IConfiguration configuration, JwtTokenValidationService jwtTokenValidationService)
-    {
-        _httpClientFactory = httpClientFactory;
-        _configuration = configuration;
-        _jwtTokenValidationService = jwtTokenValidationService;
-    }
-
     private static Uri UserServiceUri => new ("http://localhost:5001/");
     private HttpClient CreateClient() 
     {
-        var client = _httpClientFactory.CreateClient();
+        var client = httpClientFactory.CreateClient();
         client.BaseAddress = UserServiceUri;
         return client;
     }
     
-    private string GenerateJwtToken(UserDTO userDto)
+    private string? GenerateJwtToken(UserDTO userDto)
     {
-        var jwtSettings = _configuration.GetSection("JwtSettings");
+        var jwtSettings = configuration.GetSection("JwtSettings");
         var secretKey = jwtSettings["Secret"];
         var issuer = jwtSettings["Issuer"];
         var audience = jwtSettings["Audience"];
 
+        if (secretKey == null) return null;
         var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(secretKey));
         var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
 
+        if (userDto.Name == null) return null;
+        if (userDto is not { Surname: not null, Email: not null }) return null;
         var claims = new List<Claim>
         {
             new Claim(JwtRegisteredClaimNames.Email, userDto.Email),
@@ -61,6 +56,7 @@ public class UserController : ControllerBase
         return new JwtSecurityTokenHandler().WriteToken(token);
     }
 
+    // api/User/login
     [HttpPost("login")]
     public async Task<IActionResult> Login(UserLogin model)
     {
@@ -71,19 +67,17 @@ public class UserController : ControllerBase
 
         try
         {
-            using var client = _httpClientFactory.CreateClient("ApiService");
+            using var client = httpClientFactory.CreateClient("ApiService");
 
             var response = await client.PostAsJsonAsync("api/Users/login", model);
 
-            if (response.IsSuccessStatusCode)
-            {
-                var userDto = await response.Content.ReadFromJsonAsync<UserDTO>();
-                var token = GenerateJwtToken(userDto);
-                userDto.Token = token;
-                
-                return Ok(userDto);
-            }
-            return StatusCode((int)response.StatusCode, "Login failed");
+            if (!response.IsSuccessStatusCode) return StatusCode((int)response.StatusCode, "Login failed");
+            var userDto = await response.Content.ReadFromJsonAsync<UserDTO>();
+            if (userDto == null) return Ok(userDto);
+            var token = GenerateJwtToken(userDto);
+            userDto.Token = token;
+
+            return Ok(userDto);
         }
         catch (Exception)
         {
@@ -126,6 +120,7 @@ public class UserController : ControllerBase
         return BadRequest(errorResponse);
     }
     
+    // api/User/id
     [HttpPut("{id}")]
     public async Task<IActionResult> UpdateUser(int id, UserUpdateModel userUpdate)
     {
@@ -140,7 +135,7 @@ public class UserController : ControllerBase
         ClaimsPrincipal principal;
         try
         {
-            principal = _jwtTokenValidationService.ValidateToken(token);
+            principal = jwtTokenValidationService.ValidateToken(token);
         }
         catch
         {
@@ -169,22 +164,38 @@ public class UserController : ControllerBase
 
         try
         {
-            using var client = _httpClientFactory.CreateClient("ApiService");
+            using var client = httpClientFactory.CreateClient("ApiService");
             var response = await client.PutAsJsonAsync($"api/Users/{id}", userUpdate);
 
-            if (response.IsSuccessStatusCode)
-            {
-                return Ok("User updated successfully.");
-            } 
-            return StatusCode((int)response.StatusCode, await response.Content.ReadAsStringAsync());
+            if (!response.IsSuccessStatusCode)
+                return StatusCode((int)response.StatusCode, await response.Content.ReadAsStringAsync());
+            
+            var updatedUser = await GetUserDetails(id);
+
+            if (updatedUser == null) return StatusCode(500, "Failed to retrieve updated user data.");
+            var newToken = GenerateJwtToken(updatedUser); 
+            updatedUser.Token = newToken;
+            return Ok(updatedUser);
         }
         catch (Exception ex)
         {
             return StatusCode(500, $"An error occurred while updating the user: {ex.Message}");
         }
     }
-
     
+    private async Task<UserDTO?> GetUserDetails(int id)
+    {
+        using var client = httpClientFactory.CreateClient("ApiService");
+        var response = await client.GetAsync($"api/Users/{id}");
+
+        if (response.IsSuccessStatusCode)
+        {
+            return await response.Content.ReadFromJsonAsync<UserDTO>();
+        }
+        return null;
+    }
+    
+    // api/User/id
     [HttpDelete("{id}")]
     public async Task<IActionResult> DeleteUser(int id)
     {
@@ -202,7 +213,7 @@ public class UserController : ControllerBase
             try
             {
                 Console.WriteLine("Before");
-                principal = _jwtTokenValidationService.ValidateToken(token);
+                principal = jwtTokenValidationService.ValidateToken(token);
                 Console.WriteLine("After");
             }
             catch (Exception ex)
@@ -211,16 +222,14 @@ public class UserController : ControllerBase
                 return Unauthorized("Invalid token.");
             }
             
-            // Extract user ID from token
             var userIdClaim = principal.FindFirst(ClaimTypes.NameIdentifier)?.Value;
         
             if (string.IsNullOrEmpty(userIdClaim) || int.Parse(userIdClaim) != id)
             {
                 return Unauthorized("You can only delete your own account.");
             }
-
-            // Proceed with user deletion
-            using var client = _httpClientFactory.CreateClient("ApiService");
+            
+            using var client = httpClientFactory.CreateClient("ApiService");
             var response = await client.DeleteAsync($"api/Users/{id}");
 
             if (response.IsSuccessStatusCode)

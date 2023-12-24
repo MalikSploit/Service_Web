@@ -1,11 +1,10 @@
-using System.Text;
+using System.IdentityModel.Tokens.Jwt;
 using Microsoft.AspNetCore.Components;
 using Entities;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.JSInterop;
-using Newtonsoft.Json;
 using Blazored.LocalStorage;
-using Microsoft.IdentityModel.JsonWebTokens;
+using JwtRegisteredClaimNames = Microsoft.IdentityModel.JsonWebTokens.JwtRegisteredClaimNames;
 
 namespace Front.Components.Pages;
 
@@ -13,7 +12,7 @@ public partial class Profile
 {
     #pragma warning disable CS8618
     private string confirmPassword;
-    private UserUpdateModel userUpdateModel = new ();
+    private readonly UserUpdateModel userUpdateModel = new ();
     private string errorMessage = string.Empty;
     private string successMessage = string.Empty;
     private bool isDropdownOpen;
@@ -27,56 +26,34 @@ public partial class Profile
 
     protected override async Task OnInitializedAsync()
     {
-        var jwtToken = await LocalStorage.GetItemAsStringAsync("jwtToken");
-        if (!string.IsNullOrEmpty(jwtToken))
+        var jwtTokenWithQuotes = await LocalStorage.GetItemAsStringAsync("jwtToken");
+        if (!string.IsNullOrEmpty(jwtTokenWithQuotes))
         {
+            var jwtToken = jwtTokenWithQuotes.Trim('"');
             var jwtPayload = ParseJwtPayload(jwtToken);
-            userUpdateModel.Email = jwtPayload.GetValueOrDefault("email")?.ToString();
-            userUpdateModel.Name = jwtPayload.GetValueOrDefault("name")?.ToString();
-            userUpdateModel.Surname = jwtPayload.GetValueOrDefault("surname")?.ToString();
-        }
-    }
-
-    private Dictionary<string, object> ParseJwtPayload(string jwtToken)
-    {
-        var parts = jwtToken.Split('.');
-        if (parts.Length == 3)
-        {
-            var payload = parts[1];
-            var jsonBytes = ParseBase64WithoutPadding(payload);
-            var jsonPayload = Encoding.UTF8.GetString(jsonBytes);
-            return JsonConvert.DeserializeObject<Dictionary<string, object>>(jsonPayload);
-        }
-        return null;
-    }
-    
-    private byte[] ParseBase64WithoutPadding(string base64)
-    {
-        base64 = base64.Replace('-', '+').Replace('_', '/');
-        switch (base64.Length % 4)
-        {
-            case 2: base64 += "=="; break;
-            case 3: base64 += "="; break;
-        }
-        return Convert.FromBase64String(base64);
-    }
-    
-    private string GetUserIdFromJwtToken(string jwtToken)
-    {
-        var parts = jwtToken.Split('.');
-        if (parts.Length == 3)
-        {
-            var payload = parts[1];
-            var jsonBytes = ParseBase64WithoutPadding(payload);
-            var jsonPayload = Encoding.UTF8.GetString(jsonBytes);
-            var jwtPayload = JsonConvert.DeserializeObject<Dictionary<string, object>>(jsonPayload);
-
-            if (jwtPayload != null && jwtPayload.TryGetValue(JwtRegisteredClaimNames.Sub, out var userId))
+            if (jwtPayload != null)
             {
-                return userId.ToString();
+                userUpdateModel.Email = jwtPayload.Claims.FirstOrDefault(c => c.Type == JwtRegisteredClaimNames.Email)?.Value;
+                userUpdateModel.Name = jwtPayload.Claims.FirstOrDefault(c => c.Type == "name")?.Value;
+                userUpdateModel.Surname = jwtPayload.Claims.FirstOrDefault(c => c.Type == "surname")?.Value;
             }
         }
-        return null;
+    }
+    
+    private static JwtSecurityToken? ParseJwtPayload(string jwtToken)
+    {
+        var tokenHandler = new JwtSecurityTokenHandler();
+        return tokenHandler.CanReadToken(jwtToken) ? tokenHandler.ReadJwtToken(jwtToken) : null;
+    }
+    
+    private string? GetUserIdFromJwtToken(string jwtTokenWithQuotes)
+    {
+        var jwtToken = jwtTokenWithQuotes.Trim('"');
+        var tokenHandler = new JwtSecurityTokenHandler();
+
+        if (!tokenHandler.CanReadToken(jwtToken)) return null;
+        var jwtTokenObject = tokenHandler.ReadJwtToken(jwtToken);
+        return jwtTokenObject.Claims.FirstOrDefault(claim => claim.Type == JwtRegisteredClaimNames.Sub)?.Value;
     }
 
     private async Task HandleValidSubmit()
@@ -120,21 +97,31 @@ public partial class Profile
             }
 
             var userId = GetUserIdFromJwtToken(jwtToken);
-            userUpdateModel.Id = int.Parse(userId);
-            
-            // Configure the HttpClient with the JWT token
-            HttpClient.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", jwtToken);
-            
-            var response = await HttpClient.PutAsJsonAsync($"http://localhost:5000/api/User/{userId}", userUpdateModel);
+            if (userId != null)
+            {
+                userUpdateModel.Id = int.Parse(userId);
 
-            if (response.IsSuccessStatusCode)
-            {
-                successMessage = "Profile updated successfully!";
-                NavigationManager.NavigateTo("/Profile");
-            }
-            else
-            {
-                errorMessage = "Failed to update profile. Please try again.";
+                // Configure the HttpClient with the JWT token
+                HttpClient.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", jwtToken);
+
+                var response = await HttpClient.PutAsJsonAsync($"http://localhost:5000/api/User/{userId}", userUpdateModel);
+
+                if (response.IsSuccessStatusCode)
+                {
+                    var updatedUser = await response.Content.ReadFromJsonAsync<UserDTO>();
+                    if (updatedUser != null && !string.IsNullOrWhiteSpace(updatedUser.Token))
+                    {
+                        // Replace the old token with the new one
+                        await LocalStorage.SetItemAsStringAsync("jwtToken", updatedUser.Token);
+                    }
+                    
+                    successMessage = "Profile updated successfully!";
+                    NavigationManager.NavigateTo("/Profile");
+                }
+                else
+                {
+                    errorMessage = "Failed to update profile. Please try again.";
+                }
             }
         }
         catch (Exception ex)
@@ -143,9 +130,10 @@ public partial class Profile
         }
     }
     
-    private async Task DeleteAccount()
+    private Task DeleteAccount()
     {
         showConfirmationDialog = true;
+        return Task.CompletedTask;
     }
 
     private async Task ConfirmDelete()
