@@ -1,8 +1,6 @@
 using System.IdentityModel.Tokens.Jwt;
 using Microsoft.AspNetCore.Components;
 using Entities;
-using Microsoft.AspNetCore.Components.Authorization;
-using Microsoft.JSInterop;
 using Blazored.LocalStorage;
 using JwtRegisteredClaimNames = Microsoft.IdentityModel.JsonWebTokens.JwtRegisteredClaimNames;
 
@@ -18,10 +16,8 @@ public partial class Profile
     private bool isDropdownOpen;
     private bool showConfirmationDialog;
 
-    [Inject] public AuthenticationStateProvider AuthenticationStateProvider { get; set; }
     [Inject] private ILocalStorageService LocalStorage { get; set; }
     [Inject] private NavigationManager NavigationManager { get; set; }
-    [Inject] private IJSRuntime JSRuntime { get; set; }
     [Inject] private HttpClient HttpClient { get; set; }
 
     protected override async Task OnInitializedAsync()
@@ -46,7 +42,7 @@ public partial class Profile
         return tokenHandler.CanReadToken(jwtToken) ? tokenHandler.ReadJwtToken(jwtToken) : null;
     }
     
-    private string? GetUserIdFromJwtToken(string jwtTokenWithQuotes)
+    private static string? GetUserIdFromJwtToken(string jwtTokenWithQuotes)
     {
         var jwtToken = jwtTokenWithQuotes.Trim('"');
         var tokenHandler = new JwtSecurityTokenHandler();

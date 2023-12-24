@@ -1,18 +1,18 @@
-﻿using Entities;
+﻿using System.IdentityModel.Tokens.Jwt;
+using Entities;
 using Newtonsoft.Json;
 using System.Text;
+using Blazored.LocalStorage;
+using Microsoft.AspNetCore.Components;
+using JwtRegisteredClaimNames = Microsoft.IdentityModel.JsonWebTokens.JwtRegisteredClaimNames;
 
 namespace Front.Services;
 
-public class LoginService
+public class LoginService(HttpClient httpClient, ILocalStorageService localStorage)
 {
-    public static readonly string Urlprefix = "http://localhost:5000/";
-    private readonly HttpClient _httpClient;
+    [Inject] private ILocalStorageService LocalStorage { get; set; } = localStorage;
 
-    public LoginService(HttpClient httpClient)
-    {
-        _httpClient = httpClient;
-    }
+    public const string Urlprefix = "http://localhost:5000/";
 
     public async Task<(bool isSuccess, UserDTO? userDto, string errorMessage)> AuthenticateUserAsync(string email, string pass)
     {
@@ -21,7 +21,7 @@ public class LoginService
         var content = new StringContent(jsonPayload, Encoding.UTF8, "application/json");
 
         var apiUrl = Urlprefix + "api/User/login";
-        var response = await _httpClient.PostAsync(apiUrl, content);
+        var response = await httpClient.PostAsync(apiUrl, content);
     
         if (response.IsSuccessStatusCode)
         {
@@ -39,5 +39,43 @@ public class LoginService
         
         Console.WriteLine($"Authentication failed with status code: {response.StatusCode}");
         return (false, null, errorMessage);
+    }
+    
+    public async Task<bool> IsUserLoggedIn()
+    {
+        var jwtTokenWithQuotes = await LocalStorage.GetItemAsStringAsync("jwtToken");
+        if (string.IsNullOrEmpty(jwtTokenWithQuotes))
+        {
+            return false;
+        }
+
+        var jwtToken = jwtTokenWithQuotes.Trim('"');
+        var tokenHandler = new JwtSecurityTokenHandler();
+
+        if (!tokenHandler.CanReadToken(jwtToken))
+        {
+            await LocalStorage.RemoveItemAsync("jwtToken");
+            return false;
+        }
+
+        try
+        {
+            var jwtSecurityToken = tokenHandler.ReadJwtToken(jwtToken);
+            var expClaim = jwtSecurityToken.Claims.FirstOrDefault(c => c.Type == JwtRegisteredClaimNames.Exp);
+
+            if (expClaim != null && long.TryParse(expClaim.Value, out var exp))
+            {
+                return DateTimeOffset.FromUnixTimeSeconds(exp) > DateTimeOffset.UtcNow;
+            }
+
+            await LocalStorage.RemoveItemAsync("jwtToken");
+            return false;
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine("Error processing JWT token: " + ex.Message);
+            await LocalStorage.RemoveItemAsync("jwtToken");
+            return false;
+        }
     }
 }

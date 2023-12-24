@@ -11,54 +11,25 @@ namespace Front.Components.Pages
         [Inject] private BookService BookService { get; set; }
         [Inject] private ILocalStorageService LocalStorage { get; set; }
         [Inject] private NavigationManager NavigationManager { get; set; }
+        [Inject] private LoginService LoginService { get; set; }
+        
         private IEnumerable<Book> books;
         private IEnumerable<Book> filteredBooks;
-
         private bool _isLoggedIn;
-        private string searchTerm = string.Empty;
+        private string? searchTerm = string.Empty;
         private bool isDropdownOpen;
 
         protected override async Task OnInitializedAsync()
         {
             books = await BookService.GetBooksAsync();
             filteredBooks = books;
-            _isLoggedIn = await IsUserLoggedIn();
+            _isLoggedIn = await LoginService.IsUserLoggedIn();
         }
-
-        private async Task<bool> IsUserLoggedIn()
-        {
-            var jwtToken = await LocalStorage.GetItemAsStringAsync("jwtToken");
-            return !string.IsNullOrEmpty(jwtToken);
-        }
-
-        private struct SearchScore 
-        {
-            public int Score;
-            public Book Livre;
-
-            public SearchScore(int score, Book b)
-            {
-                Score = score;
-                this.Livre = b;
-            }
-        }
-
+        
         private void UpdateSearch(ChangeEventArgs e)
         {
-            searchTerm = e.Value!.ToString()!.ToLowerInvariant();
-
-            if (string.IsNullOrWhiteSpace(searchTerm)) 
-            {
-                filteredBooks = books;
-            }
-            var terms = searchTerm.Split();
-
-            List<SearchScore> s = books.Select(b =>
-                new SearchScore(b.Title.Split(' ').Select(s => StringDistance.LevenshteinDistance(s.ToLowerInvariant(), searchTerm)).Min(), b)
-                ).Where(s=>s.Score <= 4).ToList();
-            s.Sort((a, b) => a.Score.CompareTo(b.Score));
-
-            filteredBooks = string.IsNullOrWhiteSpace(searchTerm) ? books : s.Select(a => a.Livre);
+            searchTerm = e.Value?.ToString();
+            filteredBooks = string.IsNullOrWhiteSpace(searchTerm) ? books : books.Where(b => b.Title.Contains(searchTerm, StringComparison.OrdinalIgnoreCase));
         }
         
         private async Task Logout()
