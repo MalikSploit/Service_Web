@@ -1,7 +1,146 @@
 ﻿@page "/Cart"
-
-<h3>Cart</h3>
-
-@code {
+<div class="container mx-auto mt-10">
+    <!-- Top Menu -->
+    <nav class="bg-white shadow-lg">
+        <div class="max-w-6xl mx-auto px-4">
+            <div class="flex justify-between items-center">
+                <!-- Logo du site web -->
+                <a href="/" class="flex items-center py-4 px-2">
+                    <img src="Images/Logo.svg" alt="IzziBooks Logo" class="h-8 mr-2"/>
+                </a>
+                
+                <button @onclick="ToggleDropdown" class="md:hidden p-2">
+                    <svg class="w-6 h-6 text-gray-500 hover:text-green-500" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                        <path d="M4 6h16M4 12h16M4 18h16"></path>
+                    </svg>
+                </button>
     
-}
+                <!-- Desktop Menu -->
+                <div class="hidden md:flex items-center space-x-1 ml-auto">
+                    @if (_isLoggedIn)
+                    {
+                        <a href="/Profile" class="py-4 px-2 flex items-center text-gray-500 font-semibold hover:text-green-500 transition duration-300">
+                            <span class="material-icons align-middle mr-2">account_circle</span>
+                            Profile
+                        </a>
+                        <button @onclick="Logout" class="py-4 px-2 text-gray-500 font-semibold hover:text-green-500 transition duration-300 flex items-center">
+                            <span class="material-icons align-middle mr-2">exit_to_app</span>
+                            Logout
+                        </button>
+                    }
+                    else
+                    {
+                        <a href="/Signup" class="py-4 px-2 text-gray-500 font-semibold hover:text-green-500 transition duration-300">
+                            <span class="material-icons align-middle mr-2">person_add</span>
+                            Signup
+                        </a>
+                        <a href="/Login" class="py-4 px-2 text-gray-500 font-semibold hover:text-green-500 transition duration-300">
+                            <span class="material-icons align-middle mr-2">login</span>
+                            Login
+                        </a>
+                    }
+                    <a href="/" class="py-4 px-2 flex items-center text-gray-500 font-semibold hover:text-green-500 transition duration-300">
+                        <span class="material-icons align-middle mr-2">home</span>
+                        Home
+                    </a>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Dropdown Menu for Mobile -->
+        <div class="@GetDropdownClass() max-w-6xl mx-auto">
+            <ul class="py-4 px-2 bg-white shadow-lg">
+                @if (_isLoggedIn)
+                {
+                    <li>
+                        <a href="/Profile" class="text-sm px-2 py-4 hover:bg-green-500 transition duration-300 flex items-center text-gray-500 font-semibold">
+                            <span class="material-icons align-middle mr-2">account_circle</span>
+                            Profile
+                        </a>
+                    </li>
+                    <li>
+                        <a @onclick="Logout" href="/" class="text-sm px-2 py-4 hover:bg-green-500 transition duration-300 flex items-center text-gray-500 font-semibold">
+                            <span class="material-icons align-middle mr-2">exit_to_app</span>
+                            Logout
+                        </a>
+                    </li>
+                }
+                else
+                {
+                    <li>
+                        <a href="/Signup" class="text-sm px-2 py-4 hover:bg-green-500 transition duration-300 flex items-center text-gray-500 font-semibold">
+                            <span class="material-icons align-middle mr-2">person_add</span>
+                            Signup
+                        </a>
+                    </li>
+                    <li>
+                        <a href="/Login" class="text-sm px-2 py-4 hover:bg-green-500 transition duration-300 flex items-center text-gray-500 font-semibold">
+                            <span class="material-icons align-middle mr-2">login</span>
+                            Login
+                        </a>
+                    </li>
+                }
+                <li>
+                    <a href="/" class="text-sm px-2 py-4 hover:bg-green-500 transition duration-300 flex items-center text-gray-500 font-semibold">
+                        <span class="material-icons align-middle mr-2">home</span>
+                        Home
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+    <div class="flex shadow-md my-10">
+        <!-- Cart Items Section -->
+        <div class="w-3/4 bg-white px-10 py-10">
+            <div class="flex justify-between border-b pb-8">
+                <h1 class="font-semibold text-2xl outline-none">Shopping Cart</h1>
+                <h2 class="font-semibold text-2xl">@cartItems.Count Items</h2>
+            </div>
+            <div class="flex mt-10 mb-5">
+                <h3 class="font-semibold text-gray-600 text-xs uppercase w-2/5">Product Details</h3>
+                <h3 class="font-semibold text-center text-gray-600 text-xs uppercase w-1/5 text-center">Quantity</h3>
+                <h3 class="font-semibold text-center text-gray-600 text-xs uppercase w-1/5 text-center">Price</h3>
+                <h3 class="font-semibold text-center text-gray-600 text-xs uppercase w-1/5 text-center">Total</h3>
+            </div>
+
+            @foreach (var book in cartItems)
+            {
+                <div class="flex items-center hover:bg-gray-100 -mx-8 px-6 py-5">
+                    <div class="flex w-2/5">
+                        <!-- Book Image -->
+                        <div class="w-20">
+                            <img class="h-24" src="@book.ImageUrl" alt="@book.Title">
+                        </div>
+                        <!-- Book Details -->
+                        <div class="flex flex-col justify-between ml-4 flex-grow">
+                            <span class="font-bold text-sm">@book.Title</span>
+                            <span class="text-red-500 text-xs">@book.Author</span>
+                            <button @onclick="() => RemoveItem(book)" class="font-semibold hover:text-red-500 text-gray-500 text-xs">Remove</button>
+                        </div>
+                    </div>
+                    <div class="flex justify-center w-1/5">
+                        <input class="mx-2 border text-center w-8" type="number" @bind-value="@cartItemIds[book.Id]" @bind-value:event="oninput" @onchange="() => UpdateQuantity(book, cartItemIds[book.Id])">
+                    </div>
+                    <span class="text-center w-1/5 font-semibold text-sm">$@book.Price</span>
+                    <span class="text-center w-1/5 font-semibold text-sm">$@(book.Price * cartItemIds[book.Id])</span>
+                </div>
+            }
+
+            <a href="/Explore" class="flex font-semibold text-indigo-600 text-sm mt-10">
+                <!-- SVG Icon -->
+                Continue Shopping
+            </a>
+        </div>
+
+        <!-- Order Summary Section -->
+        <div id="summary" class="w-1/4 px-8 py-10">
+            <h1 class="font-semibold text-2xl border-b pb-8">Order Summary</h1>
+            <div class="flex justify-between mt-10 mb-5">
+                <span class="font-semibold text-sm uppercase">Items @cartItems.Count</span>
+                <span class="font-semibold text-sm">$@TotalPrice</span>
+            </div>
+            <!-- Additional order summary content here -->
+            <button @onclick="Checkout" class="bg-indigo-500 hover:bg-indigo-700 text-white font-bold py-2 px-4 rounded w-full">Checkout</button>
+        </div>
+    </div>
+</div>
