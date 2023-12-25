@@ -1,18 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using Entities;
 
 namespace BookService.Data;
 
-public class BookServiceContext : DbContext
+public class BookServiceContext(DbContextOptions<BookServiceContext> options) : DbContext(options)
 {
-    public BookServiceContext(DbContextOptions<BookServiceContext> options)
-        : base(options)
-    {
-    }
-
     public DbSet<Book> Books { get; set; } = default!;
 }

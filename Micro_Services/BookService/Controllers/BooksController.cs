@@ -7,15 +7,9 @@ namespace BookService.Controllers;
 
 [Route("api/[controller]")]
 [ApiController]
-public class  BookController : ControllerBase
+public class BooksController(BookServiceContext context) : ControllerBase
 {
-    private readonly BookServiceContext _context;
-    private DbSet<Book> Books => _context.Books;
-
-    public BookController(BookServiceContext context)
-    {
-        _context = context;
-    }
+    private DbSet<Book> Books => context.Books;
 
     // GET: api/Books
     [HttpGet]
@@ -40,7 +34,7 @@ public class  BookController : ControllerBase
     public async Task<ActionResult<Book>> CreateBook(Book book)
     {
         Books.Add(book);
-        await _context.SaveChangesAsync();
+        await context.SaveChangesAsync();
 
         return CreatedAtAction(nameof(Get), new { id = book.Id }, book);
     }
@@ -54,7 +48,7 @@ public class  BookController : ControllerBase
             return BadRequest("Mismatched book ID");
         }
 
-        var book = await _context.Books.FindAsync(id);
+        var book = await context.Books.FindAsync(id);
 
         if (book == null)
         {
@@ -69,7 +63,7 @@ public class  BookController : ControllerBase
 
         try
         {
-            await _context.SaveChangesAsync();
+            await context.SaveChangesAsync();
         }
         catch (DbUpdateConcurrencyException)
         {
@@ -95,7 +89,7 @@ public class  BookController : ControllerBase
         }
 
         Books.Remove(book);
-        await _context.SaveChangesAsync();
+        await context.SaveChangesAsync();
 
         return NoContent();
     }

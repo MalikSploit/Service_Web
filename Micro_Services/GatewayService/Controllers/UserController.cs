@@ -17,6 +17,7 @@ public class UserController(
     : ControllerBase
 {
     private static Uri UserServiceUri => new ("http://localhost:5001/");
+
     private HttpClient CreateClient() 
     {
         var client = httpClientFactory.CreateClient();
@@ -232,12 +233,7 @@ public class UserController(
             using var client = httpClientFactory.CreateClient("ApiService");
             var response = await client.DeleteAsync($"api/Users/{id}");
 
-            if (response.IsSuccessStatusCode)
-            {
-                return Ok("User deleted successfully.");
-            }
-
-            return StatusCode((int)response.StatusCode, await response.Content.ReadAsStringAsync());
+            return response.IsSuccessStatusCode ? Ok("User deleted successfully.") : StatusCode((int)response.StatusCode, await response.Content.ReadAsStringAsync());
         }
         catch (Exception ex)
         {

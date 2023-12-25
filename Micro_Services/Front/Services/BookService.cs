@@ -8,7 +8,7 @@ namespace Front.Services
         {
             try
             {
-                var response = await httpClient.GetAsync("http://localhost:5002/api/Book/");
+                var response = await httpClient.GetAsync("http://localhost:5000/api/Book/");
                 if (response.IsSuccessStatusCode)
                 {
                     var books = await response.Content.ReadFromJsonAsync<IEnumerable<Book>>();
@@ -27,7 +27,7 @@ namespace Front.Services
         {
             try
             {
-                var book = await httpClient.GetFromJsonAsync<Book>($"http://localhost:5002/api/Book/{bookId}");
+                var book = await httpClient.GetFromJsonAsync<Book>($"http://localhost:5000/api/Book/{bookId}");
                 return book;
             }
             catch (HttpRequestException ex)
