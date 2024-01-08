@@ -40,6 +40,17 @@ public class BookController(IHttpClientFactory httpClientFactory) : ControllerBa
         return Ok(book);
     }
     
+    // POST: api/Book
+    [HttpPost]
+    public async Task<IActionResult> CreateBook([FromBody] Book book)
+    {
+        var response = await _client.PostAsJsonAsync("http://localhost:5002/api/Books", book);
+
+        if (!response.IsSuccessStatusCode) return StatusCode((int)response.StatusCode, response.ReasonPhrase);
+        var createdBook = await response.Content.ReadFromJsonAsync<Book>();
+        return CreatedAtAction(nameof(Get), new { id = createdBook.Id }, createdBook);
+    }
+    
     // PUT api/Book/{id}
     [HttpPut("{id:int}")]
     public async Task<IActionResult> UpdateBook(int id, Book book)
