@@ -1,4 +1,5 @@
 ﻿using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
 using Entities;
 using Newtonsoft.Json;
 using System.Text;
@@ -83,6 +84,37 @@ public class LoginService
         }
     
         await _localStorage.RemoveItemAsync("jwtToken");
+        return false;
+    }
+    
+    public async Task<bool> IsUserAdmin()
+    {
+        var jwtTokenWithQuotes = await _localStorage.GetItemAsStringAsync("jwtToken");
+        if (string.IsNullOrEmpty(jwtTokenWithQuotes))
+        {
+            return false;
+        }
+
+        var jwtToken = jwtTokenWithQuotes.Trim('"');
+        var tokenHandler = new JwtSecurityTokenHandler();
+
+        if (!tokenHandler.CanReadToken(jwtToken))
+        {
+            return false;
+        }
+
+        try
+        {
+            var jwtSecurityToken = tokenHandler.ReadJwtToken(jwtToken);
+            var isAdmin = jwtSecurityToken.Claims.Any(c => c.Type == ClaimTypes.Role && c.Value == "Admin");
+                    
+            return isAdmin;
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine("Error processing JWT token: " + ex.Message);
+        }
+
         return false;
     }
 }

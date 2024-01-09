@@ -16,15 +16,18 @@ public partial class Profile
     private string successMessage = string.Empty;
     private bool isDropdownOpen;
     private bool showConfirmationDialog;
+    private bool _isUserAdmin;
     private int CartItemCount { get; set; }
 
     [Inject] private ILocalStorageService LocalStorage { get; set; }
     [Inject] private NavigationManager NavigationManager { get; set; }
     [Inject] private HttpClient HttpClient { get; set; }
     [Inject] private CartStateService CartStateService { get; set; }
+    [Inject] private LoginService LoginService { get; set; }
 
     protected override async Task OnInitializedAsync()
     {
+        _isUserAdmin = await LoginService.IsUserAdmin();
         CartStateService.OnChange += UpdateCartCount;
         UpdateCartCount();
         

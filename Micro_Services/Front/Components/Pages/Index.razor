@@ -33,13 +33,16 @@
                         <div class="flex items-center">
                             <!-- Profile Icon -->
                             <a href="/Profile" class="py-4 px-2 flex items-center text-gray-500 font-semibold hover:text-green-500 transition duration-300">
-                                @*<svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 mr-2 align-middle" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M 12 14 C 14.5 14 16.5 12 16.5 9.5 S 14.5 5 12 5 S 7.5 7 7.5 9.5 S 9.5 14 12 14 Z M 12 16 C 9.67 16 5 17.17 5 19.5 V 21 H 19 V 19.5 C 19 17.17 14.33 16 12 16 Z"/>
-                                </svg>*@
                                 <span class="material-icons align-middle mr-2">account_circle</span>
                                 Profile
                             </a>
-
+                            @if (_isUserAdmin)
+                            {
+                                <a href="/Admin" class="py-4 px-2 flex items-center text-gray-500 font-semibold hover:text-green-500 transition duration-300">
+                                    <span class="material-icons align-middle mr-2">admin_panel_settings</span>
+                                    Admin
+                                </a>
+                            }
                             <!-- Logout Button -->
                             <button @onclick="Logout" class="py-4 px-2 text-gray-500 font-semibold hover:text-green-500 transition duration-300 flex items-center">
                                 <span class="material-icons align-middle mr-2">exit_to_app</span>
@@ -93,12 +96,16 @@
                 {
                     <li>
                         <a href="/Profile" class="text-sm px-2 py-4 hover:bg-green-500 transition duration-300 flex items-center text-gray-500 font-semibold">
-                            @*<svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2 align-middle" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 11c2.5 0 4.5-2 4.5-4.5S14.5 2 12 2 7.5 4 7.5 6.5 9.5 11 12 11zm0 2c-2.33 0-7 1.17-7 3.5V18h14v-1.5c0-2.33-4.67-3.5-7-3.5z"/>
-                            </svg>*@
                             <span class="material-icons align-middle mr-2">account_circle</span>
                             Profile
                         </a>
+                        @if (_isUserAdmin)
+                        {
+                            <a href="/Admin" class="text-sm px-2 py-4 hover:bg-green-500 transition duration-300 flex items-center text-gray-500 font-semibold">
+                                <span class="material-icons align-middle mr-2">admin_panel_settings</span>
+                                Admin
+                            </a>
+                        }
                     </li>
                     <li>
                         <button @onclick="Logout" class="text-sm px-2 py-4 hover:bg-green-500 transition duration-300 w-full text-left text-gray-500 font-semibold">

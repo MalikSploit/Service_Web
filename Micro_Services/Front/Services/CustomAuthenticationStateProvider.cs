@@ -1,39 +1,51 @@
-﻿using Entities;
+﻿using System.IdentityModel.Tokens.Jwt;
+using Entities;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Components.Authorization;
-using Microsoft.AspNetCore.Components.Server.ProtectedBrowserStorage;
 using System.Security.Claims;
-using System.Security.Principal;
+using Blazored.LocalStorage;
 
 namespace Front.Services;
 
 public class CustomAuthenticationStateProvider : AuthenticationStateProvider
 {
     private ClaimsPrincipal _currentUser = new ClaimsPrincipal(new ClaimsIdentity());
-    private ProtectedLocalStorage _sessionStorage;
+    private readonly ILocalStorageService _localStorageService;
 
-    public CustomAuthenticationStateProvider(ProtectedLocalStorage protectedSessionStorage)
+    public CustomAuthenticationStateProvider(ILocalStorageService localStorageService)
     {
-        _sessionStorage = protectedSessionStorage;
+        _localStorageService = localStorageService;
     }
 
-    public async Task<ClaimsPrincipal> MarkUserAsAuthenticated(UserDTO user)
+    public async Task<ClaimsPrincipal> MarkUserAsAuthenticated(UserDTO user, string jwtToken)
     {
-        await _sessionStorage.SetAsync("User", user);
-        var claims = new[] {
-            new Claim(ClaimTypes.Name, user.Name),
-            new Claim(ClaimTypes.Role, "User")
-        };
+        Console.WriteLine("MarkUserAsAuthenticated: Starting authentication process");
+        jwtToken = jwtToken.Trim('"');
+        await _localStorageService.SetItemAsStringAsync("jwtToken", jwtToken);
+
+        var tokenHandler = new JwtSecurityTokenHandler();
+        var jwtTokenObject = tokenHandler.ReadJwtToken(jwtToken);
+        var claims = jwtTokenObject.Claims.ToList();
+
+        Console.WriteLine($"MarkUserAsAuthenticated: JWT token parsed with {claims.Count} claims");
+
+        if (!claims.Any(c => c.Type == ClaimTypes.Role))
+        {
+            claims.Add(new Claim(ClaimTypes.Role, "User"));
+            Console.WriteLine("MarkUserAsAuthenticated: Added default 'User' role");
+        }
+
         var identity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
         _currentUser = new ClaimsPrincipal(identity);
 
         NotifyAuthenticationStateChanged(GetAuthenticationStateAsync());
-
         return _currentUser;
     }
+    
     public async Task<ClaimsPrincipal> Logout()
     {
-        await _sessionStorage.DeleteAsync("User");
+        Console.WriteLine("Logout: User logging out");
+        await _localStorageService.RemoveItemAsync("jwtToken");
         _currentUser = new ClaimsPrincipal(new ClaimsIdentity());
 
         NotifyAuthenticationStateChanged(GetAuthenticationStateAsync());
@@ -42,19 +54,42 @@ public class CustomAuthenticationStateProvider : AuthenticationStateProvider
 
     public override async Task<AuthenticationState> GetAuthenticationStateAsync()
     {
-        var userSession = await _sessionStorage.GetAsync<UserDTO>("User");
-        if(userSession.Success && userSession.Value != null)
+        Console.WriteLine("GetAuthenticationStateAsync: Method called");
+        var jwtTokenWithQuotes = await _localStorageService.GetItemAsStringAsync("jwtToken");
+        Console.WriteLine($"GetAuthenticationStateAsync: Retrieved JWT token: {jwtTokenWithQuotes}");
+
+        if (!string.IsNullOrEmpty(jwtTokenWithQuotes))
         {
-            var user = userSession.Value;
-            var claims = new[] {
-                new Claim(ClaimTypes.Name, user.Name),
-                new Claim(ClaimTypes.Role, "User")
-            };
-            var identity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
-            _currentUser = new ClaimsPrincipal(identity);
-        } else {
-            _currentUser = new ClaimsPrincipal(new ClaimsIdentity());
+            var jwtToken = jwtTokenWithQuotes.Trim('"');
+            var tokenHandler = new JwtSecurityTokenHandler();
+
+            if (tokenHandler.CanReadToken(jwtToken))
+            {
+                var jwtTokenObject = tokenHandler.ReadJwtToken(jwtToken);
+                var claims = jwtTokenObject.Claims.ToList();
+                Console.WriteLine($"GetAuthenticationStateAsync: JWT token parsed with {claims.Count} claims");
+
+                if (!claims.Any(c => c.Type == ClaimTypes.Role))
+                {
+                    claims.Add(new Claim(ClaimTypes.Role, "User"));
+                    Console.WriteLine("GetAuthenticationStateAsync: Added default 'User' role");
+                }
+
+                var identity = new ClaimsIdentity(claims, "jwtAuthType");
+                var user = new ClaimsPrincipal(identity);
+
+                return new AuthenticationState(user);
+            }
+            else
+            {
+                Console.WriteLine("GetAuthenticationStateAsync: Unable to read JWT token");
+            }
         }
-        return await Task.FromResult(new AuthenticationState(_currentUser));
+        else
+        {
+            Console.WriteLine("GetAuthenticationStateAsync: JWT token is null or empty");
+        }
+
+        return new AuthenticationState(new ClaimsPrincipal(new ClaimsIdentity()));
     }
 }

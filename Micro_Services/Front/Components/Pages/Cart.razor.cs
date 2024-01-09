@@ -16,6 +16,7 @@ namespace Front.Components.Pages
         private Dictionary<int, int> cartItemIds = new();
         private readonly List<Book> cartItems = []; 
         private bool _isLoggedIn;
+        private bool _isUserAdmin;
         private bool isDropdownOpen;
 
         private decimal TotalPrice
@@ -31,6 +32,7 @@ namespace Front.Components.Pages
         protected override async Task OnInitializedAsync()
         {
             _isLoggedIn = await LoginService.IsUserLoggedIn();
+            _isUserAdmin = await LoginService.IsUserAdmin();
             await LoadCartItems();
         }
 

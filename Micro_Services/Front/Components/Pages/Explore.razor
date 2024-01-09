@@ -37,6 +37,13 @@
                             <span class="material-icons align-middle mr-2">account_circle</span>
                             Profile
                         </a>
+                        @if (_isUserAdmin)
+                        {
+                            <a href="/Admin" class="py-4 px-2 flex items-center text-gray-500 font-semibold hover:text-green-500 transition duration-300">
+                                <span class="material-icons align-middle mr-2">admin_panel_settings</span>
+                                Admin
+                            </a>
+                        }
                         <button @onclick="Logout" class="py-4 px-2 text-gray-500 font-semibold hover:text-green-500 transition duration-300 flex items-center">
                             <span class="material-icons align-middle mr-2">exit_to_app</span>
                             Logout
@@ -85,6 +92,13 @@
                             <span class="material-icons align-middle mr-2">account_circle</span>
                             Profile
                         </a>
+                        @if (_isUserAdmin)
+                        {
+                            <a href="/Admin" class="text-sm px-2 py-4 hover:bg-green-500 transition duration-300 flex items-center text-gray-500 font-semibold">
+                                <span class="material-icons align-middle mr-2">admin_panel_settings</span>
+                                Admin
+                            </a>
+                        }
                     </li>
                     <li>
                         <a @onclick="Logout" href="/" class="text-sm px-2 py-4 hover:bg-green-500 transition duration-300 flex items-center text-gray-500 font-semibold">

@@ -17,6 +17,7 @@ public partial class Index : ComponentBase
     private IEnumerable<Book> Books;
     private bool _isDropdownVisible;
     private bool _isLoggedIn;
+    private bool _isUserAdmin;
     private int CartItemCount { get; set; }
 
     protected override async Task OnInitializedAsync()
@@ -24,6 +25,7 @@ public partial class Index : ComponentBase
         var allBooks = await BookService.GetBooksAsync();
         Books = allBooks.Take(4);
         _isLoggedIn = await LoginService.IsUserLoggedIn();
+        _isUserAdmin = await LoginService.IsUserAdmin();
         CartStateService.OnChange += UpdateCartCount;
         UpdateCartCount();
     }

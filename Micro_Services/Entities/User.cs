@@ -24,8 +24,9 @@ public class UserDTO
     public string? Surname { get; set; } = "";
     public string? Email { get; set; } = "";
     public string? Token { get; set; } = "";
+    public string Role { get; set; } = "";
 
-    public override string ToString() => Id + " " + Name + " " + Surname + " " + Email + " " + Token;
+    public override string ToString() => Id + " " + Name + " " + Surname + " " + Email + " " + Token + " " + Role;
 }
 
 public class UserCreateModel

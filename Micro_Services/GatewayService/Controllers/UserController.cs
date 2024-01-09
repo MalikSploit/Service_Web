@@ -17,6 +17,12 @@ public class UserController(
     : ControllerBase
 {
     private static Uri UserServiceUri => new ("http://localhost:5001/");
+    private readonly List<string> adminEmails = new List<string> 
+    { 
+        "Malik@gmail.com",
+        "Thomas@gmail.com",
+        "Thibault@gmail.com"
+    };
 
     private HttpClient CreateClient() 
     {
@@ -47,6 +53,9 @@ public class UserController(
             new Claim(JwtRegisteredClaimNames.Sub, userDto.Id.ToString())
         };
 
+        var role = adminEmails.Contains(userDto.Email) ? "Admin" : "User";
+        claims.Add(new Claim(ClaimTypes.Role, role));
+        
         var token = new JwtSecurityToken(
             issuer: issuer,
             audience: audience,

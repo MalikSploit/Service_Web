@@ -43,7 +43,7 @@ builder.Services.AddAuthentication(options =>
             ValidateLifetime = true,
             ValidIssuer = issuer,
             ValidAudience = audience,
-            // Consider setting other parameters if necessary
+            RoleClaimType = "http://schemas.microsoft.com/ws/2008/06/identity/claims/role"
         };
 });
 

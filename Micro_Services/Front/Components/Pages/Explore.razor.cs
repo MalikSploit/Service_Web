@@ -19,12 +19,14 @@ namespace Front.Components.Pages
         private bool _isLoggedIn;
         private string? searchTerm = string.Empty;
         private bool isDropdownOpen;
+        private bool _isUserAdmin;
         private int CartItemCount { get; set; }
 
         protected override async Task OnInitializedAsync()
         {
             books = await BookService.GetBooksAsync();
             filteredBooks = books;
+            _isUserAdmin = await LoginService.IsUserAdmin();
             _isLoggedIn = await LoginService.IsUserLoggedIn();
 
             CartStateService.OnChange += UpdateCartCount;
