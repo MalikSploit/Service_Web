@@ -13,7 +13,6 @@
                 
                 <!-- Les éléments de navigation -->
                 <div class="hidden md:flex items-center space-x-1 ml-auto">
-                   
                     <!-- Cart Icon -->
                     <a href="/Cart" class="py-4 px-2 flex items-center text-gray-500 font-semibold hover:text-green-500 transition duration-300 relative">
                         <div class="relative inline-block">
@@ -27,7 +26,6 @@
                             }
                         </div>
                     </a>
-
                     @if (_isLoggedIn)
                     {
                         <div class="flex items-center">
@@ -62,7 +60,6 @@
                         </a>
                     }
                 </div>
-                
                 <!-- Menu pour téléphone -->
                 <div class="md:hidden flex items-center">
                     <button @onclick="ToggleDropdown" class="outline-none mobile-menu-button">
@@ -73,7 +70,6 @@
                 </div>
             </div>
         </div>
-        
         <!-- Menu pour téléphone -->
         <div class="@GetDropdownClass()">
             <ul>
@@ -106,8 +102,6 @@
                                 Admin
                             </a>
                         }
-                    </li>
-                    <li>
                         <button @onclick="Logout" class="text-sm px-2 py-4 hover:bg-green-500 transition duration-300 w-full text-left text-gray-500 font-semibold">
                             <span class="material-icons align-middle mr-2">exit_to_app</span>
                             Logout
@@ -121,8 +115,6 @@
                             <span class="material-icons align-middle mr-2">login</span>
                             Signup
                         </a>
-                    </li>
-                    <li>
                         <a href="Login" class="block text-sm px-2 py-4 hover:bg-green-500 transition duration-300 text-gray-500 font-semibold">
                             <span class="material-icons align-middle mr-2">person_add</span>
                             Login
@@ -132,14 +124,12 @@
             </ul>
         </div>
     </nav>
-    
     <!-- Hero Section -->
     <div class="text-center p-16 bg-gradient-to-r from-blue-800 to-purple-600 text-white">
         <h1 class="text-6xl font-bold mb-4 outline-none">Find Your Next Read</h1>
         <p class="text-xl mb-8">Dive into our diverse collection of books and genres.</p>
         <a href="/Explore" class="inline-block bg-pink-500 hover:bg-pink-600 text-white py-3 px-6 rounded-lg text-lg font-medium transition duration-300 ease-in-out transform hover:-translate-y-1">Explore Books</a>
     </div>
-    
     <!-- Books Section -->
     <section class="py-12">
         <div class="container mx-auto px-4">

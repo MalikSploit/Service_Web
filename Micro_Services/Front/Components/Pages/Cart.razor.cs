@@ -85,7 +85,6 @@ namespace Front.Components.Pages
             NavigationManager.NavigateTo("/Checkout");
             return Task.CompletedTask;
             // Checkout logic here
-            // Redirect to a checkout page or process the order
         }
 
         private async Task Logout()
