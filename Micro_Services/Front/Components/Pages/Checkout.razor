@@ -1,2 +1,41 @@
 ﻿@page "/Checkout"
-<h3>Checkout</h3>
+
+<EditForm Model="this" OnValidSubmit="ValidateCard">
+    <div class="container mx-auto p-4">
+        <h1 class="text-4xl font-bold mb-6 outline-none">Checkout</h1>
+
+        <DataAnnotationsValidator />
+
+        <div class="mb-4">
+            <label class="block text-gray-700 text-sm font-bold mb-2">Name</label>
+            <InputText class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" @bind-Value="CustomerName" />
+            <ValidationMessage For="@(() => CustomerName)" />
+        </div>
+
+        <div class="mb-4">
+            <label class="block text-gray-700 text-sm font-bold mb-2">Email</label>
+            <InputText type="email" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" @bind-Value="Email" />
+            <ValidationMessage For="@(() => Email)" />
+        </div>
+
+        <div class="mb-4">
+            <label class="block text-gray-700 text-sm font-bold mb-2">Billing Address</label>
+            <InputText class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" @bind-Value="BillingAddress" />
+            <ValidationMessage For="@(() => BillingAddress)" />
+        </div>
+
+        <div class="mb-4">
+            <label class="block text-gray-700 text-sm font-bold mb-2" for="card-element">
+                Credit or Debit Card
+            </label>
+            <div id="card-element" class="p-3 border border-gray-300 rounded-md">
+                <!-- Stripe Icon -->
+            </div>
+            <div id="card-errors" role="alert" class="mt-2 text-red-600"></div>
+        </div>
+
+        <button type="submit" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded transition duration-300 ease-in-out">
+            Validate Card
+        </button>
+    </div>
+</EditForm>
