@@ -2,12 +2,19 @@
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Forms;
 using Microsoft.JSInterop;
+using Blazored.LocalStorage;
+using Entities;
+using Front.Services;
 
 namespace Front.Components.Pages;
 
 public partial class Checkout : ComponentBase
 {
     #pragma warning disable CS8618
+    [Inject] private IJSRuntime JSRuntime { get; set; }
+    [Inject] private ILocalStorageService LocalStorage { get; set; }
+    [Inject] private BookService BookService { get; set; }
+    
     [Required, MaxLength(100)]
     private string CustomerName { get; set; }
 
@@ -18,13 +25,41 @@ public partial class Checkout : ComponentBase
     private string BillingAddress { get; set; }
 
     private EditContext _editContext;
-
-    [Inject]
-    private IJSRuntime JSRuntime { get; set; }
+    private List<Book> cartItems = new List<Book>();
+    private Dictionary<int, int> cartItemQuantities = new Dictionary<int, int>();
+    private decimal totalPrice;
 
     protected override void OnInitialized()
     {
         _editContext = new EditContext(this);
+    }
+    
+    protected override async Task OnInitializedAsync()
+    {
+        await LoadCartItems();
+        CalculateTotalPrice();
+    }
+    
+    private async Task LoadCartItems()
+    {
+        var storedCart = await LocalStorage.GetItemAsync<Dictionary<int, int>>("cart");
+        if (storedCart != null)
+        {
+            cartItemQuantities = storedCart;
+            foreach (var itemId in cartItemQuantities.Keys)
+            {
+                var book = await BookService.GetBookByIdAsync(itemId);
+                if (book != null)
+                {
+                    cartItems.Add(book);
+                }
+            }
+        }
+    }
+    
+    private void CalculateTotalPrice()
+    {
+        totalPrice = cartItems.Sum(item => item.Price * cartItemQuantities[item.Id]);
     }
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
