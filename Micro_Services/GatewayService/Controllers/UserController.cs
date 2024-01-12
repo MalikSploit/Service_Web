@@ -10,6 +10,15 @@ namespace GatewayService.Controllers;
 
 [Route("api/[controller]")]
 [ApiController]
+
+/*
+    * Class: UserController
+    * -----------------------
+    * This class is the controller for the User API. It contains methods for
+    * GET, POST, PUT, and DELETE requests.
+    * By default there are 3 admin users.
+    * This class also contains a method to generate a JWT token.
+*/
 public class UserController(
     IHttpClientFactory httpClientFactory,
     IConfiguration configuration,

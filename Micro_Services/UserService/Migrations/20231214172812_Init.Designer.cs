@@ -11,6 +11,13 @@ namespace UserService.Migrations
 {
     [DbContext(typeof(UserServiceContext))]
     [Migration("20231214172812_Init")]
+
+    /* 
+        * Class: Init
+        * -----------------------
+        * This class is the migration for the UserService database. It contains a
+        * CreateTable method that creates a table for User objects.
+    */
     partial class Init
     {
         /// <inheritdoc />

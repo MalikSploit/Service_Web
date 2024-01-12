@@ -6,10 +6,12 @@ using Microsoft.IdentityModel.Tokens;
 var builder = WebApplication.CreateBuilder(args);
 
 // Get JWT settings from configuration
+// This is used to generate a JWT token
 var jwtSettings = builder.Configuration.GetSection("JwtSettings");
 var secretKey = jwtSettings["Secret"];
 var issuer = jwtSettings["Issuer"];
 var audience = jwtSettings["Audience"];
+
 
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
