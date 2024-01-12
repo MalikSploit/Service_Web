@@ -11,6 +11,13 @@ namespace BookService.Migrations
 {
     [DbContext(typeof(BookServiceContext))]
     [Migration("20231224214220_InitialCreate")]
+
+    /*
+        * Class: InitialCreate
+        * -----------------------
+        * This class is the migration for the BookService database. It contains a
+        * CreateTable method that creates a table for Book objects.
+    */
     partial class InitialCreate
     {
         /// <inheritdoc />

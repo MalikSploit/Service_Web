@@ -9,6 +9,13 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BookService.Migrations
 {
     [DbContext(typeof(BookServiceContext))]
+
+    /*
+        * Class: BookServiceContextModelSnapshot
+        * -----------------------
+        * This class is the migration for the BookService database. It contains a
+        * BuildModel method that creates a table for Book objects.
+    */
     partial class BookServiceContextModelSnapshot : ModelSnapshot
     {
         protected override void BuildModel(ModelBuilder modelBuilder)

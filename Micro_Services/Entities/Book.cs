@@ -3,6 +3,12 @@ using System.Text.Json.Serialization;
 
 namespace Entities;
 
+/* 
+    * Class : BookWithoutID
+    * -----------------------
+    * This class is the model for a Book object. It contains properties for
+    * the title, author, description, image URL, and price of a book.
+*/
 public class BookWithoutID
 {
     public BookWithoutID() { }
@@ -40,6 +46,14 @@ public class BookWithoutID
     public override string ToString() => $"\"{Title}\" by {Author}, available for {Price} euros";
 }
 
+
+/* 
+    * Class : Book
+    * -----------------------
+    * This class is the model for a Book object. It contains properties for
+    * the ID, title, author, description, image URL, and price of a book.
+    * It inherits from BookWithoutID and adds an ID property.
+*/
 public class Book : BookWithoutID
 {
     public Book() { }

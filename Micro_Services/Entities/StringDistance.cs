@@ -3,6 +3,14 @@
 namespace Entities;
 
 // Thank to https://www.csharpstar.com/csharp-string-distance-algorithm/
+/*
+    * Class: StringDistance
+    * -----------------------
+    * This class is the context for the BookService database. It contains a
+    * DbSet of Book objects.
+    * We don't use this class in the project, because its search only 1 word
+    * and not the title of the book. (For the moment).
+*/
 public static class StringDistance
 {
     /// <summary>

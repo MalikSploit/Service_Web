@@ -211,4 +211,21 @@ public partial class Profile
     {
         isDropdownOpen = !isDropdownOpen;
     }
+
+    private string PasswordInputType { get; set; } = "password";
+    private string PasswordButtonIcon { get; set; } = "visibility_off";
+
+    private void TogglePasswordView()
+    {
+        if (PasswordInputType == "password")
+        {
+            PasswordInputType = "text";
+            PasswordButtonIcon = "visibility";
+        }
+        else
+        {
+            PasswordInputType = "password";
+            PasswordButtonIcon = "visibility_off";
+        }
+    }
 }

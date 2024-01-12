@@ -20,7 +20,7 @@ public class UserController(
     private readonly List<string> adminEmails = new List<string> 
     { 
         "Malik@gmail.com",
-        "Thomas@gmail.com",
+        "thomas@gmail.com",
         "Thibault@gmail.com"
     };
 

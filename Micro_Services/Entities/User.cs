@@ -2,7 +2,12 @@
 
 namespace Entities;
 
-
+/* 
+    * Class : User
+    * -----------------------
+    * This class is the model for a User object. It contains properties for
+    * the ID, name, surname, email and password of a user.
+*/
 public class User
 {
     public int Id { get; set; }
@@ -17,6 +22,13 @@ public class User
     }
 }
 
+
+/* 
+    * Class : UserDTO
+    * -----------------------
+    * This class is the model for a UserDTO object. It contains properties for
+    * the ID, name, surname, email, token and role of a user.
+*/
 public class UserDTO
 {
     public int Id { get; set; }
@@ -29,6 +41,12 @@ public class UserDTO
     public override string ToString() => Id + " " + Name + " " + Surname + " " + Email + " " + Token + " " + Role;
 }
 
+/*
+    * Class : UserCreateModel
+    * -----------------------
+    * This class is the model for a UserCreateModel object. It contains properties for
+    * the name, surname, email and password of a user.
+*/
 public class UserCreateModel
 {
     public string Password { get; set; }
@@ -46,6 +64,13 @@ public class UserCreateModel
 
     public override string ToString() => Name + " " + Surname + " " + Email + " " + Password;
 }
+
+/* 
+    * Class : UserUpdateModel
+    * -----------------------
+    * This class is the model for a UserUpdateModel object. It contains properties for
+    * the ID, name, surname, email and password of a user.
+*/
 public class UserUpdateModel
 {
     public int Id { get; set; }
@@ -58,6 +83,12 @@ public class UserUpdateModel
 
 }
 
+/* 
+    * Class : UserLogin
+    * -----------------------
+    * This class is the model for a UserLogin object. It contains properties for
+    * the email and password of a user.
+*/
 public class UserLogin
 {
     public string Email { get; set; } = "";
