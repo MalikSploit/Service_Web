@@ -13,6 +13,9 @@ public partial class Login : ComponentBase
     [Inject] private NavigationManager NavigationManager { get; set; }
     [Inject] private ILocalStorageService LocalStorage { get; set; }
     [Inject] private CartStateService CartStateService { get; set; }
+    private string PasswordInputType { get; set; } = "password";
+    private string PasswordButtonIcon { get; set; } = "visibility_off";
+
 
     private string _email="";
     private string _pass="";
@@ -74,9 +77,6 @@ public partial class Login : ComponentBase
         isDropdownOpen = !isDropdownOpen;
     }
     
-    private string PasswordInputType { get; set; } = "password";
-    private string PasswordButtonIcon { get; set; } = "visibility_off";
-
     private void TogglePasswordView()
     {
         if (PasswordInputType == "password")

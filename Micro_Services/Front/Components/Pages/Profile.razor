@@ -95,32 +95,27 @@
             @successMessage
         </div> 
     }
-    
     @if (!string.IsNullOrEmpty(errorMessage))
     {
         <div class="text-red-600 mb-4">
             @errorMessage
         </div>
     }
-    
     <EditForm Model="@userUpdateModel" OnValidSubmit="HandleValidSubmit">
         <DataAnnotationsValidator />
         <ValidationSummary />
-
         <div class="mb-4">
             <label class="block text-gray-700 text-sm font-bold mb-2" for="name">
                 Name
             </label>
             <InputText id="name" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" @bind-Value="userUpdateModel.Name" />
         </div>
-
         <div class="mb-4">
             <label class="block text-gray-700 text-sm font-bold mb-2" for="surname">
                 Surname
             </label>
             <InputText id="surname" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" @bind-Value="userUpdateModel.Surname" />
         </div>
-
         <!-- Email field -->
         <div class="mb-4">
             <label class="block text-gray-700 text-sm font-bold mb-2" for="email">
@@ -128,41 +123,35 @@
             </label>
             <InputText id="email" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" @bind-Value="userUpdateModel.Email" disabled />
         </div>
-
-        <div class="mb-4">
-            <label class="block text-gray-700 text-sm font-bold mb-2" for="password">
+        <div class="mb-4 relative">
+            <label class="block text-gray-700 text-sm font-bold mb-2">
                 New Password (optional)
             </label>
-            <InputText id="password" type="password" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline" @bind-Value="userUpdateModel.Password" placeholder="••••••••"/>
-
-            <button type="button" @onclick="TogglePasswordView" class="text-sm">
-                                <span class="material-icons">@PasswordButtonIcon</span>
-            </button>
+            <InputText id="password" type="@NewPasswordInputType" class="shadow appearance-none border rounded w-full py-2 px-3 pr-10 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline" @bind-Value="userUpdateModel.Password" placeholder="••••••••"/>
+            <div class="absolute inset-y-0 right-0 flex items-center pr-3 h-full mt-2">
+                <button type="button" @onclick="ToggleNewPasswordView" class="text-sm">
+                    <span class="material-icons">@NewPasswordButtonIcon</span>
+                </button>
+            </div>
         </div>
-        
-        <div class="mb-6">
-            <label class="block text-gray-700 text-sm font-bold mb-2" for="confirmPassword">
+        <div class="mb-6 relative">
+            <label class="block text-gray-700 text-sm font-bold mb-2">
                 Confirm New Password (optional)
             </label>
-            <InputText id="confirmPassword" type="password" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline" @bind-Value="confirmPassword" placeholder="••••••••" />
-
-
-            <button type="button" @onclick="TogglePasswordView" class="text-sm">
-                                <span class="material-icons">@PasswordButtonIcon</span>
-            </button>
-            
+            <InputText id="password2" type="@ConfirmPasswordInputType" class="shadow appearance-none border rounded w-full py-2 px-3 pr-10 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline" @bind-Value="confirmPassword" placeholder="••••••••"/>
+            <div class="absolute inset-y-0 right-0 flex items-center pr-3 h-full mt-2">
+                <button type="button" @onclick="ToggleConfirmPasswordView" class="text-sm">
+                    <span class="material-icons">@ConfirmPasswordButtonIcon</span>
+                </button>
+            </div>
         </div>
-
         <button class="bg-blue-600 hover:bg-blue-800 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" type="submit">
             Update Profile
         </button>
-        
         <button type="button" @onclick="DeleteAccount" class="bg-red-600 hover:bg-red-800 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline mt-4">
             Delete Account
         </button>
-        
     </EditForm>
-    
     @if (showConfirmationDialog)
         {
             <div class="fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full flex justify-center items-center">

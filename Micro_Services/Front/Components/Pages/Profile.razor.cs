@@ -11,7 +11,7 @@ namespace Front.Components.Pages;
 public partial class Profile
 {
     #pragma warning disable CS8618
-    private string confirmPassword;
+    private string confirmPassword = "";
     private readonly UserUpdateModel userUpdateModel = new ();
     private string errorMessage = string.Empty;
     private string successMessage = string.Empty;
@@ -19,6 +19,11 @@ public partial class Profile
     private bool showConfirmationDialog;
     private bool _isUserAdmin;
     private int CartItemCount { get; set; }
+    private string NewPasswordInputType { get; set; } = "password";
+    private string NewPasswordButtonIcon { get; set; } = "visibility_off";
+
+    private string ConfirmPasswordInputType { get; set; } = "password";
+    private string ConfirmPasswordButtonIcon { get; set; } = "visibility_off";
 
     [Inject] private ILocalStorageService LocalStorage { get; set; }
     [Inject] private NavigationManager NavigationManager { get; set; }
@@ -211,21 +216,32 @@ public partial class Profile
     {
         isDropdownOpen = !isDropdownOpen;
     }
-
-    private string PasswordInputType { get; set; } = "password";
-    private string PasswordButtonIcon { get; set; } = "visibility_off";
-
-    private void TogglePasswordView()
+    
+    private void ToggleNewPasswordView()
     {
-        if (PasswordInputType == "password")
+        if (NewPasswordInputType == "password")
         {
-            PasswordInputType = "text";
-            PasswordButtonIcon = "visibility";
+            NewPasswordInputType = "text";
+            NewPasswordButtonIcon = "visibility";
         }
         else
         {
-            PasswordInputType = "password";
-            PasswordButtonIcon = "visibility_off";
+            NewPasswordInputType = "password";
+            NewPasswordButtonIcon = "visibility_off";
+        }
+    }
+
+    private void ToggleConfirmPasswordView()
+    {
+        if (ConfirmPasswordInputType == "password")
+        {
+            ConfirmPasswordInputType = "text";
+            ConfirmPasswordButtonIcon = "visibility";
+        }
+        else
+        {
+            ConfirmPasswordInputType = "password";
+            ConfirmPasswordButtonIcon = "visibility_off";
         }
     }
 }

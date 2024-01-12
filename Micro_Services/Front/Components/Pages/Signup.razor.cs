@@ -14,6 +14,8 @@ public partial class Signup : ComponentBase
     private string _errorMessage="";
     private bool isDropdownOpen;
     private int CartItemCount { get; set; }
+    private string PasswordInputType { get; set; } = "password";
+    private string PasswordButtonIcon { get; set; } = "visibility_off";
     
     protected override Task OnInitializedAsync()
     {
@@ -75,5 +77,18 @@ public partial class Signup : ComponentBase
     private void ToggleDropdown()
     {
         isDropdownOpen = !isDropdownOpen;
+    }
+    private void TogglePasswordVisibility()
+    {
+        if (PasswordInputType == "password")
+        {
+            PasswordInputType = "text";
+            PasswordButtonIcon = "visibility";
+        }
+        else
+        {
+            PasswordInputType = "password";
+            PasswordButtonIcon = "visibility_off";
+        }
     }
 }

@@ -80,7 +80,6 @@ public class UserUpdateModel
     public string? Surname { get; set; } = "";
     
     public override string ToString() => Id + " " + Name + " " + Surname + " " + Email + " " + Password;
-
 }
 
 /* 
