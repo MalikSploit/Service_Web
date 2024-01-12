@@ -98,6 +98,13 @@ public class UserLogin
 
 }
 
+
+/*
+    * Class : Extension
+    * -----------------------
+    * This class is the extension class for the User object. It contains methods for
+    * checking if the email, name, surname and password are valid.
+*/
 public static class Extension
 {
     private static readonly Regex EmailRegex = new Regex(@"^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$", RegexOptions.Compiled);

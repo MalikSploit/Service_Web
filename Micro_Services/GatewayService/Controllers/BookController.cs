@@ -6,6 +6,13 @@ namespace GatewayService.Controllers;
 
 [Route("api/[controller]")]
 [ApiController]
+
+/* 
+    * Class : BookController
+    * -----------------------
+    * This class is the controller for the Book API. It contains methods for
+    * GET, POST, PUT, and DELETE requests.
+*/
 public class BookController(IHttpClientFactory httpClientFactory) : ControllerBase
 {
     private readonly HttpClient _client = httpClientFactory.CreateClient("BookService");

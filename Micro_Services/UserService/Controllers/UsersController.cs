@@ -9,6 +9,15 @@ namespace UserService.Controllers;
 
 [Route("api/[controller]")]
 [ApiController]
+
+/* 
+    * Class : UsersController
+    * -----------------------
+    * This class is the controller for the User API. It contains methods for
+    * GET, POST, PUT, and DELETE requests.
+    * This class contains attributes for the UserServiceContext and the
+    * PasswordHasher.
+*/
 public class UsersController : ControllerBase
 {
     private readonly UserServiceContext _context;

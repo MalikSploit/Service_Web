@@ -2,6 +2,7 @@
 using Entities;
 using Front.Services;
 using Microsoft.AspNetCore.Components;
+using Microsoft.IdentityModel.Tokens;
 
 namespace Front.Components.Pages;
 
@@ -35,8 +36,41 @@ public partial class Explore : ComponentBase
 
     private void UpdateSearch(ChangeEventArgs e)
     {
-        searchTerm = e.Value?.ToString();
-        filteredBooks = string.IsNullOrWhiteSpace(searchTerm) ? books : books.Where(b => b.Title.Contains(searchTerm, StringComparison.OrdinalIgnoreCase));
+        searchTerm = e.Value?.ToString()!;
+
+        if(searchTerm.IsNullOrEmpty() || searchTerm.Length <= 3 || !books.Any()) { filteredBooks = books; return; }
+
+        var keywords = searchTerm.ToLowerInvariant().Split(" ");
+
+        List<Tuple<Book, int>> BookWithScore = new(books.Count());
+
+        foreach (var b in books) 
+        {
+            var titles = b.Title.ToLowerInvariant().Split(" ");
+            var description = b.Description.ToLowerInvariant().Split(" ");
+            var author = b.Author.ToLowerInvariant().Split(" ");
+
+            var book_keywords = titles.Union(description).Union(author);
+
+            int score = 0;
+
+            foreach(var kw in keywords) 
+            {
+                int local_score = int.MaxValue;
+                foreach (var bwk in book_keywords) 
+                {
+                    local_score = Math.Min(local_score, StringDistance.LevenshteinDistance(kw, bwk));
+                }
+                score += local_score;
+            }
+
+            BookWithScore.Add(new Tuple<Book, int>(b, score));
+        }
+        BookWithScore.Sort((a,b) => a.Item2.CompareTo(b.Item2));
+
+        filteredBooks = BookWithScore.Select(t => t.Item1);
+
+        //filteredBooks = string.IsNullOrWhiteSpace(searchTerm) ? books : books.Where(b => b.Title.Contains(searchTerm, StringComparison.OrdinalIgnoreCase));
     }
         
     private async Task AddToCart(Book book)
