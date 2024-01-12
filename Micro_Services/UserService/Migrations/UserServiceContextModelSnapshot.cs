@@ -9,6 +9,13 @@ using UserService.Data;
 namespace UserService.Migrations
 {
     [DbContext(typeof(UserServiceContext))]
+
+    /* 
+        * Class: UserServiceContextModelSnapshot
+        * -----------------------
+        * This class is the migration for the UserService database. It contains a
+        * BuildModel method that creates a table for User objects.
+    */
     partial class UserServiceContextModelSnapshot : ModelSnapshot
     {
         protected override void BuildModel(ModelBuilder modelBuilder)

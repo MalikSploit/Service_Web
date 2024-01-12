@@ -5,6 +5,11 @@ using Microsoft.IdentityModel.Tokens;
 
 namespace GatewayService.Services;
 
+/*
+    * Class: JwtTokenValidationService
+    * -----------------------
+    * This class is used to validate a JWT token.
+*/
 public class JwtTokenValidationService
 {
     private readonly TokenValidationParameters _tokenValidationParameters;

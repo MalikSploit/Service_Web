@@ -7,6 +7,13 @@ using Entities;
 
 namespace UserService.Data;
 
+
+/* 
+    * Class : UserServiceContext
+    * -----------------------
+    * This class is the context for the UserService database. It contains a
+    * DbSet of User objects.
+*/
 public class UserServiceContext : DbContext
 {
     public UserServiceContext (DbContextOptions<UserServiceContext> options)
