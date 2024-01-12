@@ -5,6 +5,8 @@ using Microsoft.JSInterop;
 using Blazored.LocalStorage;
 using Entities;
 using Front.Services;
+using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
 
 namespace Front.Components.Pages;
 
@@ -14,6 +16,7 @@ public partial class Checkout : ComponentBase
     [Inject] private IJSRuntime JSRuntime { get; set; }
     [Inject] private ILocalStorageService LocalStorage { get; set; }
     [Inject] private BookService BookService { get; set; }
+    [Inject] protected NavigationManager NavigationManager { get; set; }
     
     [Required, MaxLength(100)]
     private string CustomerName { get; set; }
@@ -25,9 +28,10 @@ public partial class Checkout : ComponentBase
     private string BillingAddress { get; set; }
 
     private EditContext _editContext;
-    private readonly List<Book> cartItems = new List<Book>();
-    private Dictionary<int, int> cartItemQuantities = new Dictionary<int, int>();
+    private readonly List<Book> cartItems = [];
+    private Dictionary<int, int> cartItemQuantities = new();
     private decimal totalPrice;
+    private bool isDropdownOpen;
 
     protected override void OnInitialized()
     {
@@ -36,8 +40,31 @@ public partial class Checkout : ComponentBase
     
     protected override async Task OnInitializedAsync()
     {
+        var jwtTokenWithQuotes = await LocalStorage.GetItemAsStringAsync("jwtToken");
+        if (!string.IsNullOrEmpty(jwtTokenWithQuotes))
+        {
+            var jwtToken = jwtTokenWithQuotes.Trim('"');
+            var jwtPayload = ParseJwtPayload(jwtToken);
+            if (jwtPayload != null)
+            {
+                var isLogged = jwtPayload.Claims.Any(c => c.Type == ClaimTypes.Role && c.Value == "User" || c.Value == "Admin");
+                if (!isLogged)
+                {
+                    Console.WriteLine("User is not logged in");
+                    // User is not an logged in, redirect to login page
+                    NavigationManager.NavigateTo("/Login", true);
+                    return;
+                }
+            }
+        }
         await LoadCartItems();
         CalculateTotalPrice();
+    }
+    
+    private static JwtSecurityToken? ParseJwtPayload(string jwtToken)
+    {
+        var tokenHandler = new JwtSecurityTokenHandler();
+        return tokenHandler.CanReadToken(jwtToken) ? tokenHandler.ReadJwtToken(jwtToken) : null;
     }
     
     private async Task LoadCartItems()
@@ -87,5 +114,15 @@ public partial class Checkout : ComponentBase
         {
             Console.WriteLine("Failed to validate the card.");
         }
+    }
+    
+    private string GetDropdownClass()
+    {
+        return isDropdownOpen ? "block z-10" : "hidden";
+    }
+
+    private void ToggleDropdown()
+    {
+        isDropdownOpen = !isDropdownOpen;
     }
 }

@@ -1,4 +1,5 @@
 using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
 using Microsoft.AspNetCore.Components;
 using Entities;
 using Blazored.LocalStorage;
@@ -27,22 +28,33 @@ public partial class Profile
 
     protected override async Task OnInitializedAsync()
     {
-        _isUserAdmin = await LoginService.IsUserAdmin();
-        CartStateService.OnChange += UpdateCartCount;
-        UpdateCartCount();
-        
         var jwtTokenWithQuotes = await LocalStorage.GetItemAsStringAsync("jwtToken");
+        var isLogged = false; // Create the isLogged variable before the if statement
         if (!string.IsNullOrEmpty(jwtTokenWithQuotes))
         {
             var jwtToken = jwtTokenWithQuotes.Trim('"');
             var jwtPayload = ParseJwtPayload(jwtToken);
             if (jwtPayload != null)
             {
-                userUpdateModel.Email = jwtPayload.Claims.FirstOrDefault(c => c.Type == JwtRegisteredClaimNames.Email)?.Value;
-                userUpdateModel.Name = jwtPayload.Claims.FirstOrDefault(c => c.Type == "name")?.Value;
-                userUpdateModel.Surname = jwtPayload.Claims.FirstOrDefault(c => c.Type == "surname")?.Value;
+                isLogged = jwtPayload.Claims.Any(c => c.Type == ClaimTypes.Role && (c.Value == "User" || c.Value == "Admin"));
+                if (isLogged)
+                {
+                    userUpdateModel.Email = jwtPayload.Claims.FirstOrDefault(c => c.Type == JwtRegisteredClaimNames.Email)?.Value;
+                    userUpdateModel.Name = jwtPayload.Claims.FirstOrDefault(c => c.Type == "name")?.Value;
+                    userUpdateModel.Surname = jwtPayload.Claims.FirstOrDefault(c => c.Type == "surname")?.Value;
+                }
             }
         }
+    
+        if (!isLogged)
+        {
+            NavigationManager.NavigateTo("/Login");
+            return;
+        }
+    
+        _isUserAdmin = await LoginService.IsUserAdmin();
+        CartStateService.OnChange += UpdateCartCount;
+        UpdateCartCount();
     }
     
     private async void UpdateCartCount()
