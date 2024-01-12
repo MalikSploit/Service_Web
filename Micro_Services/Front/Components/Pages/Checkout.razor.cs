@@ -50,7 +50,6 @@ public partial class Checkout : ComponentBase
                 var isLogged = jwtPayload.Claims.Any(c => c.Type == ClaimTypes.Role && c.Value == "User" || c.Value == "Admin");
                 if (!isLogged)
                 {
-                    Console.WriteLine("User is not logged in");
                     // User is not an logged in, redirect to login page
                     NavigationManager.NavigateTo("/Login", true);
                     return;

@@ -84,7 +84,6 @@ public partial class Cart : ComponentBase
     {
         NavigationManager.NavigateTo("/Checkout");
         return Task.CompletedTask;
-        // Checkout logic here
     }
 
     private async Task Logout()
