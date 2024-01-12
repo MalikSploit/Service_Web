@@ -9,7 +9,15 @@ public class CartStateService(ILocalStorageService localStorage)
     public async Task<int> GetCartItemCountAsync()
     {
         var cart = await localStorage.GetItemAsync<Dictionary<int, int>>("cart");
-        return cart?.Sum(c => c.Value) ?? 0;
+        try
+        {
+            return cart?.Sum(c => c.Value) ?? 0;
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine("trop de livre : " + ex.Message);
+        }
+        return int.MaxValue;
     }
 
     public async Task UpdateCartItemCountAsync()

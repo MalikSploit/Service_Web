@@ -10,6 +10,7 @@ using Microsoft.AspNetCore.Components.Forms;
 namespace Front.Components.Pages;
 
 using System.Collections.Generic;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Components;
 
@@ -111,7 +112,7 @@ public partial class Admin : ComponentBase
     private string PriceString
     {
         get => SelectedBook.Price.ToString(CultureInfo.InvariantCulture);
-        set => SelectedBook.Price = decimal.TryParse(value, out var result) ? result : 0;
+        set => SelectedBook.Price = decimal.TryParse(value, CultureInfo.InvariantCulture, out var result) ? result : 0;
     }
 
     private void OpenEditModal(Book book)
