@@ -1,4 +1,5 @@
-﻿using Front.Services;
+﻿using System.Reflection.Metadata;
+using Front.Services;
 using Microsoft.AspNetCore.Components;
 using Blazored.LocalStorage;
 using Entities;
@@ -71,5 +72,22 @@ public partial class Login : ComponentBase
     private void ToggleDropdown()
     {
         isDropdownOpen = !isDropdownOpen;
+    }
+    
+    private string PasswordInputType { get; set; } = "password";
+    private string PasswordButtonIcon { get; set; } = "visibility_off";
+
+    private void TogglePasswordView()
+    {
+        if (PasswordInputType == "password")
+        {
+            PasswordInputType = "text";
+            PasswordButtonIcon = "visibility";
+        }
+        else
+        {
+            PasswordInputType = "password";
+            PasswordButtonIcon = "visibility_off";
+        }
     }
 }

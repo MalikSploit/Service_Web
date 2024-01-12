@@ -88,9 +88,14 @@
                         <label for="email-address" class="sr-only">Email address</label>
                         <input @bind="_email" id="email-address" name="email" type="email" autocomplete="email" required class="appearance-none rounded-t-lg relative block w-full px-3 py-3 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-blue-500 focus:border-blue-500 focus:z-10 sm:text-sm" placeholder="Email address">
                     </div>
-                    <div class="-mt-1">
+                    <div class="-mt-1 relative">
                         <label for="password" class="sr-only">Password</label>
-                        <input @bind="_pass" id="password" name="password" type="password" autocomplete="current-password" required class="appearance-none rounded-b-lg relative block w-full px-3 py-3 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-blue-500 focus:border-blue-500 focus:z-10 sm:text-sm" placeholder="Password">
+                        <input @bind="_pass" id="password" type="@PasswordInputType" autocomplete="current-password" required class="appearance-none rounded-b-lg block w-full px-3 py-3 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-blue-500 focus:border-blue-500 focus:z-10 sm:text-sm pr-10" placeholder="Password" />
+                        <div class="absolute inset-y-0 right-0 flex items-center pr-3 h-full">
+                            <button type="button" @onclick="TogglePasswordView" class="text-sm">
+                                <span class="material-icons">@PasswordButtonIcon</span>
+                            </button>
+                        </div>
                     </div>
                 </div>
 

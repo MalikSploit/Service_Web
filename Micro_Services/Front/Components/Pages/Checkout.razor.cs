@@ -25,7 +25,7 @@ public partial class Checkout : ComponentBase
     private string BillingAddress { get; set; }
 
     private EditContext _editContext;
-    private List<Book> cartItems = new List<Book>();
+    private readonly List<Book> cartItems = new List<Book>();
     private Dictionary<int, int> cartItemQuantities = new Dictionary<int, int>();
     private decimal totalPrice;
 
