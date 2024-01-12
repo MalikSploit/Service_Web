@@ -7,6 +7,14 @@ namespace BookService.Controllers;
 
 [Route("api/[controller]")]
 [ApiController]
+
+
+/*
+    * Class: BooksController
+    * -----------------------
+    * This class is the controller for the Books API. It contains methods for
+    * GET, POST, PUT, and DELETE requests.
+*/
 public class BooksController(BookServiceContext context) : ControllerBase
 {
     private DbSet<Book> Books => context.Books;

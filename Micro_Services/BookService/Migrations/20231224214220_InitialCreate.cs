@@ -5,6 +5,13 @@
 namespace BookService.Migrations
 {
     /// <inheritdoc />
+    /// 
+    /* 
+        * Class: InitialCreate
+        * -----------------------
+        * This class is the migration for the BookService database. It contains a
+        * CreateTable method that creates a table for Book objects.
+    */
     public partial class InitialCreate : Migration
     {
         /// <inheritdoc />
