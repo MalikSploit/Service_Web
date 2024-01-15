@@ -18,6 +18,9 @@ public partial class Index : ComponentBase
     private bool _isDropdownVisible;
     private bool _isLoggedIn;
     private bool _isUserAdmin;
+    private bool showAddToCartModal;
+    private string modalMessage = "";
+    private Timer modalTimer;
     private int CartItemCount { get; set; }
 
     protected override async Task OnInitializedAsync()
@@ -34,15 +37,25 @@ public partial class Index : ComponentBase
     {
         var cart = await LocalStorage.GetItemAsync<Dictionary<int, int>>("cart") ?? new Dictionary<int, int>();
 
-        // Add or update the quantity for the given book
         if (!cart.TryAdd(book.Id, 1))
         {
             cart[book.Id] += 1;
         }
 
-        // If it's not, add it with a quantity of 1
         await LocalStorage.SetItemAsync("cart", cart);
         await UpdateCartItemCount();
+
+        // Show modal
+        modalMessage = "Book added to cart!";
+        showAddToCartModal = true;
+        StateHasChanged();
+
+        // Hide the modal after 1 second
+        modalTimer?.Dispose();
+        modalTimer = new Timer(_ => { 
+            showAddToCartModal = false; 
+            InvokeAsync(StateHasChanged); // Invoke StateHasChanged on the UI thread
+        }, null, 1000, Timeout.Infinite);
     }
     
     private async void UpdateCartCount()

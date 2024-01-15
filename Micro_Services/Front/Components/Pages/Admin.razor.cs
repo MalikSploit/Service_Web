@@ -1,6 +1,4 @@
 ﻿using System.Globalization;
-using System.IdentityModel.Tokens.Jwt;
-using System.Security.Claims;
 using Blazored.LocalStorage;
 using Entities;
 using Front.Services;
@@ -10,7 +8,6 @@ using Microsoft.AspNetCore.Components.Forms;
 namespace Front.Components.Pages;
 
 using System.Collections.Generic;
-using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Components;
 
@@ -20,6 +17,8 @@ public partial class Admin : ComponentBase
     [Inject] protected BookService BookService { get; set; }
     [Inject] protected NavigationManager NavigationManager { get; set; }
     [Inject] private ILocalStorageService LocalStorage { get; set; }
+    [Inject] private LoginService LoginService { get; set; }
+    
     [CascadingParameter]
     private Task<AuthenticationState> AuthenticationStateTask { get; set; }
 
@@ -29,33 +28,20 @@ public partial class Admin : ComponentBase
     private bool ShowEditModal;
     private bool ShowDeleteConfirmModal;
     private bool isDropdownOpen;
+    private bool _isUserAdmin;
 
     protected override async Task OnInitializedAsync()
     {
-        var jwtTokenWithQuotes = await LocalStorage.GetItemAsStringAsync("jwtToken");
-        if (!string.IsNullOrEmpty(jwtTokenWithQuotes))
+        _isUserAdmin = await LoginService.IsUserAdmin();
+        if (_isUserAdmin)
         {
-            var jwtToken = jwtTokenWithQuotes.Trim('"');
-            var jwtPayload = ParseJwtPayload(jwtToken);
-            if (jwtPayload != null)
-            {
-                var isAdmin = jwtPayload.Claims.Any(c => c.Type == ClaimTypes.Role && c.Value == "Admin");
-                if (!isAdmin)
-                {
-                    // User is not an admin, redirect to home page
-                    NavigationManager.NavigateTo("/", true);
-                    return;
-                }
-            }
+            await LoadBooks();
+            IsLoading = false;
         }
-        await LoadBooks();
-        IsLoading = false;
-    }
-    
-    private static JwtSecurityToken? ParseJwtPayload(string jwtToken)
-    {
-        var tokenHandler = new JwtSecurityTokenHandler();
-        return tokenHandler.CanReadToken(jwtToken) ? tokenHandler.ReadJwtToken(jwtToken) : null;
+        else
+        {
+            NavigationManager.NavigateTo("/", true);
+        }
     }
 
     private async Task LoadBooks()

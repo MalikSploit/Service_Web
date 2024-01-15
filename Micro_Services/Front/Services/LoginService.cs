@@ -4,7 +4,6 @@ using Entities;
 using Newtonsoft.Json;
 using System.Text;
 using Blazored.LocalStorage;
-using Microsoft.AspNetCore.Components;
 using JwtRegisteredClaimNames = Microsoft.IdentityModel.JsonWebTokens.JwtRegisteredClaimNames;
 
 namespace Front.Services;
@@ -69,23 +68,30 @@ public class LoginService
         try
         {
             var jwtSecurityToken = tokenHandler.ReadJwtToken(jwtToken);
-            var expClaim = jwtSecurityToken.Claims.FirstOrDefault(c => c.Type == JwtRegisteredClaimNames.Exp);
 
-            if (expClaim is not null 
-                && long.TryParse(expClaim.Value, out var exp) 
-                && DateTimeOffset.FromUnixTimeSeconds(exp) > DateTimeOffset.UtcNow)
+            // Check for expiration
+            var expClaim = jwtSecurityToken.Claims.FirstOrDefault(c => c.Type == JwtRegisteredClaimNames.Exp);
+            if (expClaim is null 
+                || !long.TryParse(expClaim.Value, out var exp) 
+                || DateTimeOffset.FromUnixTimeSeconds(exp) <= DateTimeOffset.UtcNow)
             {
-                return true;
+                await _localStorage.RemoveItemAsync("jwtToken");
+                return false;
             }
+
+            // Check for role
+            var roleClaim = jwtSecurityToken.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Role);
+            return roleClaim?.Value is "Admin" or "User";
         }
         catch (Exception ex)
         {
             Console.WriteLine("Error processing JWT token: " + ex.Message);
+            await _localStorage.RemoveItemAsync("jwtToken");
         }
-    
-        await _localStorage.RemoveItemAsync("jwtToken");
+
         return false;
     }
+
     
     public async Task<bool> IsUserAdmin()
     {
@@ -106,8 +112,18 @@ public class LoginService
         try
         {
             var jwtSecurityToken = tokenHandler.ReadJwtToken(jwtToken);
+
+            // Check for expiration
+            var expClaim = jwtSecurityToken.Claims.FirstOrDefault(c => c.Type == JwtRegisteredClaimNames.Exp);
+            if (expClaim is null 
+                || !long.TryParse(expClaim.Value, out var exp) 
+                || DateTimeOffset.FromUnixTimeSeconds(exp) <= DateTimeOffset.UtcNow)
+            {
+                return false;
+            }
+
+            // Check for Admin role
             var isAdmin = jwtSecurityToken.Claims.Any(c => c.Type == ClaimTypes.Role && c.Value == "Admin");
-                    
             return isAdmin;
         }
         catch (Exception ex)

@@ -1,5 +1,4 @@
 using System.IdentityModel.Tokens.Jwt;
-using System.Security.Claims;
 using Microsoft.AspNetCore.Components;
 using Entities;
 using Blazored.LocalStorage;
@@ -33,34 +32,34 @@ public partial class Profile
 
     protected override async Task OnInitializedAsync()
     {
-        var jwtTokenWithQuotes = await LocalStorage.GetItemAsStringAsync("jwtToken");
-        var isLogged = false; // Create the isLogged variable before the if statement
-        if (!string.IsNullOrEmpty(jwtTokenWithQuotes))
+        var isLogged = await LoginService.IsUserLoggedIn();
+
+        if (isLogged)
         {
-            var jwtToken = jwtTokenWithQuotes.Trim('"');
-            var jwtPayload = ParseJwtPayload(jwtToken);
-            if (jwtPayload != null)
+            var jwtTokenWithQuotes = await LocalStorage.GetItemAsStringAsync("jwtToken");
+            if (!string.IsNullOrEmpty(jwtTokenWithQuotes))
             {
-                isLogged = jwtPayload.Claims.Any(c => c.Type == ClaimTypes.Role && (c.Value == "User" || c.Value == "Admin"));
-                if (isLogged)
+                var jwtToken = jwtTokenWithQuotes.Trim('"');
+                var jwtPayload = ParseJwtPayload(jwtToken);
+                if (jwtPayload != null)
                 {
                     userUpdateModel.Email = jwtPayload.Claims.FirstOrDefault(c => c.Type == JwtRegisteredClaimNames.Email)?.Value;
                     userUpdateModel.Name = jwtPayload.Claims.FirstOrDefault(c => c.Type == "name")?.Value;
                     userUpdateModel.Surname = jwtPayload.Claims.FirstOrDefault(c => c.Type == "surname")?.Value;
                 }
             }
+
+            _isUserAdmin = await LoginService.IsUserAdmin();
+            CartStateService.OnChange += UpdateCartCount;
+            UpdateCartCount();
         }
-    
-        if (!isLogged)
+        else
         {
+            // If not logged in, redirect to the Login page
             NavigationManager.NavigateTo("/Login");
-            return;
         }
-    
-        _isUserAdmin = await LoginService.IsUserAdmin();
-        CartStateService.OnChange += UpdateCartCount;
-        UpdateCartCount();
     }
+
     
     private async void UpdateCartCount()
     {

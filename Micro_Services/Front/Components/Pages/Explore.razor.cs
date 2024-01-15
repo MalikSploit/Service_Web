@@ -21,6 +21,10 @@ public partial class Explore : ComponentBase
     private string? searchTerm = string.Empty;
     private bool isDropdownOpen;
     private bool _isUserAdmin;
+    private bool showAddToCartModal;
+    private string modalMessage = "";
+    private Timer modalTimer;
+
     private int CartItemCount { get; set; }
 
     protected override async Task OnInitializedAsync()
@@ -43,29 +47,8 @@ public partial class Explore : ComponentBase
         var keywords = searchTerm.ToLowerInvariant().Split(" ");
 
         List<Tuple<Book, int>> BookWithScore = new(books.Count());
+        BookWithScore.AddRange(from b in books let titles = b.Title.ToLowerInvariant().Split(" ") let description = b.Description.ToLowerInvariant().Split(" ") let author = b.Author.ToLowerInvariant().Split(" ") let book_keywords = titles.Union(description).Union(author) let score = keywords.Sum(kw => book_keywords.Select(bwk => StringDistance.LevenshteinDistance(kw, bwk)).Prepend(int.MaxValue).Min()) select new Tuple<Book, int>(b, score));
 
-        foreach (var b in books) 
-        {
-            var titles = b.Title.ToLowerInvariant().Split(" ");
-            var description = b.Description.ToLowerInvariant().Split(" ");
-            var author = b.Author.ToLowerInvariant().Split(" ");
-
-            var book_keywords = titles.Union(description).Union(author);
-
-            int score = 0;
-
-            foreach(var kw in keywords) 
-            {
-                int local_score = int.MaxValue;
-                foreach (var bwk in book_keywords) 
-                {
-                    local_score = Math.Min(local_score, StringDistance.LevenshteinDistance(kw, bwk));
-                }
-                score += local_score;
-            }
-
-            BookWithScore.Add(new Tuple<Book, int>(b, score));
-        }
         BookWithScore.Sort((a,b) => a.Item2.CompareTo(b.Item2));
 
         filteredBooks = BookWithScore.Select(t => t.Item1);
@@ -77,15 +60,25 @@ public partial class Explore : ComponentBase
     {
         var cart = await LocalStorage.GetItemAsync<Dictionary<int, int>>("cart") ?? new Dictionary<int, int>();
 
-        // Add or update the quantity for the given book
         if (!cart.TryAdd(book.Id, 1))
         {
             cart[book.Id] += 1;
         }
 
-        // If it's not, add it with a quantity of 1
         await LocalStorage.SetItemAsync("cart", cart);
         await UpdateCartItemCount();
+
+        // Show modal
+        modalMessage = "Book added to cart!";
+        showAddToCartModal = true;
+        StateHasChanged();
+
+        // Hide the modal after 1 second
+        modalTimer?.Dispose();
+        modalTimer = new Timer(_ => { 
+            showAddToCartModal = false; 
+            InvokeAsync(StateHasChanged); // Invoke StateHasChanged on the UI thread
+        }, null, 1000, Timeout.Infinite);
     }
         
     private async void UpdateCartCount()

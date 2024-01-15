@@ -82,7 +82,7 @@ public partial class Cart : ComponentBase
 
     private Task Checkout()
     {
-        NavigationManager.NavigateTo("/Checkout");
+        NavigationManager.NavigateTo(_isLoggedIn ? "/Checkout" : "/Login");
         return Task.CompletedTask;
     }
 

@@ -5,8 +5,6 @@ using Microsoft.JSInterop;
 using Blazored.LocalStorage;
 using Entities;
 using Front.Services;
-using System.IdentityModel.Tokens.Jwt;
-using System.Security.Claims;
 
 namespace Front.Components.Pages;
 
@@ -17,6 +15,7 @@ public partial class Checkout : ComponentBase
     [Inject] private ILocalStorageService LocalStorage { get; set; }
     [Inject] private BookService BookService { get; set; }
     [Inject] protected NavigationManager NavigationManager { get; set; }
+    [Inject] private LoginService LoginService { get; set; }
     
     [Required, MaxLength(100)]
     private string CustomerName { get; set; }
@@ -32,6 +31,7 @@ public partial class Checkout : ComponentBase
     private Dictionary<int, int> cartItemQuantities = new();
     private decimal totalPrice;
     private bool isDropdownOpen;
+    private bool _isLoggedIn;
 
     protected override void OnInitialized()
     {
@@ -40,30 +40,16 @@ public partial class Checkout : ComponentBase
     
     protected override async Task OnInitializedAsync()
     {
-        var jwtTokenWithQuotes = await LocalStorage.GetItemAsStringAsync("jwtToken");
-        if (!string.IsNullOrEmpty(jwtTokenWithQuotes))
+        _isLoggedIn =  _isLoggedIn = await LoginService.IsUserAdmin();
+        if (_isLoggedIn)
         {
-            var jwtToken = jwtTokenWithQuotes.Trim('"');
-            var jwtPayload = ParseJwtPayload(jwtToken);
-            if (jwtPayload != null)
-            {
-                var isLogged = jwtPayload.Claims.Any(c => c.Type == ClaimTypes.Role && c.Value == "User" || c.Value == "Admin");
-                if (!isLogged)
-                {
-                    // User is not an logged in, redirect to login page
-                    NavigationManager.NavigateTo("/Login", true);
-                    return;
-                }
-            }
+            await LoadCartItems();
+            CalculateTotalPrice();
         }
-        await LoadCartItems();
-        CalculateTotalPrice();
-    }
-    
-    private static JwtSecurityToken? ParseJwtPayload(string jwtToken)
-    {
-        var tokenHandler = new JwtSecurityTokenHandler();
-        return tokenHandler.CanReadToken(jwtToken) ? tokenHandler.ReadJwtToken(jwtToken) : null;
+        else
+        {
+            NavigationManager.NavigateTo("/Login", true);
+        }
     }
     
     private async Task LoadCartItems()
