@@ -54,6 +54,14 @@
         <!-- Payment Details Section -->
         <div class="md:w-2/3 lg:w-3/5 p-4 bg-white shadow-md rounded">
             <h2 class="text-2xl font-bold mb-4">Pay with card</h2>
+            <!-- Error Message Display -->
+            @if (!string.IsNullOrEmpty(errorMessage))
+            {
+                <div class="mt-4 p-4 bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative" role="alert">
+                    <strong class="font-bold">Error!</strong>
+                    <span class="block sm:inline">@errorMessage</span>
+                </div>
+            }
             <EditForm Model="this" OnValidSubmit="ValidateCard">
                 <DataAnnotationsValidator />
 
@@ -104,7 +112,7 @@
                 <span class="text-lg font-bold">Total:</span>
                 <span class="text-lg font-bold">@totalPrice.ToString("C2")</span>
             </div>
-            <button class="w-full bg-purple-600 text-white py-3 px-4 rounded-md hover:bg-purple-700 transition duration-300 ease-in-out">
+            <button @onclick="CompleteCheckout" class="w-full bg-purple-600 text-white py-3 px-4 rounded-md hover:bg-purple-700 transition duration-300 ease-in-out">
                 Complete Checkout
             </button>
             <div class="text-center mt-4 text-sm text-gray-500">By completing your purchase you agree to these <a href="#" class="text-purple-600 hover:underline">Terms of Service</a>.</div>

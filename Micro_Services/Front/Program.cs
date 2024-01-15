@@ -29,6 +29,7 @@ builder.Services.AddCascadingAuthenticationState();
 builder.Services.AddScoped<AuthenticationStateProvider, CustomAuthenticationStateProvider>();
 builder.Services.AddScoped<LoginService>();
 builder.Services.AddScoped<CartStateService>();
+builder.Services.AddScoped<CheckoutService>();
 
 // Register Blazored LocalStorage
 builder.Services.AddBlazoredLocalStorage();

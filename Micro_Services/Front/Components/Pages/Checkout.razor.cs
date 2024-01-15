@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.Runtime.InteropServices;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Forms;
 using Microsoft.JSInterop;
@@ -16,6 +17,7 @@ public partial class Checkout : ComponentBase
     [Inject] private BookService BookService { get; set; }
     [Inject] protected NavigationManager NavigationManager { get; set; }
     [Inject] private LoginService LoginService { get; set; }
+    [Inject] private CheckoutService CheckoutService { get; set; }
     
     [Required, MaxLength(100)]
     private string CustomerName { get; set; }
@@ -32,6 +34,7 @@ public partial class Checkout : ComponentBase
     private decimal totalPrice;
     private bool isDropdownOpen;
     private bool _isLoggedIn;
+    private string errorMessage = string.Empty;
 
     protected override void OnInitialized()
     {
@@ -82,22 +85,24 @@ public partial class Checkout : ComponentBase
         }
     }
 
-    private async Task ValidateCard()
+    private async Task<bool> ValidateCard()
     {
         if (!_editContext.Validate())
         {
             Console.WriteLine("Form is not valid.");
-            return;
+            return false;
         }
 
         try
         {
             var cardValidationResponse = await JSRuntime.InvokeAsync<bool>("stripeIntegration.validateCard");
             Console.WriteLine(cardValidationResponse ? "The card is valid" : "The card is invalid");
+            return cardValidationResponse;
         }
         catch (JSException)
         {
             Console.WriteLine("Failed to validate the card.");
+            return false;
         }
     }
     
@@ -109,5 +114,19 @@ public partial class Checkout : ComponentBase
     private void ToggleDropdown()
     {
         isDropdownOpen = !isDropdownOpen;
+    }
+
+    private async Task CompleteCheckout()
+    {
+        var isCardValid = await ValidateCard();
+        if (isCardValid)
+        {
+            CheckoutService.HasCompletedCheckout = true;
+            NavigationManager.NavigateTo("/ThankYou");
+        }
+        else
+        {
+            errorMessage = "Card validation failed. Please check your card details.";
+        }
     }
 }
