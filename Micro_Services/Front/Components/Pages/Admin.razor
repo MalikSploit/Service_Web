@@ -111,48 +111,54 @@
     @if (ShowEditModal)
     {
         <!-- Modal Background -->
-        <div class="fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full"></div>
-        
-        <!-- Modal Content -->
-        <div class="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 p-5 border w-full max-w-md shadow-lg rounded-md bg-white">
-            <!-- Edit Form -->
-            <EditForm Model="SelectedBook">
-                <DataAnnotationsValidator />
-                <ValidationSummary />
-                <div class="mb-4">
-                    <label class="block">Title</label>
-                    <InputText class="border p-2" @bind-Value="SelectedBook.Title"/>
+        <div class="fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full flex items-center justify-center">
+            
+            <!-- Modal Content -->
+            <div class="bg-white rounded-lg shadow-lg max-w-lg w-full m-4 overflow-hidden transform transition-all">
+                <div class="p-5 border-b">
+                    <h2 class="text-3xl font-semibold text-gray-800 text-center">@modalTitle</h2>
                 </div>
-
-                <div class="mb-4">
-                    <label class="block">Author</label>
-                    <InputText class="border p-2" @bind-Value="SelectedBook.Author"/>
-                </div>
-
-                <div class="mb-4">
-                    <label class="block">description</label>
-                    <InputText class="border p-2" @bind-Value="SelectedBook.Description"/>
-                </div>
-
-                <div class="mb-4">
-                    <label class="block">imageUrl</label>
-                    <InputText class="border p-2" @bind-Value="SelectedBook.ImageUrl"/>
-                    <div class="mt-2">
-                        <label for="imageUpload" class="block">Or upload an image</label>
-                        <InputFile id="imageUpload" OnChange="@HandleImageUpload"/>
+                <!-- Edit Form -->
+                <EditForm Model="SelectedBook">
+                    <div class="p-5">
+                        <DataAnnotationsValidator />
+                        <ValidationSummary />
+                        <div class="mb-4">
+                            <label class="block text-gray-700 text-sm font-bold mb-2">Title</label>
+                            <InputText class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" @bind-Value="SelectedBook.Title"/>
+                        </div>
+    
+                        <div class="mb-4">
+                            <label class="block text-gray-700 text-sm font-bold mb-2">Author</label>
+                            <InputText class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" @bind-Value="SelectedBook.Author"/>
+                        </div>
+    
+                        <div class="mb-4">
+                            <label class="block text-gray-700 text-sm font-bold mb-2">Description</label>
+                            <InputText class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" @bind-Value="SelectedBook.Description"/>
+                        </div>
+    
+                        <div class="mb-4">
+                            <label class="block text-gray-700 text-sm font-bold mb-2">Image URL</label>
+                            <InputText class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" @bind-Value="SelectedBook.ImageUrl"/>
+                            <div class="mt-2">
+                                <label for="imageUpload" class="block text-gray-700 text-sm font-bold mb-2">Or upload an image</label>
+                                <InputFile id="imageUpload" OnChange="@HandleImageUpload"/>
+                            </div>
+                        </div>
+    
+                        <div class="mb-4">
+                            <label class="block text-gray-700 text-sm font-bold mb-2">Price</label>
+                            <InputText class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" @bind-Value="@PriceString"/>
+                        </div>
                     </div>
-                </div>
-
-                <div class="mb-4">
-                    <label class="block">Price</label>
-                    <InputText class="border p-2" @bind-Value="@PriceString"/>
-                </div>
-
-                <div class="flex justify-end">
-                    <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" @onclick="SaveBook">Save</button>
-                    <button class="bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded ml-2" @onclick="CloseEditModal">Cancel</button>
-                </div>
-            </EditForm>
+    
+                    <div class="flex justify-end p-5 border-t">
+                        <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline mr-2" @onclick="SaveBook">Save</button>
+                        <button class="bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" @onclick="CloseEditModal">Cancel</button>
+                    </div>
+                </EditForm>
+            </div>
         </div>
     }
 

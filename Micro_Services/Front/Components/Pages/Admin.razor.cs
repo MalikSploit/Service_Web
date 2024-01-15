@@ -29,6 +29,7 @@ public partial class Admin : ComponentBase
     private bool ShowDeleteConfirmModal;
     private bool isDropdownOpen;
     private bool _isUserAdmin;
+    private string modalTitle = "";
 
     protected override async Task OnInitializedAsync()
     {
@@ -54,6 +55,7 @@ public partial class Admin : ComponentBase
         SelectedBook = new Book();
         ShowEditModal = true;
         SelectedBook.Price = 0;
+        modalTitle = "Create Book";
     }
 
     private async Task DeleteBook(int id)
@@ -93,7 +95,6 @@ public partial class Admin : ComponentBase
             }
         }
     }
-
     
     private string PriceString
     {
@@ -105,6 +106,7 @@ public partial class Admin : ComponentBase
     {
         SelectedBook = book;
         ShowEditModal = true;
+        modalTitle = "Edit Book";
     }
 
     private void CloseEditModal()
