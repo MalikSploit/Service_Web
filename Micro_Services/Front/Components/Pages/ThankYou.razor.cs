@@ -16,4 +16,9 @@ public partial class ThankYou : ComponentBase
             NavigationManager.NavigateTo("/");
         }
     }
+    
+    private void NavigateHome()
+    {
+        NavigationManager.NavigateTo("/");
+    }
 }
