@@ -78,9 +78,12 @@ public partial class Cart : ComponentBase
                 cartItemIds[item.Id] = quantity;
                 await LocalStorage.SetItemAsync("cart", cartItemIds);
                 await LoadCartItems();
-                
-                // Synchronize the updated cart with the server
-                await SynchronizeCartWithDatabase();
+
+                if (_isLoggedIn)
+                {
+                    // Synchronize the updated cart with the server
+                    await SynchronizeCartWithDatabase();
+                }
             }
         }
     }
@@ -93,9 +96,12 @@ public partial class Cart : ComponentBase
             cartItems.RemoveAll(b => b.Id == item.Id);
             await LocalStorage.SetItemAsync("cart", cartItemIds);
             StateHasChanged();
-            
-            // Synchronize the updated cart with the server
-            await SynchronizeCartWithDatabase();
+
+            if (_isLoggedIn)
+            {
+                // Synchronize the updated cart with the server
+                await SynchronizeCartWithDatabase();
+            }
         }
     }
 

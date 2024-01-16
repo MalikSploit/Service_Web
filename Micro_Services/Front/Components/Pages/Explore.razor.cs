@@ -68,9 +68,12 @@ public partial class Explore : ComponentBase
         await LocalStorage.SetItemAsync("cart", cart);
         await UpdateCartItemCount();
         
-        // Synchronize the cart with the database
-        await CartStateService.UpdateCartAsync(cart, updateServer: true);
-
+        if (_isLoggedIn)
+        {
+            // Synchronize the cart with the database
+            await CartStateService.UpdateCartAsync(cart, updateServer: true);
+        }
+        
         // Show modal
         modalMessage = "Book added to cart!";
         showAddToCartModal = true;
