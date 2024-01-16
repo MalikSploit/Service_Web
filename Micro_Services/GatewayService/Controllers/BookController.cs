@@ -1,4 +1,5 @@
-﻿using System.Text.Json;
+﻿using System.Diagnostics;
+using System.Text.Json;
 using Entities;
 using Microsoft.AspNetCore.Mvc;
 
@@ -55,6 +56,7 @@ public class BookController(IHttpClientFactory httpClientFactory) : ControllerBa
 
         if (!response.IsSuccessStatusCode) return StatusCode((int)response.StatusCode, response.ReasonPhrase);
         var createdBook = await response.Content.ReadFromJsonAsync<Book>();
+        Debug.Assert(createdBook != null, nameof(createdBook) + " != null");
         return CreatedAtAction(nameof(Get), new { id = createdBook.Id }, createdBook);
     }
     

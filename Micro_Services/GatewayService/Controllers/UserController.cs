@@ -272,7 +272,7 @@ public class UserController(
     public async Task<IActionResult> UpdateCart(int userId, [FromBody] CartUpdateModel model)
     {
         using var client = httpClientFactory.CreateClient("ApiService");
-        var response = await client.PutAsJsonAsync($"http://localhost:5001/api/Users/cart/{userId}", model);
+        var response = await client.PutAsJsonAsync($"api/Users/cart/{userId}", model);
 
         if (response.IsSuccessStatusCode)
         {

@@ -210,6 +210,19 @@ public class UsersController : ControllerBase
         };
     }
     
+    [HttpGet("cart/{userId:int}")]
+    public async Task<ActionResult<string>> GetCart(int userId)
+    {
+        var user = await _context.User.FindAsync(userId);
+        if (user == null) 
+        {
+            return NotFound("User not found.");
+        }
+        
+        return string.IsNullOrEmpty(user.Cart) ? Ok(new Dictionary<int, int>()) : // Return an empty cart if no cart data is present
+            Ok(user.Cart);
+    }
+    
     [HttpPut("cart/{userId:int}")]
     public async Task<IActionResult> UpdateCart(int userId, [FromBody] CartUpdateModel model)
     {
@@ -226,19 +239,6 @@ public class UsersController : ControllerBase
         await _context.SaveChangesAsync();
 
         return NoContent(); // Or return updated cart data
-    }
-    
-    [HttpGet("cart/{userId:int}")]
-    public async Task<ActionResult<string>> GetCart(int userId)
-    {
-        var user = await _context.User.FindAsync(userId);
-        if (user == null) 
-        {
-            return NotFound("User not found.");
-        }
-        
-        return string.IsNullOrEmpty(user.Cart) ? Ok(new Dictionary<int, int>()) : // Return an empty cart if no cart data is present
-            Ok(user.Cart);
     }
 }
 
