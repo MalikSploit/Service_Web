@@ -1,5 +1,4 @@
 ﻿using System.ComponentModel.DataAnnotations;
-using System.Runtime.InteropServices;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Forms;
 using Microsoft.JSInterop;
@@ -18,7 +17,8 @@ public partial class Checkout : ComponentBase
     [Inject] protected NavigationManager NavigationManager { get; set; }
     [Inject] private LoginService LoginService { get; set; }
     [Inject] private CheckoutService CheckoutService { get; set; }
-    
+    [Inject] private TermsOfServiceModal TermsOfServiceModal { get; set; }
+
     [Required, MaxLength(100)]
     private string CustomerName { get; set; }
 
@@ -35,6 +35,7 @@ public partial class Checkout : ComponentBase
     private bool isDropdownOpen;
     private bool _isLoggedIn;
     private string errorMessage = string.Empty;
+    private string cardValidationMessage = string.Empty;
 
     protected override void OnInitialized()
     {
@@ -90,21 +91,23 @@ public partial class Checkout : ComponentBase
         if (!_editContext.Validate())
         {
             Console.WriteLine("Form is not valid.");
+            cardValidationMessage = "Please fill in all required fields correctly.";
             return false;
         }
 
         try
         {
             var cardValidationResponse = await JSRuntime.InvokeAsync<bool>("stripeIntegration.validateCard");
-            Console.WriteLine(cardValidationResponse ? "The card is valid" : "The card is invalid");
+            cardValidationMessage = cardValidationResponse ? "Your card is valid. You can now agree to the terms and complete the checkout." : "The card is invalid. Please check your card details.";
             return cardValidationResponse;
         }
         catch (JSException)
         {
-            Console.WriteLine("Failed to validate the card.");
+            cardValidationMessage = "Failed to validate the card. Please try again.";
             return false;
         }
     }
+
     
     private string GetDropdownClass()
     {
@@ -121,6 +124,12 @@ public partial class Checkout : ComponentBase
         var isCardValid = await ValidateCard();
         if (isCardValid)
         {
+            if (!TermsOfServiceModal.TermsAgreed)
+            {
+                await ShowAndConfirmTermsOfService();
+                errorMessage = "Please agree to the Terms of Service before completing the checkout.";
+                return;
+            }
             CheckoutService.HasCompletedCheckout = true;
             NavigationManager.NavigateTo("/ThankYou");
         }
@@ -128,5 +137,16 @@ public partial class Checkout : ComponentBase
         {
             errorMessage = "Card validation failed. Please check your card details.";
         }
+    }
+    
+    private void ShowTermsOfService()
+    {
+        TermsOfServiceModal.Show();
+    }
+    
+    private async Task ShowAndConfirmTermsOfService()
+    {
+        TermsOfServiceModal.Show();
+        await Task.Delay(100);
     }
 }

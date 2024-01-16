@@ -98,6 +98,14 @@
                 <button type="submit" class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded w-full">
                     Validate Card
                 </button>
+                
+                @if (!string.IsNullOrEmpty(cardValidationMessage))
+                {
+                    <div class="mt-4 p-4 bg-blue-100 border border-blue-400 text-blue-700 px-4 py-3 rounded relative" role="alert">
+                        <strong class="font-bold">Notice:</strong>
+                        <span class="block sm:inline">@cardValidationMessage</span>
+                    </div>
+                }
             </EditForm>
         </div>
 
@@ -115,7 +123,11 @@
             <button @onclick="CompleteCheckout" class="w-full bg-purple-600 text-white py-3 px-4 rounded-md hover:bg-purple-700 transition duration-300 ease-in-out">
                 Complete Checkout
             </button>
-            <div class="text-center mt-4 text-sm text-gray-500">By completing your purchase you agree to these <a href="#" class="text-purple-600 hover:underline">Terms of Service</a>.</div>
+            <TermsOfServiceModal @ref="TermsOfServiceModal"></TermsOfServiceModal>
+            <div class="text-center mt-4 text-sm text-gray-500">
+                By completing your purchase you agree to these 
+                <button class="text-purple-600 hover:underline" @onclick="ShowTermsOfService">Terms of Service</button>.
+            </div>
         </div>
     </div>
 </div>

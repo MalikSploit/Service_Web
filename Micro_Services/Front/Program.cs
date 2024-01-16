@@ -3,6 +3,7 @@ using Front.Services;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Components.Authorization;
 using Blazored.LocalStorage;
+using Front.Components.Pages;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -30,6 +31,7 @@ builder.Services.AddScoped<AuthenticationStateProvider, CustomAuthenticationStat
 builder.Services.AddScoped<LoginService>();
 builder.Services.AddScoped<CartStateService>();
 builder.Services.AddScoped<CheckoutService>();
+builder.Services.AddScoped<TermsOfServiceModal>();
 
 // Register Blazored LocalStorage
 builder.Services.AddBlazoredLocalStorage();
