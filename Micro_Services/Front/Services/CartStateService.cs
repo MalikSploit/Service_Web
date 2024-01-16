@@ -76,14 +76,16 @@ public class CartStateService(ILocalStorageService localStorage, HttpClient http
             throw new InvalidOperationException("User is not authenticated.");
         }
 
+        var jwtToken = await localStorage.GetItemAsStringAsync("jwtToken");
+        httpClient.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", jwtToken?.Trim('"'));
+
         var response = await httpClient.GetAsync($"http://localhost:5000/api/User/cart/{userId}");
         if (!response.IsSuccessStatusCode) throw new HttpRequestException("Failed to fetch cart from the server.");
         var cartJson = await response.Content.ReadAsStringAsync();
         var cart = JsonConvert.DeserializeObject<Dictionary<int, int>>(cartJson);
         return cart ?? new Dictionary<int, int>();
-
     }
-    
+
     private async Task SynchronizeCartAsync(Dictionary<int, int> cart)
     {
         var userId = await GetUserIdFromJwtToken();
@@ -93,15 +95,13 @@ public class CartStateService(ILocalStorageService localStorage, HttpClient http
             return;
         }
 
-        // Serialize the cart dictionary to a JSON string
+        var jwtToken = await localStorage.GetItemAsStringAsync("jwtToken");
+        httpClient.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", jwtToken?.Trim('"'));
+
         var cartJson = JsonConvert.SerializeObject(cart);
-
-        // Create an object with a "cartJson" field
-        var payload = new {  cartJson };
-
-        // Serialize the payload to JSON
+        var payload = new { cartJson };
         var content = new StringContent(JsonConvert.SerializeObject(payload), Encoding.UTF8, "application/json");
-        
+
         var response = await httpClient.PutAsync($"http://localhost:5000/api/User/cart/{userId}", content);
 
         if (!response.IsSuccessStatusCode)

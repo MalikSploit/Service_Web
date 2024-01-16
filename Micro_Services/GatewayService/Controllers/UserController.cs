@@ -256,9 +256,46 @@ public class UserController(
         }
     }
     
+    private bool IsUserAuthorized(int userId, out string errorMessage)
+    {
+        errorMessage = string.Empty;
+        var tokenWithQuotes = HttpContext.Request.Headers["Authorization"].FirstOrDefault()?.Split(" ").Last();
+        if (string.IsNullOrEmpty(tokenWithQuotes))
+        {
+            errorMessage = "Authorization token is missing.";
+            return false;
+        }
+
+        var token = tokenWithQuotes.Trim('"');
+
+        try
+        {
+            var principal = jwtTokenValidationService.ValidateToken(token);
+            var userIdClaim = principal.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+
+            if (string.IsNullOrEmpty(userIdClaim) || int.Parse
+                    (userIdClaim) != userId)
+            {
+                errorMessage = "You are not authorized to access this resource.";
+                return false;
+            }
+        }
+        catch (Exception ex)
+        {
+            errorMessage = $"Invalid token: {ex.Message}";
+            return false;
+        }
+        return true; // User is authorized
+    }
+    
     [HttpGet("cart/{userId:int}")]
     public async Task<ActionResult<string>> GetCart(int userId)
     {
+        if (!IsUserAuthorized(userId, out var errorMessage))
+        {
+            return Unauthorized(errorMessage);
+        }
+
         using var client = httpClientFactory.CreateClient("ApiService");
         var response = await client.GetAsync($"api/Users/cart/{userId}");
 
@@ -271,6 +308,11 @@ public class UserController(
     [HttpPut("cart/{userId:int}")]
     public async Task<IActionResult> UpdateCart(int userId, [FromBody] CartUpdateModel model)
     {
+        if (!IsUserAuthorized(userId, out var errorMessage))
+        {
+            return Unauthorized(errorMessage);
+        }
+
         using var client = httpClientFactory.CreateClient("ApiService");
         var response = await client.PutAsJsonAsync($"api/Users/cart/{userId}", model);
 
