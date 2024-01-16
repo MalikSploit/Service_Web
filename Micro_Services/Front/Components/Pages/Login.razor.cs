@@ -1,5 +1,4 @@
-﻿using System.Reflection.Metadata;
-using Front.Services;
+﻿using Front.Services;
 using Microsoft.AspNetCore.Components;
 using Blazored.LocalStorage;
 using Entities;
@@ -45,19 +44,32 @@ public partial class Login : ComponentBase
             _errorMessage = "Invalid input for email or password";
             return;
         }
-        
+
         if (_attemptCount >= 5)
         {
             _errorMessage = "You've reached the maximum number of login attempts. Please try again later.";
             return;
         }
-        
+
         var (isSuccess, userDto, error) = await LoginService.AuthenticateUserAsync(_email, _pass);
-        
+
         if (isSuccess && userDto?.Token != null)
         {
             await LocalStorage.SetItemAsync("jwtToken", userDto.Token);
+
+            try
+            {
+                // Fetch the user's cart from the database
+                var cart = await CartStateService.FetchCart();
             
+                // Update the local storage with the fetched cart
+                await LocalStorage.SetItemAsync("cart", cart);
+            }
+            catch (Exception ex)
+            {
+                _errorMessage = "Failed to fetch cart: " + ex.Message;
+            }
+
             NavigationManager.NavigateTo("/");
         }
         else
@@ -66,7 +78,7 @@ public partial class Login : ComponentBase
             _errorMessage = error;
         }
     }
-
+    
     private string GetDropdownClass()
     {
         return isDropdownOpen ? "block z-10" : "hidden";

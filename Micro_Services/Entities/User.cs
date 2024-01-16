@@ -10,15 +10,16 @@ namespace Entities;
 */
 public class User
 {
-    public int Id { get; set; }
+    public int Id { get; init; }
     public string? Name { get; set; } = "";
     public string? Surname { get; set; } = "";
     public string? Email { get; set; } = "";
     public string PasswordHash { get; set; } = "";
+    public string? Cart { get; set; } = "";
 
     public override string ToString()
     {
-        return $"Id: ${Id} Name: ${Name} Surname: ${Surname} Email : ${Email} Pass: ${PasswordHash}";
+        return $"Id: {Id} Name: {Name} Surname: {Surname} Email : {Email} Pass: {PasswordHash} Cart : {Cart}";
     }
 }
 
@@ -31,14 +32,15 @@ public class User
 */
 public class UserDTO
 {
-    public int Id { get; set; }
-    public string? Name { get; set; } = "";
-    public string? Surname { get; set; } = "";
-    public string? Email { get; set; } = "";
+    public int Id { get; init; }
+    public string? Name { get; init; } = "";
+    public string? Surname { get; init; } = "";
+    public string? Email { get; init; } = "";
     public string? Token { get; set; } = "";
-    public string Role { get; set; } = "";
+    private static string Role => "";
+    public string? Cart { get; set; } = "";
 
-    public override string ToString() => Id + " " + Name + " " + Surname + " " + Email + " " + Token + " " + Role;
+    public override string ToString() => Id + " " + Name + " " + Surname + " " + Email + " " + Token + " " + Role + " " + Cart;
 }
 
 /*

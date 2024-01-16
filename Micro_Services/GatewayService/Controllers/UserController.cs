@@ -26,12 +26,12 @@ public class UserController(
     : ControllerBase
 {
     private static Uri UserServiceUri => new ("http://localhost:5001/");
-    private readonly List<string> adminEmails = new List<string> 
-    { 
+    private readonly List<string> adminEmails =
+    [
         "Malik@gmail.com",
         "thomas@gmail.com",
         "Thibault@gmail.com"
-    };
+    ];
 
     private HttpClient CreateClient() 
     {
@@ -55,11 +55,11 @@ public class UserController(
         if (userDto is not { Surname: not null, Email: not null }) return null;
         var claims = new List<Claim>
         {
-            new Claim(JwtRegisteredClaimNames.Email, userDto.Email),
-            new Claim("surname", userDto.Surname),
-            new Claim("name", userDto.Name),
-            new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
-            new Claim(JwtRegisteredClaimNames.Sub, userDto.Id.ToString())
+            new (JwtRegisteredClaimNames.Email, userDto.Email),
+            new ("surname", userDto.Surname),
+            new ("name", userDto.Name),
+            new (JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
+            new (JwtRegisteredClaimNames.Sub, userDto.Id.ToString())
         };
 
         var role = adminEmails.Contains(userDto.Email) ? "Admin" : "User";
@@ -127,7 +127,7 @@ public class UserController(
         
         using var client = CreateClient();
 
-        HttpResponseMessage response = await client.PostAsJsonAsync("api/Users/register", accountToCreate);
+        var response = await client.PostAsJsonAsync("api/Users/register", accountToCreate);
 
         if (response.IsSuccessStatusCode)
         {
@@ -140,7 +140,7 @@ public class UserController(
     }
     
     // api/User/id
-    [HttpPut("{id}")]
+    [HttpPut("{id:int}")]
     public async Task<IActionResult> UpdateUser(int id, UserUpdateModel userUpdate)
     {
         var tokenWithQuotes = HttpContext.Request.Headers["Authorization"].FirstOrDefault()?.Split(" ").Last();
@@ -215,12 +215,12 @@ public class UserController(
     }
     
     // api/User/id
-    [HttpDelete("{id}")]
+    [HttpDelete("{id:int}")]
     public async Task<IActionResult> DeleteUser(int id)
     {
         try
         {
-            var tokenWithQuotes = HttpContext.Request.Headers["Authorization"].FirstOrDefault()?.Split(" ").Last();
+            var tokenWithQuotes = HttpContext.Request.Headers.Authorization.FirstOrDefault()?.Split(" ").Last();
             if (string.IsNullOrEmpty(tokenWithQuotes))
             {
                 return Unauthorized("Authorization token is missing.");
@@ -231,13 +231,10 @@ public class UserController(
             ClaimsPrincipal principal;
             try
             {
-                Console.WriteLine("Before");
                 principal = jwtTokenValidationService.ValidateToken(token);
-                Console.WriteLine("After");
             }
-            catch (Exception ex)
+            catch (Exception)
             {
-                Console.WriteLine($"Error {ex}");
                 return Unauthorized("Invalid token.");
             }
             
@@ -258,4 +255,34 @@ public class UserController(
             return StatusCode(500, $"An error occurred while deleting the user: {ex.Message}");
         }
     }
+    
+    [HttpGet("cart/{userId:int}")]
+    public async Task<ActionResult<string>> GetCart(int userId)
+    {
+        using var client = httpClientFactory.CreateClient("ApiService");
+        var response = await client.GetAsync($"api/Users/cart/{userId}");
+
+        if (!response.IsSuccessStatusCode)
+            return StatusCode((int)response.StatusCode, await response.Content.ReadAsStringAsync());
+        var cartJson = await response.Content.ReadAsStringAsync();
+        return Ok(cartJson); 
+    }
+    
+    [HttpPut("cart/{userId:int}")]
+    public async Task<IActionResult> UpdateCart(int userId, [FromBody] CartUpdateModel model)
+    {
+        using var client = httpClientFactory.CreateClient("ApiService");
+        var response = await client.PutAsJsonAsync($"http://localhost:5001/api/Users/cart/{userId}", model);
+
+        if (response.IsSuccessStatusCode)
+        {
+            return NoContent();
+        }
+        return StatusCode((int)response.StatusCode, await response.Content.ReadAsStringAsync());
+    }
+}
+
+public class CartUpdateModel
+{
+    public string CartJson { get; set; } = string.Empty;
 }

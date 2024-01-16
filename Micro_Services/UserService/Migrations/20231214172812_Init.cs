@@ -26,7 +26,8 @@ public partial class Init : Migration
                 Name = table.Column<string>(type: "TEXT", maxLength: 50, nullable: false),
                 Surname = table.Column<string>(type: "TEXT", maxLength: 50, nullable: false),
                 Email = table.Column<string>(type: "TEXT", maxLength: 100, nullable: false),
-                PasswordHash = table.Column<string>(type: "TEXT", nullable: false)
+                PasswordHash = table.Column<string>(type: "TEXT", nullable: false),
+                Cart = table.Column<string>(type: "TEXT", nullable: true)
             },
             constraints: table =>
             {

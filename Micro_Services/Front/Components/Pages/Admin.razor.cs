@@ -18,6 +18,7 @@ public partial class Admin : ComponentBase
     [Inject] protected NavigationManager NavigationManager { get; set; }
     [Inject] private ILocalStorageService LocalStorage { get; set; }
     [Inject] private LoginService LoginService { get; set; }
+    [Inject] private CartStateService CartStateService { get; set; }
     
     [CascadingParameter]
     private Task<AuthenticationState> AuthenticationStateTask { get; set; }
@@ -177,6 +178,7 @@ public partial class Admin : ComponentBase
     private async Task Logout()
     {
         await LocalStorage.RemoveItemAsync("jwtToken");
+        await CartStateService.ClearCartAsync();
         NavigationManager.NavigateTo("/", true);
     }
 }

@@ -67,6 +67,9 @@ public partial class Explore : ComponentBase
 
         await LocalStorage.SetItemAsync("cart", cart);
         await UpdateCartItemCount();
+        
+        // Synchronize the cart with the database
+        await CartStateService.UpdateCartAsync(cart, updateServer: true);
 
         // Show modal
         modalMessage = "Book added to cart!";
@@ -98,6 +101,7 @@ public partial class Explore : ComponentBase
     private async Task Logout()
     {
         await LocalStorage.RemoveItemAsync("jwtToken");
+        await CartStateService.ClearCartAsync();
         NavigationManager.NavigateTo("/", true);
     }
         

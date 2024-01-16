@@ -39,7 +39,7 @@ public class UsersController : ControllerBase
     }
 
     // GET: api/Users/5
-    [HttpGet("{id}")]
+    [HttpGet("{id:int}")]
     public async Task<ActionResult<UserDTO>> GetUser(int id)
     {
         var user = await _context.User.FindAsync(id);
@@ -53,7 +53,7 @@ public class UsersController : ControllerBase
     }
 
     // PUT: api/Users/5
-    [HttpPut("{id}")]
+    [HttpPut("{id:int}")]
     public async Task<IActionResult> UpdateUser(int id, UserUpdateModel userUpdate)
     {
         if (id != userUpdate.Id)
@@ -170,17 +170,15 @@ public class UsersController : ControllerBase
 
         var passwordVerificationResult = _passwordHasher.VerifyHashedPassword(user, user.PasswordHash, userLogin.Pass);
 
-        if (passwordVerificationResult == PasswordVerificationResult.Success)
-        {
-            var userDto = UserToDto(user);
-            return Ok(userDto);
-        }
+        if (passwordVerificationResult != PasswordVerificationResult.Success)
+            return Unauthorized("Invalid credentials.");
+        var userDto = UserToDto(user);
+        return Ok(userDto);
 
-        return Unauthorized("Invalid credentials.");
     }
 
     // DELETE: api/Users/5
-    [HttpDelete("{id}")]
+    [HttpDelete("{id:int}")]
     public async Task<IActionResult> DeleteUser(int id)
     {
         var user = await _context.User.FindAsync(id);
@@ -208,6 +206,43 @@ public class UsersController : ControllerBase
             Name = user.Name,
             Surname = user.Surname,
             Email = user.Email,
+            Cart = user.Cart ?? ""
         };
     }
+    
+    [HttpPut("cart/{userId:int}")]
+    public async Task<IActionResult> UpdateCart(int userId, [FromBody] CartUpdateModel model)
+    {
+        var user = await _context.User.FindAsync(userId);
+        if (user == null) return NotFound();
+
+        // Check if the cartJson is not empty or null
+        if (string.IsNullOrEmpty(model.CartJson))
+        {
+            return BadRequest("Cart data is required.");
+        }
+        
+        user.Cart = model.CartJson;
+        await _context.SaveChangesAsync();
+
+        return NoContent(); // Or return updated cart data
+    }
+    
+    [HttpGet("cart/{userId:int}")]
+    public async Task<ActionResult<string>> GetCart(int userId)
+    {
+        var user = await _context.User.FindAsync(userId);
+        if (user == null) 
+        {
+            return NotFound("User not found.");
+        }
+        
+        return string.IsNullOrEmpty(user.Cart) ? Ok(new Dictionary<int, int>()) : // Return an empty cart if no cart data is present
+            Ok(user.Cart);
+    }
+}
+
+public class CartUpdateModel
+{
+    public string CartJson { get; set; } = string.Empty;
 }

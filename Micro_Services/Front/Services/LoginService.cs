@@ -44,7 +44,6 @@ public class LoginService
             _ => "Authentication failed. Please try again."
         };
         
-        Console.WriteLine($"Authentication failed with status code: {response.StatusCode}");
         return (false, null, errorMessage);
     }
     
@@ -85,7 +84,6 @@ public class LoginService
         }
         catch (Exception ex)
         {
-            Console.WriteLine("Error processing JWT token: " + ex.Message);
             await _localStorage.RemoveItemAsync("jwtToken");
         }
 

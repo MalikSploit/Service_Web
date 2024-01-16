@@ -203,6 +203,7 @@ public partial class Profile
     private async Task Logout()
     {
         await LocalStorage.RemoveItemAsync("jwtToken");
+        await CartStateService.ClearCartAsync();
         NavigationManager.NavigateTo("/", true);
     }
         

@@ -12,6 +12,7 @@ public partial class Cart : ComponentBase
     [Inject] private NavigationManager NavigationManager { get; set; }
     [Inject] private BookService BookService { get; set; }
     [Inject] private LoginService LoginService { get; set; }
+    [Inject] private CartStateService CartStateService { get; set; }
 
     private Dictionary<int, int> cartItemIds = new();
     private readonly List<Book> cartItems = []; 
@@ -51,6 +52,18 @@ public partial class Cart : ComponentBase
             }
         }
     }
+    
+    private async Task SynchronizeCartWithDatabase()
+    {
+        try
+        {
+            await CartStateService.UpdateCartAsync(cartItemIds, updateServer: true);
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine("Error synchronizing cart with the server: " + ex.Message);
+        }
+    }
 
     private async Task UpdateQuantity(Book item, int quantity)
     {
@@ -65,6 +78,9 @@ public partial class Cart : ComponentBase
                 cartItemIds[item.Id] = quantity;
                 await LocalStorage.SetItemAsync("cart", cartItemIds);
                 await LoadCartItems();
+                
+                // Synchronize the updated cart with the server
+                await SynchronizeCartWithDatabase();
             }
         }
     }
@@ -77,6 +93,9 @@ public partial class Cart : ComponentBase
             cartItems.RemoveAll(b => b.Id == item.Id);
             await LocalStorage.SetItemAsync("cart", cartItemIds);
             StateHasChanged();
+            
+            // Synchronize the updated cart with the server
+            await SynchronizeCartWithDatabase();
         }
     }
 
@@ -89,6 +108,7 @@ public partial class Cart : ComponentBase
     private async Task Logout()
     {
         await LocalStorage.RemoveItemAsync("jwtToken");
+        await CartStateService.ClearCartAsync();
         NavigationManager.NavigateTo("/", true);
     }
         
