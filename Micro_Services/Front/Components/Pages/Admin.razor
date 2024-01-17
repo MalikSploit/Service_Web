@@ -122,7 +122,7 @@
                 <EditForm Model="SelectedBook">
                     <div class="p-5">
                         <DataAnnotationsValidator />
-                        <ValidationSummary />
+                        <ValidationSummary class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative" role="alert"/>
                         <div class="mb-4">
                             <label class="block text-gray-700 text-sm font-bold mb-2">Title</label>
                             <InputText class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" @bind-Value="SelectedBook.Title"/>
@@ -140,10 +140,18 @@
     
                         <div class="mb-4">
                             <label class="block text-gray-700 text-sm font-bold mb-2">Image URL</label>
+                            @if (!string.IsNullOrEmpty(ErrorMessageUrl))
+                            {
+                                <p class="text-red-600">@ErrorMessageUrl</p>
+                            }
                             <InputText class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" @bind-Value="SelectedBook.ImageUrl"/>
                             <div class="mt-2">
                                 <label for="imageUpload" class="block text-gray-700 text-sm font-bold mb-2">Or upload an image</label>
-                                <InputFile id="imageUpload" OnChange="@HandleImageUpload"/>
+                                @if (!string.IsNullOrEmpty(ErrorMessageUrl))
+                                {
+                                    <p class="text-red-600">@ErrorMessageUrl</p>
+                                }
+                                <InputFile id="imageUpload" accept="image/*" OnChange="@HandleImageUpload"/>
                             </div>
                         </div>
     

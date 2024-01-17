@@ -23,4 +23,8 @@
     <PackageReference Include="System.Net.Http.Json" Version="8.0.0" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Content Remove="wwwroot\Images\15.png" />
+  </ItemGroup>
+
 </Project>
