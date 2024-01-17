@@ -143,29 +143,9 @@ public class UserController(
     [HttpPut("{id:int}")]
     public async Task<IActionResult> UpdateUser(int id, UserUpdateModel userUpdate)
     {
-        var tokenWithQuotes = HttpContext.Request.Headers["Authorization"].FirstOrDefault()?.Split(" ").Last();
-        if (string.IsNullOrEmpty(tokenWithQuotes))
+        if (!jwtTokenValidationService.IsUserAuthorized(id, out var errorMessage))
         {
-            return Unauthorized("Authorization token is missing.");
-        }
-            
-        var token = tokenWithQuotes.Trim('"');
-
-        ClaimsPrincipal principal;
-        try
-        {
-            principal = jwtTokenValidationService.ValidateToken(token);
-        }
-        catch
-        {
-            return Unauthorized("Invalid token.");
-        }
-
-        var userIdClaim = principal.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-
-        if (string.IsNullOrEmpty(userIdClaim) || int.Parse(userIdClaim) != id)
-        {
-            return Unauthorized("You can only update your own account.");
+            return Unauthorized(errorMessage);
         }
 
         if (!userUpdate.Name.IsNameValid())
@@ -188,7 +168,7 @@ public class UserController(
 
             if (!response.IsSuccessStatusCode)
                 return StatusCode((int)response.StatusCode, await response.Content.ReadAsStringAsync());
-            
+        
             var updatedUser = await GetUserDetails(id);
 
             if (updatedUser == null) return StatusCode(500, "Failed to retrieve updated user data.");
@@ -220,31 +200,11 @@ public class UserController(
     {
         try
         {
-            var tokenWithQuotes = HttpContext.Request.Headers.Authorization.FirstOrDefault()?.Split(" ").Last();
-            if (string.IsNullOrEmpty(tokenWithQuotes))
+            if (!jwtTokenValidationService.IsUserAuthorized(id, out var errorMessage))
             {
-                return Unauthorized("Authorization token is missing.");
+                return Unauthorized(errorMessage);
             }
-            
-            var token = tokenWithQuotes.Trim('"');
 
-            ClaimsPrincipal principal;
-            try
-            {
-                principal = jwtTokenValidationService.ValidateToken(token);
-            }
-            catch (Exception)
-            {
-                return Unauthorized("Invalid token.");
-            }
-            
-            var userIdClaim = principal.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-        
-            if (string.IsNullOrEmpty(userIdClaim) || int.Parse(userIdClaim) != id)
-            {
-                return Unauthorized("You can only delete your own account.");
-            }
-            
             using var client = httpClientFactory.CreateClient("ApiService");
             var response = await client.DeleteAsync($"api/Users/{id}");
 
@@ -255,43 +215,12 @@ public class UserController(
             return StatusCode(500, $"An error occurred while deleting the user: {ex.Message}");
         }
     }
-    
-    private bool IsUserAuthorized(int userId, out string errorMessage)
-    {
-        errorMessage = string.Empty;
-        var tokenWithQuotes = HttpContext.Request.Headers["Authorization"].FirstOrDefault()?.Split(" ").Last();
-        if (string.IsNullOrEmpty(tokenWithQuotes))
-        {
-            errorMessage = "Authorization token is missing.";
-            return false;
-        }
 
-        var token = tokenWithQuotes.Trim('"');
-
-        try
-        {
-            var principal = jwtTokenValidationService.ValidateToken(token);
-            var userIdClaim = principal.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-
-            if (string.IsNullOrEmpty(userIdClaim) || int.Parse
-                    (userIdClaim) != userId)
-            {
-                errorMessage = "You are not authorized to access this resource.";
-                return false;
-            }
-        }
-        catch (Exception ex)
-        {
-            errorMessage = $"Invalid token: {ex.Message}";
-            return false;
-        }
-        return true; // User is authorized
-    }
     
     [HttpGet("cart/{userId:int}")]
     public async Task<ActionResult<string>> GetCart(int userId)
     {
-        if (!IsUserAuthorized(userId, out var errorMessage))
+        if (!jwtTokenValidationService.IsUserAuthorized(userId, out var errorMessage))
         {
             return Unauthorized(errorMessage);
         }
@@ -308,7 +237,7 @@ public class UserController(
     [HttpPut("cart/{userId:int}")]
     public async Task<IActionResult> UpdateCart(int userId, [FromBody] CartUpdateModel model)
     {
-        if (!IsUserAuthorized(userId, out var errorMessage))
+        if (!jwtTokenValidationService.IsUserAuthorized(userId, out var errorMessage))
         {
             return Unauthorized(errorMessage);
         }

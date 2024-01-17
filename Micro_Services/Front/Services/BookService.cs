@@ -1,9 +1,19 @@
-﻿using Entities;
+﻿using System.Net.Http.Headers;
+using Blazored.LocalStorage;
+using Entities;
+using Microsoft.AspNetCore.Components;
 
 namespace Front.Services;
 
-public class BookService(HttpClient httpClient)
+public class BookService(HttpClient httpClient, ILocalStorageService localStorage, LoginService loginService)
 {
+    [Inject] private ILocalStorageService LocalStorage { get; set; } = localStorage;
+
+    private async Task<bool> IsUserAdmin()
+    {
+        return await loginService.IsUserAdmin();
+    }
+    
     public async Task<IEnumerable<Book>> GetBooksAsync()
     {
         try
@@ -38,22 +48,42 @@ public class BookService(HttpClient httpClient)
         return null;
     }
         
-    public async Task<bool> DeleteBookAsync(int bookId)
+    public async Task DeleteBookAsync(int bookId)
     {
         try
         {
-            var response = await httpClient.DeleteAsync($"http://localhost:5000/api/Book/{bookId}");
-            return response.IsSuccessStatusCode;
+            var jwtToken = await LocalStorage.GetItemAsStringAsync("jwtToken");
+            if (string.IsNullOrEmpty(jwtToken))
+            {
+                throw new InvalidOperationException("User is not logged in.");
+            }
+            if (!await IsUserAdmin())
+            {
+                throw new UnauthorizedAccessException("Only admins can delete books.");
+            }
+
+            httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", jwtToken);
+            await httpClient.DeleteAsync($"http://localhost:5000/api/Book/{bookId}");
         }
         catch (HttpRequestException ex)
         {
             Console.WriteLine($"Error during book deletion: {ex.Message}");
-            return false;
         }
     }
     
     public async Task<Book?> AddBookAsync(Book book)
     {
+        var jwtToken = await LocalStorage.GetItemAsStringAsync("jwtToken");
+        if (string.IsNullOrEmpty(jwtToken))
+        {
+            throw new InvalidOperationException("User is not logged in.");
+        }
+        if (!await IsUserAdmin())
+        {
+            throw new UnauthorizedAccessException("Only admins can delete books.");
+        }
+
+        httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", jwtToken);
         var response = await httpClient.PostAsJsonAsync("http://localhost:5000/api/Book", book);
         if (response.IsSuccessStatusCode)
         {
@@ -64,8 +94,18 @@ public class BookService(HttpClient httpClient)
     
     public async Task<bool> UpdateBookAsync(Book book)
     {
+        var jwtToken = await LocalStorage.GetItemAsStringAsync("jwtToken");
+        if (string.IsNullOrEmpty(jwtToken))
+        {
+            throw new InvalidOperationException("User is not logged in.");
+        }
+        if (!await IsUserAdmin())
+        {
+            throw new UnauthorizedAccessException("Only admins can delete books.");
+        }
+
+        httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", jwtToken);
         var response = await httpClient.PutAsJsonAsync($"http://localhost:5000/api/Book/{book.Id}", book);
         return response.IsSuccessStatusCode;
     }
-    
 }

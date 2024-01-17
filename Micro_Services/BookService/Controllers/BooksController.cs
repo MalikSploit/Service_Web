@@ -24,7 +24,7 @@ public class BooksController(BookServiceContext context) : ControllerBase
     public IEnumerable<Book> Get() => Books.ToList();
 
     // GET api/Books/id
-    [HttpGet("{id}")]
+    [HttpGet("{id:int}")]
     public IActionResult Get(int id)
     {
         var book = Books.FirstOrDefault(t => t.Id == id);
@@ -48,7 +48,7 @@ public class BooksController(BookServiceContext context) : ControllerBase
     }
     
     // PUT api/Books/5
-    [HttpPut("{id}")]
+    [HttpPut("{id:int}")]
     public async Task<IActionResult> UpdateBook(int id, Book bookToUpdate)
     {
         if (id != bookToUpdate.Id)
@@ -86,7 +86,7 @@ public class BooksController(BookServiceContext context) : ControllerBase
     }
 
     // DELETE api/Books/5
-    [HttpDelete("{id}")]
+    [HttpDelete("{id:int}")]
     public async Task<IActionResult> DeleteBook(int id)
     {
         var book = await Books.FindAsync(id);

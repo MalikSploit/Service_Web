@@ -24,6 +24,7 @@ builder.Services.AddHttpClient("BookService", client =>
 {
     client.BaseAddress = new Uri("http://localhost:5002/"); 
 });
+builder.Services.AddHttpContextAccessor();
 
 // Adding Authentication
 builder.Services.AddAuthentication(options =>

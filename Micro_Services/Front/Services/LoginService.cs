@@ -82,7 +82,7 @@ public class LoginService
             var roleClaim = jwtSecurityToken.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Role);
             return roleClaim?.Value is "Admin" or "User";
         }
-        catch (Exception ex)
+        catch (Exception)
         {
             await _localStorage.RemoveItemAsync("jwtToken");
         }

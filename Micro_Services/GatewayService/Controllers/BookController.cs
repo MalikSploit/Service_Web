@@ -1,6 +1,7 @@
 ﻿using System.Diagnostics;
 using System.Text.Json;
 using Entities;
+using GatewayService.Services;
 using Microsoft.AspNetCore.Mvc;
 
 namespace GatewayService.Controllers;
@@ -14,7 +15,7 @@ namespace GatewayService.Controllers;
     * This class is the controller for the Book API. It contains methods for
     * GET, POST, PUT, and DELETE requests.
 */
-public class BookController(IHttpClientFactory httpClientFactory) : ControllerBase
+public class BookController(IHttpClientFactory httpClientFactory, JwtTokenValidationService jwtTokenValidationService) : ControllerBase
 {
     private readonly HttpClient _client = httpClientFactory.CreateClient("BookService");
 
@@ -52,6 +53,14 @@ public class BookController(IHttpClientFactory httpClientFactory) : ControllerBa
     [HttpPost]
     public async Task<IActionResult> CreateBook([FromBody] Book book)
     {
+        var errorMessage = string.Empty;
+        var tokenWithQuotes = HttpContext.Request.Headers.Authorization.FirstOrDefault()?.Split(" ").Last();
+        var token = tokenWithQuotes?.Trim('"');
+
+        if (string.IsNullOrEmpty(token) || !jwtTokenValidationService.IsUserAdmin(token, out  errorMessage))
+        {
+            return Unauthorized(errorMessage);
+        }
         var response = await _client.PostAsJsonAsync("http://localhost:5002/api/Books", book);
 
         if (!response.IsSuccessStatusCode) return StatusCode((int)response.StatusCode, response.ReasonPhrase);
@@ -64,6 +73,14 @@ public class BookController(IHttpClientFactory httpClientFactory) : ControllerBa
     [HttpPut("{id:int}")]
     public async Task<IActionResult> UpdateBook(int id, Book book)
     {
+        var errorMessage = string.Empty;
+        var tokenWithQuotes = HttpContext.Request.Headers.Authorization.FirstOrDefault()?.Split(" ").Last();
+        var token = tokenWithQuotes?.Trim('"');
+
+        if (string.IsNullOrEmpty(token) || !jwtTokenValidationService.IsUserAdmin(token, out errorMessage))
+        {
+            return Unauthorized(errorMessage);
+        }
         if (id != book.Id)
         {
             return BadRequest();
@@ -83,6 +100,14 @@ public class BookController(IHttpClientFactory httpClientFactory) : ControllerBa
     [HttpDelete("{id:int}")]
     public async Task<IActionResult> DeleteBook(int id)
     {
+        var errorMessage = string.Empty;
+        var tokenWithQuotes = HttpContext.Request.Headers.Authorization.FirstOrDefault()?.Split(" ").Last();
+        var token = tokenWithQuotes?.Trim('"');
+
+        if (string.IsNullOrEmpty(token) || !jwtTokenValidationService.IsUserAdmin(token, out errorMessage))
+        {
+            return Unauthorized(errorMessage);
+        }
         var response = await _client.DeleteAsync($"http://localhost:5002/api/Books/{id}");
     
         if (response.IsSuccessStatusCode)
