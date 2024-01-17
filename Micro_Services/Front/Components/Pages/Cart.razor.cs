@@ -105,9 +105,15 @@ public partial class Cart : ComponentBase
         }
     }
 
+    private bool CanCheckout => TotalPrice > 0;
     private Task Checkout()
     {
-        NavigationManager.NavigateTo(_isLoggedIn ? "/Checkout" : "/Login");
+        if (CanCheckout)
+        {
+            NavigationManager.NavigateTo(_isLoggedIn ? "/Checkout" : "/Login");
+            return Task.CompletedTask;
+        }
+        NavigationManager.NavigateTo("/Explore");
         return Task.CompletedTask;
     }
 

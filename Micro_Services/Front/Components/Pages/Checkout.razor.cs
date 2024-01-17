@@ -28,7 +28,7 @@ public partial class Checkout : ComponentBase
     [Required, MaxLength(200)]
     private string BillingAddress { get; set; }
 
-    private EditContext _editContext;
+    private readonly EditContext _editContext;
     private readonly List<Book> cartItems = [];
     private Dictionary<int, int> cartItemQuantities = new();
     private decimal totalPrice;
@@ -37,24 +37,32 @@ public partial class Checkout : ComponentBase
     private string errorMessage = string.Empty;
     private string cardValidationMessage = string.Empty;
 
-    protected override void OnInitialized()
+    public Checkout(EditContext editContext)
     {
-        _editContext = new EditContext(this);
+        _editContext = editContext;
     }
-    
+
     protected override async Task OnInitializedAsync()
     {
-        _isLoggedIn =  _isLoggedIn = await LoginService.IsUserAdmin();
+        _isLoggedIn = await LoginService.IsUserLoggedIn();
         if (_isLoggedIn)
         {
             await LoadCartItems();
             CalculateTotalPrice();
+
+            if (totalPrice <= 0)
+            {
+                // Redirect to the Explore page if the cart is empty
+                NavigationManager.NavigateTo("/Explore", true);
+            }
         }
         else
         {
+            // Redirect to the Login page if the user is not logged in
             NavigationManager.NavigateTo("/Login", true);
         }
     }
+
     
     private async Task LoadCartItems()
     {
