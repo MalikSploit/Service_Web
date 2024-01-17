@@ -149,7 +149,7 @@
                                 <label for="imageUpload" class="block text-gray-700 text-sm font-bold mb-2">Or upload an image</label>
                                 @if (!string.IsNullOrEmpty(ErrorMessageUrl))
                                 {
-                                    <p class="text-red-600">@ErrorMessageUrl</p>
+                                    <p class="text-red-600">@ErrorMessageImage</p>
                                 }
                                 <InputFile id="imageUpload" accept="image/*" OnChange="@HandleImageUpload"/>
                             </div>
