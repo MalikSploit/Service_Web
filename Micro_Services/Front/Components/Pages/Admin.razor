@@ -1,4 +1,5 @@
 ﻿@page "/Admin"
+@using System.Globalization
 @attribute [Authorize(Roles = "Admin")]
 
 
@@ -93,7 +94,7 @@
                                 </div>
                             </td>
                             <td class="px-4 py-3 border-b text-center text-gray-700">@book.Author</td>
-                            <td class="px-4 py-3 border-b text-center text-gray-700">@book.Price.ToString("C")</td>
+                            <td class="px-4 py-3 border-b text-center text-gray-700">@book.Price.ToString("C", new CultureInfo("en-US"))</td>
                             <td class="px-4 py-3 border-b">
                                 <div class="flex justify-center space-x-2">
                                     <button class="bg-yellow-500 hover:bg-yellow-600 text-white font-bold py-1 px-2 rounded" @onclick="() => OpenEditModal(book)">Edit</button>
