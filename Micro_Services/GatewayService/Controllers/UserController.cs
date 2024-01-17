@@ -75,7 +75,7 @@ public class UserController(
         return new JwtSecurityTokenHandler().WriteToken(token);
     }
 
-    // api/User/login
+    // POST: api/User/login
     [HttpPost("login")]
     public async Task<IActionResult> Login(UserLogin model)
     {
@@ -104,7 +104,7 @@ public class UserController(
         }
     }
 
-    // api/User/register
+    // POST: api/User/register
     [HttpPost("register")]
     public async Task<IActionResult> Register(UserCreateModel accountToCreate)
     {
@@ -139,7 +139,7 @@ public class UserController(
         return BadRequest(errorResponse);
     }
     
-    // api/User/id
+    // PUT: api/User/id
     [HttpPut("{id:int}")]
     public async Task<IActionResult> UpdateUser(int id, UserUpdateModel userUpdate)
     {
@@ -194,7 +194,7 @@ public class UserController(
         return null;
     }
     
-    // api/User/id
+    // DELETE: api/User/id
     [HttpDelete("{id:int}")]
     public async Task<IActionResult> DeleteUser(int id)
     {
@@ -216,7 +216,7 @@ public class UserController(
         }
     }
 
-    
+    // GET: api/User/cart/id
     [HttpGet("cart/{userId:int}")]
     public async Task<ActionResult<string>> GetCart(int userId)
     {
@@ -234,6 +234,7 @@ public class UserController(
         return Ok(cartJson); 
     }
     
+    // POST: api/User/cart/id
     [HttpPut("cart/{userId:int}")]
     public async Task<IActionResult> UpdateCart(int userId, [FromBody] CartUpdateModel model)
     {

@@ -4,7 +4,6 @@ using Microsoft.EntityFrameworkCore;
 using UserService.Data;
 using Entities;
 
-
 namespace UserService.Controllers;
 
 [Route("api/[controller]")]
@@ -18,22 +17,14 @@ namespace UserService.Controllers;
     * This class contains attributes for the UserServiceContext and the
     * PasswordHasher.
 */
-public class UsersController : ControllerBase
+public class UsersController(UserServiceContext context, PasswordHasher<User> passwordHasher)
+    : ControllerBase
 {
-    private readonly UserServiceContext _context;
-    private readonly PasswordHasher<User> _passwordHasher;
-
-    public UsersController(UserServiceContext context, PasswordHasher<User> passwordHasher)
-    {
-        _context = context;
-        _passwordHasher = passwordHasher;
-    }
-
     // GET: api/Users
     [HttpGet]
     public async Task<ActionResult<IEnumerable<UserDTO>>> GetAllUsers()
     {
-        return await _context.User
+        return await context.User
             .Select(u => UserToDto(u))
             .ToListAsync();
     }
@@ -42,7 +33,7 @@ public class UsersController : ControllerBase
     [HttpGet("{id:int}")]
     public async Task<ActionResult<UserDTO>> GetUser(int id)
     {
-        var user = await _context.User.FindAsync(id);
+        var user = await context.User.FindAsync(id);
 
         if (user == null)
         {
@@ -61,7 +52,7 @@ public class UsersController : ControllerBase
             return BadRequest("Mismatched user ID");
         }
 
-        var user = await _context.User.FindAsync(id);
+        var user = await context.User.FindAsync(id);
 
         if (user == null)
         {
@@ -74,27 +65,10 @@ public class UsersController : ControllerBase
             user.Name = userUpdate.Name;
         }
         
-        // Update name if provided
+        // Update surname if provided
         if (!string.IsNullOrWhiteSpace(userUpdate.Surname))
         {
             user.Surname = userUpdate.Surname;
-        }
-
-        // Update email if provided and valid
-        if (!string.IsNullOrWhiteSpace(userUpdate.Email))
-        {
-            if (!userUpdate.Email.IsEmailValid())
-            {
-                return BadRequest("Invalid email format");
-            }
-
-            // Check for email uniqueness
-            if (await _context.User.AnyAsync(u => u.Email == userUpdate.Email && u.Id != id))
-            {
-                return BadRequest("Email already in use by another user");
-            }
-
-            user.Email = userUpdate.Email;
         }
 
         // Update password if provided
@@ -105,14 +79,14 @@ public class UsersController : ControllerBase
                 return BadRequest("Password is not robust enough");
             }
 
-            user.PasswordHash = _passwordHasher.HashPassword(user, userUpdate.Password);
+            user.PasswordHash = passwordHasher.HashPassword(user, userUpdate.Password);
         }
 
-        _context.Entry(user).State = EntityState.Modified;
+        context.Entry(user).State = EntityState.Modified;
 
         try
         {
-            await _context.SaveChangesAsync();
+            await context.SaveChangesAsync();
         }
         catch (DbUpdateConcurrencyException)
         {
@@ -125,20 +99,32 @@ public class UsersController : ControllerBase
 
         return NoContent();
     }
+    
+    // POST: api/Users/login
+    [HttpPost("login")]
+    public async Task<ActionResult<UserDTO>> Login(UserLogin userLogin)
+    {
+        var user = await context.User.FirstOrDefaultAsync(u => u.Email == userLogin.Email);
+
+        if (user == null)
+        {
+            return NotFound("User not found.");
+        }
+
+        var passwordVerificationResult = passwordHasher.VerifyHashedPassword(user, user.PasswordHash, userLogin.Pass);
+
+        if (passwordVerificationResult != PasswordVerificationResult.Success)
+            return Unauthorized("Invalid credentials.");
+        var userDto = UserToDto(user);
+        return Ok(userDto);
+
+    }
 
     // POST: api/Users/register
     [HttpPost("register")]
     public async Task<ActionResult<User>> CreateUser(UserCreateModel userPayload)
     {
-        if (!userPayload.Password.IsPasswordRobust())
-        {
-            return BadRequest("Password is not robust enough, Please enter 8 characters with 1 Uppercase, 1 Lowercase, 1 nNumber and 1 Symbol");
-        }
-        if (!userPayload.Email.IsEmailValid())
-        {
-            return BadRequest("Email is not valid");
-        }
-        if (await _context.User.AnyAsync(u => u.Email == userPayload.Email))
+        if (await context.User.AnyAsync(u => u.Email == userPayload.Email))
         {
             return BadRequest("Email already in use");
         }
@@ -149,53 +135,33 @@ public class UsersController : ControllerBase
             Name = userPayload.Name,
             Surname = userPayload.Surname
         };
-        user.PasswordHash = _passwordHasher.HashPassword(user, userPayload.Password);
+        user.PasswordHash = passwordHasher.HashPassword(user, userPayload.Password);
 
-        _context.User.Add(user);
-        await _context.SaveChangesAsync();
+        context.User.Add(user);
+        await context.SaveChangesAsync();
 
         return CreatedAtAction("GetUser", new { id = user.Id }, UserToDto(user));
-    }
-
-    // POST: api/Users/login
-    [HttpPost("login")]
-    public async Task<ActionResult<UserDTO>> Login(UserLogin userLogin)
-    {
-        var user = await _context.User.FirstOrDefaultAsync(u => u.Email == userLogin.Email);
-
-        if (user == null)
-        {
-            return NotFound("User not found.");
-        }
-
-        var passwordVerificationResult = _passwordHasher.VerifyHashedPassword(user, user.PasswordHash, userLogin.Pass);
-
-        if (passwordVerificationResult != PasswordVerificationResult.Success)
-            return Unauthorized("Invalid credentials.");
-        var userDto = UserToDto(user);
-        return Ok(userDto);
-
     }
 
     // DELETE: api/Users/5
     [HttpDelete("{id:int}")]
     public async Task<IActionResult> DeleteUser(int id)
     {
-        var user = await _context.User.FindAsync(id);
+        var user = await context.User.FindAsync(id);
         if (user == null)
         {
             return NotFound();
         }
 
-        _context.User.Remove(user);
-        await _context.SaveChangesAsync();
+        context.User.Remove(user);
+        await context.SaveChangesAsync();
 
         return NoContent();
     }
 
     private bool UserExists(int id)
     {
-        return _context.User.Any(e => e.Id == id);
+        return context.User.Any(e => e.Id == id);
     }
 
     private static UserDTO UserToDto(User user)
@@ -210,10 +176,11 @@ public class UsersController : ControllerBase
         };
     }
     
+    // GET: api/Users/cart/id
     [HttpGet("cart/{userId:int}")]
     public async Task<ActionResult<string>> GetCart(int userId)
     {
-        var user = await _context.User.FindAsync(userId);
+        var user = await context.User.FindAsync(userId);
         if (user == null) 
         {
             return NotFound("User not found.");
@@ -223,10 +190,11 @@ public class UsersController : ControllerBase
             Ok(user.Cart);
     }
     
+    // POST: api/Users/cart/id
     [HttpPut("cart/{userId:int}")]
     public async Task<IActionResult> UpdateCart(int userId, [FromBody] CartUpdateModel model)
     {
-        var user = await _context.User.FindAsync(userId);
+        var user = await context.User.FindAsync(userId);
         if (user == null) return NotFound();
 
         // Check if the cartJson is not empty or null
@@ -236,7 +204,7 @@ public class UsersController : ControllerBase
         }
         
         user.Cart = model.CartJson;
-        await _context.SaveChangesAsync();
+        await context.SaveChangesAsync();
 
         return NoContent(); // Or return updated cart data
     }
