@@ -28,7 +28,7 @@ public partial class Checkout : ComponentBase
     [Required, MaxLength(200)]
     private string BillingAddress { get; set; }
 
-    private readonly EditContext _editContext;
+    private EditContext _editContext;
     private readonly List<Book> cartItems = [];
     private Dictionary<int, int> cartItemQuantities = new();
     private decimal totalPrice;
@@ -36,11 +36,7 @@ public partial class Checkout : ComponentBase
     private bool _isLoggedIn;
     private string errorMessage = string.Empty;
     private string cardValidationMessage = string.Empty;
-
-    public Checkout(EditContext editContext)
-    {
-        _editContext = editContext;
-    }
+    
 
     protected override async Task OnInitializedAsync()
     {
@@ -54,6 +50,10 @@ public partial class Checkout : ComponentBase
             {
                 // Redirect to the Explore page if the cart is empty
                 NavigationManager.NavigateTo("/Explore", true);
+            }
+            else
+            {
+                _editContext = new EditContext(this); 
             }
         }
         else
