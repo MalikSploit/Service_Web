@@ -40,8 +40,26 @@ public partial class Cart : ComponentBase
     private async Task LoadCartItems()
     {
         var storedCart = await LocalStorage.GetItemAsync<Dictionary<int, int>>("cart");
-        cartItemIds = storedCart ?? new Dictionary<int, int>();
-    
+        if (storedCart != null)
+        {
+            // Filter out items with negative ids or negative quantities and update local storage
+            var validCartItems = storedCart
+                .Where(kv => kv is { Key: >= 0, Value: >= 0 })
+                .ToDictionary(kv => kv.Key, kv => kv.Value);
+
+            if (validCartItems.Count != storedCart.Count)
+            {
+                // Update the local storage if invalid items were removed
+                await LocalStorage.SetItemAsync("cart", validCartItems);
+            }
+
+            cartItemIds = validCartItems;
+        }
+        else
+        {
+            cartItemIds = new Dictionary<int, int>();
+        }
+
         cartItems.Clear();
         foreach (var itemId in cartItemIds.Keys)
         {
@@ -52,24 +70,18 @@ public partial class Cart : ComponentBase
             }
         }
     }
-    
-    private async Task SynchronizeCartWithDatabase()
-    {
-        try
-        {
-            await CartStateService.UpdateCartAsync(cartItemIds, updateServer: true);
-        }
-        catch (Exception ex)
-        {
-            Console.WriteLine("Error synchronizing cart with the server: " + ex.Message);
-        }
-    }
 
     private async Task UpdateQuantity(Book item, int quantity)
     {
+        if (quantity < 0)
+        {
+            // Ignore the update
+            return;
+        }
+
         if (cartItemIds.ContainsKey(item.Id))
         {
-            if (quantity <= 0)
+            if (quantity == 0)
             {
                 await RemoveItem(item);
             }
@@ -85,6 +97,18 @@ public partial class Cart : ComponentBase
                     await SynchronizeCartWithDatabase();
                 }
             }
+        }
+    }
+    
+    private async Task SynchronizeCartWithDatabase()
+    {
+        try
+        {
+            await CartStateService.UpdateCartAsync(cartItemIds, updateServer: true);
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine("Error synchronizing cart with the server: " + ex.Message);
         }
     }
 
