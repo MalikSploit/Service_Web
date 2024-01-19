@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 using Entities;
 using GatewayService.Services;
 using Microsoft.IdentityModel.Tokens;
+using System.Net;
 
 namespace GatewayService.Controllers;
 
@@ -98,9 +99,9 @@ public class UserController(
 
             return Ok(userDto);
         }
-        catch (Exception)
+        catch (Exception ex)
         {
-            return StatusCode(500, "An internal server error occurred");
+            return StatusCode((int)HttpStatusCode.InternalServerError, ex);
         }
     }
 

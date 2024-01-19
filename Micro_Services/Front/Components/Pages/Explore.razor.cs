@@ -3,6 +3,7 @@ using Entities;
 using Front.Services;
 using Microsoft.AspNetCore.Components;
 using Microsoft.IdentityModel.Tokens;
+using System;
 
 namespace Front.Components.Pages;
 
@@ -96,8 +97,16 @@ public partial class Explore : ComponentBase
     private async Task UpdateCartItemCount()
     {
         var cart = await LocalStorage.GetItemAsync<Dictionary<int, int>>("cart") ?? new Dictionary<int, int>();
-        CartItemCount = cart.Values.Sum();
-        StateHasChanged(); // Notify the component to refresh the UI
+
+        try
+        {
+            CartItemCount = cart.Values.Sum();
+            StateHasChanged(); // Notify the component to refresh the UI
+        }
+        catch(Exception ex) // In case of overflow
+        {
+            Console.WriteLine($"Error : {ex}");
+        }
     }
 
         
