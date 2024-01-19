@@ -19,6 +19,7 @@ jobs:
           username: malik
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           script: |
+            cd /home/malik/Service_Web/
             sudo git pull
             cd /home/malik/Service_Web/Micro_Services/BookService
             sudo dotnet publish -o /home/malik/IZZIBOOKS/BookService
