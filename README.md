@@ -151,7 +151,7 @@ cd Micro_Services/Front && dotnet run
 -[✅] Microservice BookService : Un microservice dédié à la gestion des livres, permettant la gestion des livres, des utilisateurs, et d'autres fonctionnalités associées. 
 -[✅] Microservice Entities : Un microservice dédié à la gestion des entités, permettant la gestion des livres, des utilisateurs, et d'autres fonctionnalités associées.
 
-Bonus :
+Bonus : \n
 
 -[✅] Champ Rôle Utilisateur : Un champ de rôle est ajouté aux utilisateurs (basique, admin) avec une migration et une application en base de données.
 -[✅] Page Additionnelle pour Admin : En fonction du rôle de l'utilisateur, le frontend affiche une page supplémentaire permettant aux administrateurs de consulter la liste de tous les utilisateurs inscrits.
