@@ -24,23 +24,38 @@ public class UsersController(UserServiceContext context, PasswordHasher<User> pa
     [HttpGet]
     public async Task<ActionResult<IEnumerable<UserDTO>>> GetAllUsers()
     {
-        return await context.User
-            .Select(u => UserToDto(u))
-            .ToListAsync();
+        try
+        {
+            return await context.User
+                .Select(u => UserToDto(u))
+                .ToListAsync();
+        }
+        catch
+        {
+            return NotFound();
+        }
+
     }
 
     // GET: api/Users/5
     [HttpGet("{id:int}")]
     public async Task<ActionResult<UserDTO>> GetUser(int id)
     {
-        var user = await context.User.FindAsync(id);
+        try
+        {
+            var user = await context.User.FindAsync(id);
 
-        if (user == null)
+            if (user == null)
+            {
+                return NotFound();
+            }
+
+            return UserToDto(user);
+        }
+        catch
         {
             return NotFound();
         }
-
-        return UserToDto(user);
     }
 
     // PUT: api/Users/5
@@ -117,7 +132,6 @@ public class UsersController(UserServiceContext context, PasswordHasher<User> pa
             return Unauthorized("Invalid credentials.");
         var userDto = UserToDto(user);
         return Ok(userDto);
-
     }
 
     // POST: api/Users/register
@@ -137,26 +151,41 @@ public class UsersController(UserServiceContext context, PasswordHasher<User> pa
         };
         user.PasswordHash = passwordHasher.HashPassword(user, userPayload.Password);
 
-        context.User.Add(user);
-        await context.SaveChangesAsync();
+        try
+        {
+            context.User.Add(user);
+            await context.SaveChangesAsync();
 
-        return CreatedAtAction("GetUser", new { id = user.Id }, UserToDto(user));
+            return CreatedAtAction("GetUser", new { id = user.Id }, UserToDto(user));
+        }
+        catch
+        {
+            return BadRequest("Server Error");
+        }
+
     }
 
     // DELETE: api/Users/5
     [HttpDelete("{id:int}")]
     public async Task<IActionResult> DeleteUser(int id)
     {
-        var user = await context.User.FindAsync(id);
-        if (user == null)
+        try
         {
-            return NotFound();
+            var user = await context.User.FindAsync(id);
+            if (user == null)
+            {
+                return NotFound();
+            }
+
+            context.User.Remove(user);
+            await context.SaveChangesAsync();
+
+            return NoContent();
         }
-
-        context.User.Remove(user);
-        await context.SaveChangesAsync();
-
-        return NoContent();
+        catch
+        {
+            return NoContent();
+        }
     }
 
     private bool UserExists(int id)
@@ -202,11 +231,19 @@ public class UsersController(UserServiceContext context, PasswordHasher<User> pa
         {
             return BadRequest("Cart data is required.");
         }
-        
-        user.Cart = model.CartJson;
-        await context.SaveChangesAsync();
 
-        return NoContent(); // Or return updated cart data
+        try
+        {
+            user.Cart = model.CartJson;
+            await context.SaveChangesAsync();
+
+            return NoContent(); // Or return updated cart data
+        }
+        catch
+        {
+            return NoContent();
+        }
+
     }
 }
 

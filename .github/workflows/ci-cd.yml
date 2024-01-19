@@ -23,7 +23,7 @@ jobs:
             sudo git pull
 
             # Determine the list of changed directories
-            CHANGED_DIRS=$(git diff --name-only HEAD HEAD~1 | grep 'Micro_Services/' | awk 'BEGIN {FS="/"} {print $2}' | uniq)
+            CHANGED_DIRS=$(sudo git diff --name-only HEAD HEAD~1 | grep 'Micro_Services/' | awk 'BEGIN {FS="/"} {print $2}' | uniq)
 
             for DIR in $CHANGED_DIRS
             do
