@@ -21,15 +21,18 @@ jobs:
           script: |
             cd /home/malik/Service_Web/
             sudo git pull
-            cd /home/malik/Service_Web/Micro_Services/BookService
-            sudo dotnet publish -o /home/malik/IZZIBOOKS/BookService
-            cd /home/malik/Service_Web/Micro_Services/UserService
-            sudo dotnet publish -o /home/malik/IZZIBOOKS/UserService
-            cd /home/malik/Service_Web/Micro_Services/GatewayService
-            sudo dotnet publish -o /home/malik/IZZIBOOKS/GatewayService
-            cd /home/malik/Service_Web/Micro_Services/Front
-            sudo dotnet publish -o /home/malik/IZZIBOOKS/Front
-            sudo systemctl restart bookservice.service
-            sudo systemctl restart userservice.service
-            sudo systemctl restart gatewayservice.service
-            sudo systemctl restart front.service
+
+            # Determine the list of changed directories
+            CHANGED_DIRS=$(git diff --name-only HEAD HEAD~1 | grep 'Micro_Services/' | awk 'BEGIN {FS="/"} {print $2}' | uniq)
+
+            for DIR in $CHANGED_DIRS
+            do
+              # Check if the directory exists and is a microservice we want to publish
+              if [ -d "Micro_Services/$DIR" ]; then
+                echo "Publishing $DIR..."
+                sudo dotnet publish -o "/home/malik/IZZIBOOKS/$DIR" "Micro_Services/$DIR"
+
+                # Restart the service only if it was updated
+                sudo systemctl restart "${DIR,,}.service"
+              fi
+            done
