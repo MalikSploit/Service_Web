@@ -50,7 +50,14 @@ public partial class Admin : ComponentBase
 
     private async Task LoadBooks()
     {
-        Books = await BookService.GetBooksAsync();
+        try
+        {
+            Books = await BookService.GetBooksAsync();
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine("Error loading books: " + ex.Message);
+        }
     }
 
     private void ShowAddBookForm()
@@ -123,34 +130,41 @@ public partial class Admin : ComponentBase
 
     private async Task SaveBook()
     {
-        bool operationSuccessful;
-        ErrorMessageUrl = string.Empty;
-
-        if (!IsValidImageUrl(SelectedBook.ImageUrl))
+        try
         {
-            ErrorMessageUrl = "Invalid image URL. Please enter a valid URL to an image file.";
-            return;
-        }
+            bool operationSuccessful;
+            ErrorMessageUrl = string.Empty;
 
-        if (SelectedBook.Id == 0) // Adding a new book
-        {
-            var newBook = await BookService.AddBookAsync(SelectedBook);
-            operationSuccessful = newBook != null;
-        }
-        else // Updating an existing book
-        {
-            operationSuccessful = await BookService.UpdateBookAsync(SelectedBook);
-        }
-
-        if (operationSuccessful)
-        {
-            await LoadBooks();
-            CloseEditModal();
-
-            if (SelectedBook.Id == 0) // If it was a new book, reset SelectedBook
+            if (!IsValidImageUrl(SelectedBook.ImageUrl))
             {
-                SelectedBook = new Book();
+                ErrorMessageUrl = "Invalid image URL. Please enter a valid URL to an image file.";
+                return;
             }
+
+            if (SelectedBook.Id == 0) // Adding a new book
+            {
+                var newBook = await BookService.AddBookAsync(SelectedBook);
+                operationSuccessful = newBook != null;
+            }
+            else // Updating an existing book
+            {
+                operationSuccessful = await BookService.UpdateBookAsync(SelectedBook);
+            }
+
+            if (operationSuccessful)
+            {
+                await LoadBooks();
+                CloseEditModal();
+
+                if (SelectedBook.Id == 0) // If it was a new book, reset SelectedBook
+                {
+                    SelectedBook = new Book();
+                }
+            }
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine("Error saving book: " + ex.Message);
         }
     }
     

@@ -12,42 +12,48 @@ public class CartStateService(ILocalStorageService localStorage, HttpClient http
 
     public async Task<int> GetCartItemCountAsync()
     {
-        var cart = await localStorage.GetItemAsync<Dictionary<int, int>>("cart");
         try
         {
+            var cart = await localStorage.GetItemAsync<Dictionary<int, int>>("cart");
             return cart?.Sum(c => c.Value) ?? 0;
+        }
+        catch (System.Text.Json.JsonException ex)
+        {
+            Console.WriteLine("Error calculating cart items: " + ex.Message);
+            await ClearCartAsync(); // Reset the cart if malformed JSON is found
+            return 0;
         }
         catch (Exception ex)
         {
-            Console.WriteLine("Error calculating cart items: " + ex.Message);
-            return int.MaxValue;
-        }
-    }
-    
-    private async Task<int> GetUserIdFromJwtToken()
-    {
-        var jwtTokenWithQuotes = await localStorage.GetItemAsStringAsync("jwtToken");
-        if (string.IsNullOrEmpty(jwtTokenWithQuotes))
-        {
-            return 0; // No user ID found
-        }
-
-        var jwtToken = jwtTokenWithQuotes.Trim('"');
-        var tokenHandler = new JwtSecurityTokenHandler();
-
-        if (!tokenHandler.CanReadToken(jwtToken))
-        {
+            Console.WriteLine("Unexpected error in GetCartItemCountAsync: " + ex.Message);
             return 0;
         }
+    }
 
+    private async Task<int> GetUserIdFromJwtToken()
+    {
         try
         {
+            var jwtTokenWithQuotes = await localStorage.GetItemAsStringAsync("jwtToken");
+            if (string.IsNullOrEmpty(jwtTokenWithQuotes))
+            {
+                return 0; // No user ID found
+            }
+
+            var jwtToken = jwtTokenWithQuotes.Trim('"');
+            var tokenHandler = new JwtSecurityTokenHandler();
+
+            if (!tokenHandler.CanReadToken(jwtToken))
+            {
+                return 0;
+            }
+
             var jwtSecurityToken = tokenHandler.ReadJwtToken(jwtToken);
 
             // Check for expiration
             var expClaim = jwtSecurityToken.Claims.FirstOrDefault(c => c.Type == JwtRegisteredClaimNames.Exp);
-            if (expClaim is null 
-                || !long.TryParse(expClaim.Value, out var exp) 
+            if (expClaim is null
+                || !long.TryParse(expClaim.Value, out var exp)
                 || DateTimeOffset.FromUnixTimeSeconds(exp) <= DateTimeOffset.UtcNow)
             {
                 return 0;
@@ -59,71 +65,103 @@ public class CartStateService(ILocalStorageService localStorage, HttpClient http
             {
                 return userId;
             }
+
+            return 0;
         }
         catch (Exception ex)
         {
             Console.WriteLine("Error processing JWT token: " + ex.Message);
+            return 0;
         }
-
-        return 0;
     }
     
     public async Task<Dictionary<int, int>> FetchCart()
     {
-        var userId = await GetUserIdFromJwtToken();
-        if (userId == 0)
+        try
         {
-            throw new InvalidOperationException("User is not authenticated.");
+            var userId = await GetUserIdFromJwtToken();
+            if (userId == 0)
+            {
+                throw new InvalidOperationException("User is not authenticated.");
+            }
+
+            var jwtToken = await localStorage.GetItemAsStringAsync("jwtToken");
+            httpClient.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", jwtToken?.Trim('"'));
+
+            var response = await httpClient.GetAsync($"http://localhost:5000/api/User/cart/{userId}");
+            if (!response.IsSuccessStatusCode) 
+            {
+                throw new HttpRequestException("Failed to fetch cart from the server.");
+            }
+            var cartJson = await response.Content.ReadAsStringAsync();
+            return JsonConvert.DeserializeObject<Dictionary<int, int>>(cartJson) ?? new Dictionary<int, int>();
         }
-
-        var jwtToken = await localStorage.GetItemAsStringAsync("jwtToken");
-        httpClient.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", jwtToken?.Trim('"'));
-
-        var response = await httpClient.GetAsync($"http://localhost:5000/api/User/cart/{userId}");
-        if (!response.IsSuccessStatusCode) throw new HttpRequestException("Failed to fetch cart from the server.");
-        var cartJson = await response.Content.ReadAsStringAsync();
-        var cart = JsonConvert.DeserializeObject<Dictionary<int, int>>(cartJson);
-        return cart ?? new Dictionary<int, int>();
+        catch (Exception ex)
+        {
+            Console.WriteLine("Error fetching cart: " + ex.Message);
+            return new Dictionary<int, int>();
+        }
     }
 
     private async Task SynchronizeCartAsync(Dictionary<int, int> cart)
     {
-        var userId = await GetUserIdFromJwtToken();
-        if (userId == 0)
+        try
         {
-            Console.WriteLine("User ID not found in JWT token.");
-            return;
+            var userId = await GetUserIdFromJwtToken();
+            if (userId == 0)
+            {
+                Console.WriteLine("User ID not found in JWT token.");
+                return;
+            }
+
+            var jwtToken = await localStorage.GetItemAsStringAsync("jwtToken");
+            httpClient.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", jwtToken?.Trim('"'));
+
+            var cartJson = JsonConvert.SerializeObject(cart);
+            var payload = new { cartJson };
+            var content = new StringContent(JsonConvert.SerializeObject(payload), Encoding.UTF8, "application/json");
+
+            var response = await httpClient.PutAsync($"http://localhost:5000/api/User/cart/{userId}", content);
+
+            if (!response.IsSuccessStatusCode)
+            {
+                Console.WriteLine("Error synchronizing cart with server: " + response.StatusCode);
+            }
         }
-
-        var jwtToken = await localStorage.GetItemAsStringAsync("jwtToken");
-        httpClient.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", jwtToken?.Trim('"'));
-
-        var cartJson = JsonConvert.SerializeObject(cart);
-        var payload = new { cartJson };
-        var content = new StringContent(JsonConvert.SerializeObject(payload), Encoding.UTF8, "application/json");
-
-        var response = await httpClient.PutAsync($"http://localhost:5000/api/User/cart/{userId}", content);
-
-        if (!response.IsSuccessStatusCode)
+        catch (Exception ex)
         {
-            Console.WriteLine("Error synchronizing cart with server: " + response.StatusCode);
+            Console.WriteLine("Error synchronizing cart: " + ex.Message);
         }
     }
 
     public async Task UpdateCartAsync(Dictionary<int, int> newCart, bool updateServer = false)
     {
-        await localStorage.SetItemAsync("cart", newCart);
-        if (updateServer)
+        try
         {
-            await SynchronizeCartAsync(newCart);
+            await localStorage.SetItemAsync("cart", newCart);
+            if (updateServer)
+            {
+                await SynchronizeCartAsync(newCart);
+            }
+            NotifyStateChanged();
         }
-        NotifyStateChanged();
+        catch (Exception ex)
+        {
+            Console.WriteLine("Error updating cart: " + ex.Message);
+        }
     }
     private void NotifyStateChanged() => OnChange?.Invoke();
     
     public async Task ClearCartAsync()
     {
-        await localStorage.RemoveItemAsync("cart");
-        NotifyStateChanged();
+        try
+        {
+            await localStorage.RemoveItemAsync("cart");
+            NotifyStateChanged();
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine("Error clearing cart: " + ex.Message);
+        }
     }
 }

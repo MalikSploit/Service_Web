@@ -32,34 +32,40 @@ public partial class Profile
 
     protected override async Task OnInitializedAsync()
     {
-        var isLogged = await LoginService.IsUserLoggedIn();
-
-        if (isLogged)
+        try
         {
-            var jwtTokenWithQuotes = await LocalStorage.GetItemAsStringAsync("jwtToken");
-            if (!string.IsNullOrEmpty(jwtTokenWithQuotes))
+            var isLogged = await LoginService.IsUserLoggedIn();
+
+            if (isLogged)
             {
-                var jwtToken = jwtTokenWithQuotes.Trim('"');
-                var jwtPayload = ParseJwtPayload(jwtToken);
-                if (jwtPayload != null)
+                var jwtTokenWithQuotes = await LocalStorage.GetItemAsStringAsync("jwtToken");
+                if (!string.IsNullOrEmpty(jwtTokenWithQuotes))
                 {
-                    userUpdateModel.Email = jwtPayload.Claims.FirstOrDefault(c => c.Type == JwtRegisteredClaimNames.Email)?.Value;
-                    userUpdateModel.Name = jwtPayload.Claims.FirstOrDefault(c => c.Type == "name")?.Value;
-                    userUpdateModel.Surname = jwtPayload.Claims.FirstOrDefault(c => c.Type == "surname")?.Value;
+                    var jwtToken = jwtTokenWithQuotes.Trim('"');
+                    var jwtPayload = ParseJwtPayload(jwtToken);
+                    if (jwtPayload != null)
+                    {
+                        userUpdateModel.Email = jwtPayload.Claims.FirstOrDefault(c => c.Type == JwtRegisteredClaimNames.Email)?.Value;
+                        userUpdateModel.Name = jwtPayload.Claims.FirstOrDefault(c => c.Type == "name")?.Value;
+                        userUpdateModel.Surname = jwtPayload.Claims.FirstOrDefault(c => c.Type == "surname")?.Value;
+                    }
                 }
-            }
 
-            _isUserAdmin = await LoginService.IsUserAdmin();
-            CartStateService.OnChange += UpdateCartCount;
-            UpdateCartCount();
+                _isUserAdmin = await LoginService.IsUserAdmin();
+                CartStateService.OnChange += UpdateCartCount;
+                UpdateCartCount();
+            }
+            else
+            {
+                // If not logged in, redirect to the Login page
+                NavigationManager.NavigateTo("/Login");
+            }
         }
-        else
+        catch (Exception ex)
         {
-            // If not logged in, redirect to the Login page
-            NavigationManager.NavigateTo("/Login");
+            Console.WriteLine("An error occurred: " + ex.Message);
         }
     }
-
     
     private async void UpdateCartCount()
     {
@@ -202,9 +208,16 @@ public partial class Profile
     
     private async Task Logout()
     {
-        await LocalStorage.RemoveItemAsync("jwtToken");
-        await CartStateService.ClearCartAsync();
-        NavigationManager.NavigateTo("/", true);
+        try
+        {
+            await LocalStorage.RemoveItemAsync("jwtToken");
+            await CartStateService.ClearCartAsync();
+            NavigationManager.NavigateTo("/", true);
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine("An error occurred during logout: " + ex.Message);
+        }
     }
         
     private string GetDropdownClass()

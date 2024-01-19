@@ -39,37 +39,47 @@ public partial class Cart : ComponentBase
 
     private async Task LoadCartItems()
     {
-        var storedCart = await LocalStorage.GetItemAsync<Dictionary<int, int>>("cart");
-        if (storedCart != null)
+        try
         {
-            // Filter out items with negative ids or negative quantities and update local storage
-            var validCartItems = storedCart
-                .Where(kv => kv is { Key: >= 0, Value: >= 0 })
-                .ToDictionary(kv => kv.Key, kv => kv.Value);
-
-            if (validCartItems.Count != storedCart.Count)
+            var storedCart = await LocalStorage.GetItemAsync<Dictionary<int, int>>("cart");
+            if (storedCart != null)
             {
-                // Update the local storage if invalid items were removed
-                await LocalStorage.SetItemAsync("cart", validCartItems);
+                var validCartItems = storedCart
+                    .Where(kv => kv is { Key: >= 0, Value: >= 0 })
+                    .ToDictionary(kv => kv.Key, kv => kv.Value);
+
+                if (validCartItems.Count != storedCart.Count)
+                {
+                    await LocalStorage.SetItemAsync("cart", validCartItems);
+                }
+
+                cartItemIds = validCartItems;
+            }
+            else
+            {
+                cartItemIds = new Dictionary<int, int>();
             }
 
-            cartItemIds = validCartItems;
+            cartItems.Clear();
+            foreach (var itemId in cartItemIds.Keys)
+            {
+                var book = await BookService.GetBookByIdAsync(itemId);
+                if (book != null)
+                {
+                    cartItems.Add(book);
+                }
+            }
         }
-        else
+        catch (System.Text.Json.JsonException ex)
         {
+            Console.WriteLine("Error reading cart from local storage: " + ex.Message);
+            // Reset the cart in local storage to an empty dictionary
             cartItemIds = new Dictionary<int, int>();
-        }
-
-        cartItems.Clear();
-        foreach (var itemId in cartItemIds.Keys)
-        {
-            var book = await BookService.GetBookByIdAsync(itemId);
-            if (book != null)
-            {
-                cartItems.Add(book);
-            }
+            await LocalStorage.SetItemAsync("cart", cartItemIds);
+            cartItems.Clear();
         }
     }
+
 
     private async Task UpdateQuantity(Book item, int quantity)
     {
