@@ -1,4 +1,5 @@
 ﻿using System.Diagnostics;
+using System.Net;
 using System.Text.Json;
 using Entities;
 using GatewayService.Services;
@@ -23,32 +24,48 @@ public class BookController(IHttpClientFactory httpClientFactory, JwtTokenValida
     [HttpGet]
     public async Task<ActionResult<IEnumerable<Book>>> Get()
     {
-        var response = await _client.GetAsync("http://localhost:5002/api/Books");
+        IEnumerable<Book>? books = null;
+        try
+        {
+            var response = await _client.GetAsync("http://localhost:5002/api/Books");
 
-        if (!response.IsSuccessStatusCode)
-            return StatusCode((int)response.StatusCode, response.ReasonPhrase);
+            if (!response.IsSuccessStatusCode)
+                return StatusCode((int)response.StatusCode, response.ReasonPhrase);
 
-        var json = await response.Content.ReadAsStringAsync();
-        var books = JsonSerializer.Deserialize<IEnumerable<Book>>(json);
-
+            var json = await response.Content.ReadAsStringAsync();
+            books = JsonSerializer.Deserialize<IEnumerable<Book>>(json);
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine(ex);
+        }
         return Ok(books);
     }
-    
+
     // GET: api/Book/{id}
     [HttpGet("{id:int}")]
     public async Task<ActionResult<Book>> Get(int id)
     {
-        var response = await _client.GetAsync($"http://localhost:5002/api/Books/{id}");
+        Book? book = null;
 
-        if (!response.IsSuccessStatusCode)
-            return StatusCode((int)response.StatusCode, response.ReasonPhrase);
+        try
+        {
+            var response = await _client.GetAsync($"http://localhost:5002/api/Books/{id}");
 
-        var json = await response.Content.ReadAsStringAsync();
-        var book = JsonSerializer.Deserialize<Book>(json);
-           
+            if (!response.IsSuccessStatusCode)
+                return StatusCode((int)response.StatusCode, response.ReasonPhrase);
+
+            var json = await response.Content.ReadAsStringAsync();
+            book = JsonSerializer.Deserialize<Book>(json);
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine(ex);
+        }
         return Ok(book);
+
     }
-    
+
     // POST: api/Book
     [HttpPost]
     public async Task<IActionResult> CreateBook([FromBody] Book book)
@@ -57,7 +74,7 @@ public class BookController(IHttpClientFactory httpClientFactory, JwtTokenValida
         var tokenWithQuotes = HttpContext.Request.Headers.Authorization.FirstOrDefault()?.Split(" ").Last();
         var token = tokenWithQuotes?.Trim('"');
 
-        if (string.IsNullOrEmpty(token) || !jwtTokenValidationService.IsUserAdmin(token, out  errorMessage))
+        if (string.IsNullOrEmpty(token) || !jwtTokenValidationService.IsUserAdmin(token, out errorMessage))
         {
             return Unauthorized(errorMessage);
         }
@@ -68,53 +85,67 @@ public class BookController(IHttpClientFactory httpClientFactory, JwtTokenValida
         Debug.Assert(createdBook != null, nameof(createdBook) + " != null");
         return CreatedAtAction(nameof(Get), new { id = createdBook.Id }, createdBook);
     }
-    
+
     // PUT api/Book/{id}
     [HttpPut("{id:int}")]
     public async Task<IActionResult> UpdateBook(int id, Book book)
     {
-        var errorMessage = string.Empty;
-        var tokenWithQuotes = HttpContext.Request.Headers.Authorization.FirstOrDefault()?.Split(" ").Last();
-        var token = tokenWithQuotes?.Trim('"');
-
-        if (string.IsNullOrEmpty(token) || !jwtTokenValidationService.IsUserAdmin(token, out errorMessage))
+        try
         {
-            return Unauthorized(errorMessage);
-        }
-        if (id != book.Id)
-        {
-            return BadRequest();
-        }
+            var errorMessage = string.Empty;
+            var tokenWithQuotes = HttpContext.Request.Headers.Authorization.FirstOrDefault()?.Split(" ").Last();
+            var token = tokenWithQuotes?.Trim('"');
 
-        var response = await _client.PutAsJsonAsync($"http://localhost:5002/api/Books/{id}", book);
-    
-        if (response.IsSuccessStatusCode)
-        {
-            return NoContent();
-        }
+            if (string.IsNullOrEmpty(token) || !jwtTokenValidationService.IsUserAdmin(token, out errorMessage))
+            {
+                return Unauthorized(errorMessage);
+            }
+            if (id != book.Id)
+            {
+                return BadRequest();
+            }
 
-        return StatusCode((int)response.StatusCode, response.ReasonPhrase);
+            var response = await _client.PutAsJsonAsync($"http://localhost:5002/api/Books/{id}", book);
+
+            if (response.IsSuccessStatusCode)
+            {
+                return NoContent();
+            }
+
+            return StatusCode((int)response.StatusCode, response.ReasonPhrase);
+        }
+        catch(Exception ex)
+        {
+            return StatusCode((int)HttpStatusCode.InternalServerError, ex);
+        }
     }
-    
+
     // DELETE api/Book/{id}
     [HttpDelete("{id:int}")]
     public async Task<IActionResult> DeleteBook(int id)
     {
-        var errorMessage = string.Empty;
-        var tokenWithQuotes = HttpContext.Request.Headers.Authorization.FirstOrDefault()?.Split(" ").Last();
-        var token = tokenWithQuotes?.Trim('"');
-
-        if (string.IsNullOrEmpty(token) || !jwtTokenValidationService.IsUserAdmin(token, out errorMessage))
+        try 
         {
-            return Unauthorized(errorMessage);
-        }
-        var response = await _client.DeleteAsync($"http://localhost:5002/api/Books/{id}");
-    
-        if (response.IsSuccessStatusCode)
-        {
-            return NoContent();
-        }
+            var errorMessage = string.Empty;
+            var tokenWithQuotes = HttpContext.Request.Headers.Authorization.FirstOrDefault()?.Split(" ").Last();
+            var token = tokenWithQuotes?.Trim('"');
 
-        return StatusCode((int)response.StatusCode, response.ReasonPhrase);
+            if (string.IsNullOrEmpty(token) || !jwtTokenValidationService.IsUserAdmin(token, out errorMessage))
+            {
+                return Unauthorized(errorMessage);
+            }
+            var response = await _client.DeleteAsync($"http://localhost:5002/api/Books/{id}");
+
+            if (response.IsSuccessStatusCode)
+            {
+                return NoContent();
+            }
+
+            return StatusCode((int)response.StatusCode, response.ReasonPhrase);
+        }
+        catch (Exception ex)
+        {
+            return StatusCode((int)HttpStatusCode.InternalServerError, ex);
+        }
     }
 }
