@@ -115,7 +115,7 @@
             <h2 class="text-2xl font-bold mb-4">Summary</h2>
             <div class="flex justify-between mb-4">
                 <span>Original Price:</span>
-                <span>@totalPrice.ToString("C2")</span>
+                <span>@totalPrice.ToString("C2", new CultureInfo("en-US"))</span>
             </div>
             <div class="flex justify-between mb-4">
                 <span class="text-lg font-bold">Total:</span>
