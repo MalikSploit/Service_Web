@@ -27,24 +27,38 @@ public class BooksController(BookServiceContext context) : ControllerBase
     [HttpGet("{id:int}")]
     public IActionResult Get(int id)
     {
-        var book = Books.FirstOrDefault(t => t.Id == id);
+        try
+        {
+            var book = Books.FirstOrDefault(t => t.Id == id);
 
-        if (book == null)
+            if (book == null)
+            {
+                return NotFound();
+            }
+
+            return Ok(book);
+        }
+        catch
         {
             return NotFound();
         }
-
-        return Ok(book);
     }
 
     // POST api/Books
     [HttpPost]
     public async Task<ActionResult<Book>> CreateBook(Book book)
     {
-        Books.Add(book);
-        await context.SaveChangesAsync();
+        try
+        {
+            Books.Add(book);
+            await context.SaveChangesAsync();
 
-        return CreatedAtAction(nameof(Get), new { id = book.Id }, book);
+            return CreatedAtAction(nameof(Get), new { id = book.Id }, book);
+        }
+        catch
+        {
+            return NoContent();
+        }
     }
     
     // PUT api/Books/5
@@ -89,17 +103,24 @@ public class BooksController(BookServiceContext context) : ControllerBase
     [HttpDelete("{id:int}")]
     public async Task<IActionResult> DeleteBook(int id)
     {
-        var book = await Books.FindAsync(id);
+        try
+        {
+            var book = await Books.FindAsync(id);
 
-        if (book == null)
+            if (book == null)
+            {
+                return NotFound();
+            }
+
+            Books.Remove(book);
+            await context.SaveChangesAsync();
+
+            return NoContent();
+        }
+        catch
         {
             return NotFound();
         }
-
-        Books.Remove(book);
-        await context.SaveChangesAsync();
-
-        return NoContent();
     }
 
     private bool BookExists(int id) => Books.Any(t => t.Id == id);
