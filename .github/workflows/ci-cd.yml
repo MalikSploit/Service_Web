@@ -19,19 +19,18 @@ jobs:
         username: malik
         key: ${{ secrets.SSH_PRIVATE_KEY }}
         script: |
-        sudo su -
-        git pull
+        sudo git pull
         cd /home/malik/Service_Web/Micro_Services/BookService
-        dotnet publish -o /home/malik/IZZIBOOKS/BookService
+        sudo dotnet publish -o /home/malik/IZZIBOOKS/BookService
 
         cd /home/malik/Service_Web/Micro_Services/UserService
-        dotnet publish -o /home/malik/IZZIBOOKS/UserService
+        sudo dotnet publish -o /home/malik/IZZIBOOKS/UserService
         
         cd /home/malik/Service_Web/Micro_Services/GatewayService
-        dotnet publish -o /home/malik/IZZIBOOKS/GatewayService
+        sudo dotnet publish -o /home/malik/IZZIBOOKS/GatewayService
         
         cd /home/malik/Service_Web/Micro_Services/Front
-        dotnet publish -o /home/malik/IZZIBOOKS/Front
+        sudo dotnet publish -o /home/malik/IZZIBOOKS/Front
         
         sudo systemctl restart bookservice.service
         sudo systemctl restart userservice.service
