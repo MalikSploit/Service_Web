@@ -136,36 +136,35 @@
         </button>
     </div>
     
-    <!-- Books Section -->
-    <section class="py-12">
-        <h2 class="text-4xl font-semibold text-center text-gray-800 mb-12">All Books</h2>
-        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
-            @if (filteredBooks != null && filteredBooks.Any())
-            {
-                @foreach (var book in filteredBooks)
-                {
-                    <!-- Book Template -->
-                    <div class="bg-white rounded-lg overflow-hidden shadow-lg hover:shadow-2xl transition-shadow duration-300">
-                        <img class="w-full h-64 object-cover" src="@book.ImageUrl" alt="@book.Title">
-                        <div class="p-4">
-                            <h3 class="text-xl font-bold mb-2">@book.Title</h3>
-                            <p class="text-gray-600 text-sm">@book.Author</p>
-                            <p class="text-gray-600 text-sm">@book.Description</p>
-                            <div class="mt-4 flex justify-between items-center">
-                                <span class="text-lg font-bold">$@book.Price</span>
-                                <a href="#" class="text-blue-500 hover:text-blue-600 transition-colors duration-300">Details</a>
-                                <button @onclick="() => AddToCart(book)" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">Add to Cart</button>
-                            </div>
-                        </div>
-                    </div>
-                }
-            }
-            else
-            {
-                <p>No books available.</p>
-            }
-        </div>
-    </section>
+   <!-- Books Section -->
+   <section class="py-8 md:py-12">
+       <h2 class="text-3xl md:text-4xl font-semibold text-center text-gray-800 mb-8 md:mb-12">All Books</h2>
+       <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 md:gap-8">
+           @if (filteredBooks != null && filteredBooks.Any())
+           {
+               @foreach (var book in filteredBooks)
+               {
+                   <!-- Book Template -->
+                   <div class="bg-white rounded-lg overflow-hidden shadow-lg hover:shadow-2xl transition-shadow duration-300">
+                       <img class="w-full h-auto md:h-64 object-cover" src="@book.ImageUrl" alt="@book.Title">
+                       <div class="p-4">
+                           <h3 class="text-lg md:text-xl font-bold mb-2">@book.Title</h3>
+                           <p class="text-gray-600 text-xs md:text-sm">@book.Author</p>
+                           <p class="text-gray-600 text-xs md:text-sm">@book.Description</p>
+                           <div class="mt-4 flex justify-between items-center">
+                               <span class="text-md md:text-lg font-bold">$@book.Price</span>
+                               <button @onclick="() => AddToCart(book)" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-3 md:px-4 rounded">Add to Cart</button>
+                           </div>
+                       </div>
+                   </div>
+               }
+           }
+           else
+           {
+               <p class="text-center">No books available.</p>
+           }
+       </div>
+   </section>
     @if (showAddToCartModal)
     {
         <div class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center">
