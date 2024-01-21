@@ -126,7 +126,7 @@ Le projet est structuré en utilisant une architecture de microservices. Voici u
 
 2. Ouvrez le dossier du projet dans votre éditeur de code.
 
-3. Exécutez les commandes suivantes pour restaurer les dépendances et lancer les microservices :
+3. Exécutez les commandes suivantes pour lancer les microservices :
 
 ```bash
 cd Micro_Services/GatewayService && dotnet run
@@ -148,14 +148,14 @@ cd Micro_Services/Front && dotnet run
 - [✅] Intégration Frontend et API Gateway : Le frontend interagit de manière transparente avec l'API Gateway pour toutes les opérations nécessaires.
 - [✅] Token JWT : Une fois connecté, le frontend reçoit un token JWT qu'il utilise pour authentifier les requêtes envoyées à la Gateway.
 - [✅] Microservice UserService : Un microservice dédié à la gestion des utilisateurs, permettant l'inscription, la connexion, et d'autres fonctionnalités associées.
-- [✅] Microservice BookService : Un microservice
-- [✅] Microservice Entities : Un microservice dédié à la gestion des entités, permettant la gestion des livres, des utilisateurs, et d'autres fonctionnalités associées.
+- [✅] Microservice BookService : Un microservice dédié à la gestion des livres pour les administrateurs uniquement.
+- [✅] Microservice Entities : Un microservice dédié à la gestion des entités, permettant la gestion des livres, des utilisateurs.
 
 ## Bonus :
 
-- [✅] Champ Rôle Utilisateur : Un champ de rôle est ajouté aux utilisateurs (basique, admin) avec une migration et une application en base de données.
-- [✅] Page Additionnelle pour Admin : En fonction du rôle de l'utilisateur, le frontend affiche une page supplémentaire permettant aux administrateurs de consulter la liste de tous les utilisateurs inscrits.
-- [✅] Gestion des Erreurs : Le frontend gère les erreurs de manière conviviale, affichant des messages appropriés en cas d'informations de connexion incorrectes ou d'erreurs renvoyées par la Gateway.
+- [✅] Champ Rôle Utilisateur : Un champ de rôle est ajouté aux utilisateurs (User, Admin) avec une migration et une application en base de données.
+- [✅] Page Additionnelle pour Admin : En fonction du rôle de l'utilisateur, le frontend affiche une page supplémentaire permettant aux administrateurs de consulter, ajouter et modifier les livres.
+- [✅] Gestion des Erreurs : Le frontend gère les erreurs de manière conviviale, affichant des messages appropriés en cas d'informations de connexion incorrectes ou d'erreurs renvoyées par la Gateway ou encore des informations utiles pour informer l'utilisateur que son action a était prise en compte.
 - [✅] Persistence des Données : Les données du microservice Todo sont persistées, que ce soit dans une base de données, un fichier, ou tout autre mécanisme de stockage.
 - [✅] Bonne Qualité de Code : Le code est bien indenté, lisible, et suit les bonnes pratiques de développement.
 - [✅] Konami Code : Une fonctionnalité bonus amusante avec l'intégration d'un Konami Code.
