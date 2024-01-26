@@ -30,9 +30,8 @@ jobs:
               # Check if the directory exists and is a microservice we want to publish
               if [ -d "Micro_Services/$DIR" ]; then
                 echo "Publishing $DIR..."
-                sudo rm -rf "/home/malik/IZZIBOOKS/$DIR"
                 sudo dotnet publish -o "/home/malik/IZZIBOOKS/$DIR" "Micro_Services/$DIR"
-
+                sudo chown -R www-data:www-data "/home/malik/IZZIBOOKS/$DIR"
                 # Restart the service only if it was updated
                 sudo systemctl restart "${DIR,,}.service"
               fi
