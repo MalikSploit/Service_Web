@@ -43,7 +43,6 @@
                     resolve(true);
                 }
             }).catch(function (error) {
-                // Handle any other exceptions
                 reject("An error occurred during card validation.");
             });
         });

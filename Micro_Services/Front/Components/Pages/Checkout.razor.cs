@@ -18,6 +18,7 @@ public partial class Checkout : ComponentBase
     [Inject] private LoginService LoginService { get; set; }
     [Inject] private CheckoutService CheckoutService { get; set; }
     [Inject] private TermsOfServiceModal TermsOfServiceModal { get; set; }
+    [Inject] private CartStateService CartStateService { get; set; }
 
     [Required, MaxLength(100)]
     private string CustomerName { get; set; }
@@ -139,6 +140,7 @@ public partial class Checkout : ComponentBase
                 return;
             }
             CheckoutService.HasCompletedCheckout = true;
+            await CartStateService.ClearCartAsync();
             NavigationManager.NavigateTo("/ThankYou");
         }
         else

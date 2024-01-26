@@ -3,7 +3,6 @@ using Entities;
 using Front.Services;
 using Microsoft.AspNetCore.Components;
 using Microsoft.IdentityModel.Tokens;
-using System;
 
 namespace Front.Components.Pages;
 
@@ -81,7 +80,7 @@ public partial class Explore : ComponentBase
         StateHasChanged();
 
         // Hide the modal after 1 second
-        modalTimer?.Dispose();
+        modalTimer.Dispose();
         modalTimer = new Timer(_ => { 
             showAddToCartModal = false; 
             InvokeAsync(StateHasChanged); // Invoke StateHasChanged on the UI thread
